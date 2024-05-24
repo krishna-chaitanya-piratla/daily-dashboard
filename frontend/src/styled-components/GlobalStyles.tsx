@@ -1,0 +1,19 @@
+import styled, { createGlobalStyle } from 'styled-components';
+
+export const GlobalStyles = createGlobalStyle`
+  body {
+    background-color: black;
+    color: white;
+    font-family: 'Lato', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+`;
+
+export const Header = styled.header`
+  position: fixed;
+  top: 0;
+  right: 0;
+  padding: 10px;
+`;
