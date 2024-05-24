@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Draggable from 'react-draggable';
 import TodoItem from './TodoItem';
 import { StyledTodoListContainer, StyledHeader, StyledDeleteIcon } from '../styled-components/Todo';
 
@@ -55,31 +56,33 @@ const TodoList: React.FC = () => {
   };
 
   return (
-    <StyledTodoListContainer>
-      <StyledHeader>
-        <h1>To-Do List</h1>
-        <StyledDeleteIcon onClick={clearTodos}>&#x1F5D1;</StyledDeleteIcon> {/* Unicode for delete icon */}
-      </StyledHeader>
-      <input
-        type="text"
-        value={newTodo}
-        onChange={(e) => setNewTodo(e.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder="Add a new to-do"
-        style={{ width: '400px', height: '40px' }}
-      />
-      <div>
-        {todos.map((todo, index) => (
-          <TodoItem
-            key={index}
-            todo={todo.text}
-            completed={todo.completed}
-            onToggle={() => toggleTodo(index)}
-            onDelete={() => deleteTodo(index)}
-          />
-        ))}
-      </div>
-    </StyledTodoListContainer>
+    <Draggable>
+      <StyledTodoListContainer>
+        <StyledHeader>
+          <h1>To-Do List</h1>
+          <StyledDeleteIcon onClick={clearTodos}>&#x1F5D1;</StyledDeleteIcon> {/* Unicode for delete icon */}
+        </StyledHeader>
+        <input
+          type="text"
+          value={newTodo}
+          onChange={(e) => setNewTodo(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="Add a new to-do"
+          style={{ width: '400px', height: '40px' }}
+        />
+        <div>
+          {todos.map((todo, index) => (
+            <TodoItem
+              key={index}
+              todo={todo.text}
+              completed={todo.completed}
+              onToggle={() => toggleTodo(index)}
+              onDelete={() => deleteTodo(index)}
+            />
+          ))}
+        </div>
+      </StyledTodoListContainer>
+    </Draggable>
   );
 };
 
