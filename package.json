@@ -2,11 +2,10 @@
     "name": "daily-dashboard",
     "version": "1.0.0",
     "scripts": {
-      "install": "npm install && cd frontend && npm install && cd ../backend && npm install",
-      "build": "npm run build:frontend && npm run build:backend",
-      "dev": "npm run dev:frontend & cd .. & npm run dev:backend",
-      "dev:frontend": "cd frontend && npm start",
-      "dev:backend": "cd backend && npm run start:dev"
-    },
-    "dependencies": {}
-  }
+        "install": "npm install && cd frontend && npm install && cd ../backend && npm install",
+        "build": "npm run build:frontend && npm run build:backend",
+        "dev": "npm run dev:frontend & cd .. & npm run dev:backend",
+        "dev:frontend": "cd frontend && npm start",
+        "dev:backend": "cd backend && npm run start:dev"
+    }
+}
