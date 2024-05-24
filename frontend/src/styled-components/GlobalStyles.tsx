@@ -17,3 +17,12 @@ export const Header = styled.header`
   right: 0;
   padding: 10px;
 `;
+
+export const AppContainer = styled.div`
+  text-align: center;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
