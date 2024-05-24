@@ -18,3 +18,17 @@ export const StyledTodoListContainer = styled.div`
   background-color: inherit;
   color: inherit;
 `;
+
+export const StyledHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const StyledDeleteIcon = styled.span`
+  cursor: pointer;
+  font-size: 1.5em;
+  &:hover {
+    color: red;
+  }
+`;

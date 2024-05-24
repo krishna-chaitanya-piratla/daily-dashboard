@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import TodoItem from './TodoItem';
-import { StyledTodoListContainer } from '../styled-components/Todo';
+import { StyledTodoListContainer, StyledHeader, StyledDeleteIcon } from '../styled-components/Todo';
 
 interface Todo {
   text: string;
@@ -45,9 +45,16 @@ const TodoList: React.FC = () => {
     setTodos(updatedTodos);
   };
 
+  const clearTodos = () => {
+    setTodos([]);
+  };
+
   return (
     <StyledTodoListContainer>
-      <h1>To-Do List</h1>
+      <StyledHeader>
+        <h1>To-Do List</h1>
+        <StyledDeleteIcon onClick={clearTodos}>&#x1F5D1;</StyledDeleteIcon> {/* Unicode for delete icon */}
+      </StyledHeader>
       <input
         type="text"
         value={newTodo}
