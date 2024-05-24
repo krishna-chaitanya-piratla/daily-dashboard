@@ -23,13 +23,15 @@ export const StyledItemDeleteIcon = styled.span`
   cursor: pointer;
   margin-left: -10px;
   font-size: 1.5em;
+
   &:hover {
     color: red;
   }
 `;
 
 export const StyledTodoListContainer = styled.div`
-  width: 400px; /* Set the fixed width here */
+  width: 100%;
+  height: 100%;
   margin: 20px auto;
   text-align: center;
   border: 1px solid #ccc;
@@ -37,6 +39,7 @@ export const StyledTodoListContainer = styled.div`
   padding: 20px;
   background-color: inherit;
   color: inherit;
+  box-sizing: border-box; /* Ensure padding is included in the dimensions */
 `;
 
 export const StyledHeader = styled.div`

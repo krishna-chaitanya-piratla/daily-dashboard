@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Draggable from 'react-draggable';
+import { ResizableBox } from 'react-resizable';
 import TodoItem from './TodoItem';
 import { StyledTodoListContainer, StyledHeader, StyledDeleteIcon } from '../styled-components/Todo';
+import 'react-resizable/css/styles.css';
 
 interface Todo {
   text: string;
@@ -12,6 +14,7 @@ const TodoList: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodo, setNewTodo] = useState<string>('');
   const [isInitialized, setIsInitialized] = useState(false);
+  const [isResizing, setIsResizing] = useState(false);
 
   useEffect(() => {
     const savedTodos = localStorage.getItem('todos');
@@ -56,32 +59,41 @@ const TodoList: React.FC = () => {
   };
 
   return (
-    <Draggable>
-      <StyledTodoListContainer>
-        <StyledHeader>
-          <h1>To-Do List</h1>
-          <StyledDeleteIcon onClick={clearTodos}>&#x1F5D1;</StyledDeleteIcon> {/* Unicode for delete icon */}
-        </StyledHeader>
-        <input
-          type="text"
-          value={newTodo}
-          onChange={(e) => setNewTodo(e.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder="Add a new to-do"
-          style={{ width: '400px', height: '40px' }}
-        />
-        <div>
-          {todos.map((todo, index) => (
-            <TodoItem
-              key={index}
-              todo={todo.text}
-              completed={todo.completed}
-              onToggle={() => toggleTodo(index)}
-              onDelete={() => deleteTodo(index)}
-            />
-          ))}
-        </div>
-      </StyledTodoListContainer>
+    <Draggable handle=".handle" disabled={isResizing}>
+      <ResizableBox 
+        width={400} 
+        height={400} 
+        minConstraints={[300, 300]} 
+        maxConstraints={[1000, 1000]}
+        onResizeStart={() => setIsResizing(true)}
+        onResizeStop={() => setIsResizing(false)}
+      >
+        <StyledTodoListContainer>
+          <StyledHeader className="handle">
+            <h1>To-Do List</h1>
+            <StyledDeleteIcon onClick={clearTodos}>&#x1F5D1;</StyledDeleteIcon> {/* Unicode for delete icon */}
+          </StyledHeader>
+          <input
+            type="text"
+            value={newTodo}
+            onChange={(e) => setNewTodo(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="Add a new to-do"
+            style={{ width: '100%', height: '40px' }}
+          />
+          <div>
+            {todos.map((todo, index) => (
+              <TodoItem
+                key={index}
+                todo={todo.text}
+                completed={todo.completed}
+                onToggle={() => toggleTodo(index)}
+                onDelete={() => deleteTodo(index)}
+              />
+            ))}
+          </div>
+        </StyledTodoListContainer>
+      </ResizableBox>
     </Draggable>
   );
 };
