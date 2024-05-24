@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { StyledDateTimeLocation, StyledTime, StyledDate, StyledLocation } from '../styled-components/DateTimeLocation';
 
-
 const DateTimeLocation: React.FC = () => {
-    const [dateTime, setDateTime] = useState<{ time: string, date: string }>({ time: '', date: '' });
-    const [location, setLocation] = useState<string>('');
+  const [dateTime, setDateTime] = useState<{ time: string, date: string }>({ time: '', date: '' });
+  const [location, setLocation] = useState<string>('');
 
   useEffect(() => {
     const updateDateTime = () => {
-    const now = new Date();
-    const time = now.toLocaleTimeString();
-    const date = now.toLocaleDateString();
-    setDateTime({ time, date });
+      const now = new Date();
+      const time = now.toLocaleTimeString();
+      const date = new Intl.DateTimeFormat('en-GB', {
+        weekday: 'long',
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+      }).format(now);
+      setDateTime({ time, date });
     };
     updateDateTime();
     const interval = setInterval(updateDateTime, 1000);
@@ -20,13 +24,13 @@ const DateTimeLocation: React.FC = () => {
 
   useEffect(() => {
     const fetchLocation = async () => {
-        try {
+      try {
         const response = await fetch('https://ipapi.co/json/');
         const data = await response.json();
         setLocation(`${data.city}, ${data.region}, ${data.country}`);
-        } catch (error) {
+      } catch (error) {
         setLocation('Location not found');
-        }
+      }
     };
     fetchLocation();
   }, []);
