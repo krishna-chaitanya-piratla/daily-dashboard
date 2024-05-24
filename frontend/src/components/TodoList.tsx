@@ -45,6 +45,11 @@ const TodoList: React.FC = () => {
     setTodos(updatedTodos);
   };
 
+  const deleteTodo = (index: number) => {
+    const updatedTodos = todos.filter((_, i) => i !== index);
+    setTodos(updatedTodos);
+  };
+
   const clearTodos = () => {
     setTodos([]);
   };
@@ -70,6 +75,7 @@ const TodoList: React.FC = () => {
             todo={todo.text}
             completed={todo.completed}
             onToggle={() => toggleTodo(index)}
+            onDelete={() => deleteTodo(index)}
           />
         ))}
       </div>
