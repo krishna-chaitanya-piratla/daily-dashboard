@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import TodoItem from './TodoItem';
+import { StyledTodoListContainer } from '../styled-components/Todo';
 
 const TodoList: React.FC = () => {
   const [todos, setTodos] = useState<string[]>([]);
   const [newTodo, setNewTodo] = useState<string>('');
   const [isInitialized, setIsInitialized] = useState(false);
 
-  // Load to-dos from local storage when the component mounts
   useEffect(() => {
     const savedTodos = localStorage.getItem('todos');
     if (savedTodos) {
@@ -15,7 +15,6 @@ const TodoList: React.FC = () => {
     setIsInitialized(true);
   }, []);
 
-  // Save to-dos to local storage whenever the todos state changes
   useEffect(() => {
     if (isInitialized) {
       localStorage.setItem('todos', JSON.stringify(todos));
@@ -36,7 +35,7 @@ const TodoList: React.FC = () => {
   };
 
   return (
-    <div>
+    <StyledTodoListContainer>
       <h1>To-Do List</h1>
       <input
         type="text"
@@ -51,7 +50,7 @@ const TodoList: React.FC = () => {
           <TodoItem key={index} todo={todo} />
         ))}
       </div>
-    </div>
+    </StyledTodoListContainer>
   );
 };
 
