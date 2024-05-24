@@ -2,8 +2,13 @@ import React, { useState, useEffect } from 'react';
 import TodoItem from './TodoItem';
 import { StyledTodoListContainer } from '../styled-components/Todo';
 
+interface Todo {
+  text: string;
+  completed: boolean;
+}
+
 const TodoList: React.FC = () => {
-  const [todos, setTodos] = useState<string[]>([]);
+  const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodo, setNewTodo] = useState<string>('');
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -23,7 +28,7 @@ const TodoList: React.FC = () => {
 
   const addTodo = () => {
     if (newTodo.trim()) {
-      setTodos([...todos, newTodo]);
+      setTodos([...todos, { text: newTodo, completed: false }]);
       setNewTodo('');
     }
   };
@@ -32,6 +37,12 @@ const TodoList: React.FC = () => {
     if (event.key === 'Enter') {
       addTodo();
     }
+  };
+
+  const toggleTodo = (index: number) => {
+    const updatedTodos = [...todos];
+    updatedTodos[index].completed = !updatedTodos[index].completed;
+    setTodos(updatedTodos);
   };
 
   return (
@@ -47,7 +58,12 @@ const TodoList: React.FC = () => {
       />
       <div>
         {todos.map((todo, index) => (
-          <TodoItem key={index} todo={todo} />
+          <TodoItem
+            key={index}
+            todo={todo.text}
+            completed={todo.completed}
+            onToggle={() => toggleTodo(index)}
+          />
         ))}
       </div>
     </StyledTodoListContainer>
