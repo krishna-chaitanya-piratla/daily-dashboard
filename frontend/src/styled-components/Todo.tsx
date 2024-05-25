@@ -4,7 +4,7 @@ export const StyledTodoItem = styled.div<{ completed: boolean }>`
   padding: 10px 10px 10px 30px; /* Adjust padding to create space for the icon */
   border-bottom: 1px solid #ccc;
   text-align: left;
-  color: #888;
+  color: inherit;
   word-wrap: break-word;
   position: relative;
   text-decoration: ${(props) => (props.completed ? 'line-through' : 'none')};
@@ -35,8 +35,12 @@ export const StyledTodoListContainer = styled.div`
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 20px;
-  background-color: inherit;
+  background-color: rgba(0, 0, 0, 0.6);
   color: inherit;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
 `;
 
 export const StyledHeader = styled.div`

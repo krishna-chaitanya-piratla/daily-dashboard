@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const StyledDateTimeLocation = styled.div`
   font-size: 14px;
   text-align: right;
-  border: 2px solid gold;
+  border: 1px solid #ccc;
   border-radius: 10px;
   padding: 10px;
   margin: 10px;
