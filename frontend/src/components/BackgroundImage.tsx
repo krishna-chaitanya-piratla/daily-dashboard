@@ -14,7 +14,6 @@ const BackgroundImage: React.FC<BackgroundImageProps> = ({ query, children }) =>
   const [backgroundImage, setBackgroundImage] = useState<string>('');
 
   useEffect(() => {
-    console.log(`abcd = ${process.env.UNSPLASH_ACCESS_KEY}`);
     const fetchRandomPhoto = async () => {
       try {
         const result = await unsplash.photos.getRandom({ query });

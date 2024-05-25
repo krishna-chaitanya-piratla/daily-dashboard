@@ -11,16 +11,16 @@ export const StyledDateTimeLocation = styled.div`
 `;
 
 export const StyledTime = styled.p`
-  font-size: 2.5em;
+  font-size: 3em;
   margin: 0;
 `;
 
 export const StyledDate = styled.p`
-  font-size: 1em;
+  font-size: 1.5em;
   margin: 0;
 `;
 
 export const StyledLocation = styled.p`
-  font-size: 1em;
+  font-size: 1.5em;
   margin: 0;
 `;
