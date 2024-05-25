@@ -3,6 +3,7 @@ import DateTimeLocation from './components/DateTimeLocation';
 import TodoList from './components/TodoList';
 import { GlobalStyles, AppContainer, Header } from './styled-components/GlobalStyles';
 import { Helmet } from 'react-helmet';
+import BackgroundImage from './components/BackgroundImage';
 
 const App: React.FC = () => {
   return (
@@ -14,14 +15,16 @@ const App: React.FC = () => {
         />
       </Helmet>
       <GlobalStyles />
-      <AppContainer>
-        <Header>
-          <DateTimeLocation />
-        </Header>
-        <div>
-          <TodoList />
-        </div>
-      </AppContainer>
+      <BackgroundImage query="space">
+        <AppContainer>
+          <Header>
+            <DateTimeLocation />
+          </Header>
+          <div>
+            <TodoList />
+          </div>
+        </AppContainer>
+      </BackgroundImage>
     </>
   );
 };

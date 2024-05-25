@@ -25,4 +25,5 @@ export const AppContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background-size: cover; /* Ensure the background image covers the entire container */
 `;
