@@ -29,7 +29,8 @@ export const StyledItemDeleteIcon = styled.span`
 `;
 
 export const StyledTodoListContainer = styled.div`
-  width: 400px; /* Set the fixed width here */
+  width: 100%;
+  height: 100%;
   margin: 20px auto;
   text-align: center;
   border: 1px solid #ccc;
@@ -37,6 +38,7 @@ export const StyledTodoListContainer = styled.div`
   padding: 20px;
   background-color: rgba(0, 0, 0, 0.6);
   color: inherit;
+  box-sizing: border-box;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);

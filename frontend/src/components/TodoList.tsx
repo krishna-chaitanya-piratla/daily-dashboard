@@ -67,6 +67,7 @@ const TodoList: React.FC = () => {
         maxConstraints={[1000, 1000]}
         onResizeStart={() => setIsResizing(true)}
         onResizeStop={() => setIsResizing(false)}
+        resizeHandles={['s', 'w', 'e', 'n', 'sw', 'nw', 'se', 'ne']}
       >
         <StyledTodoListContainer>
           <StyledHeader className="handle">
