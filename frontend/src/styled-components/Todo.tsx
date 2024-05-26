@@ -33,10 +33,10 @@ export const StyledTodoListContainer = styled.div`
   height: 100%;
   margin: 20px auto;
   text-align: center;
-  border: 1px solid #ccc;
+  border: 1px solid #999;
   border-radius: 10px;
   padding: 20px;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.2);
   color: inherit;
   box-sizing: border-box;
   backdrop-filter: blur(10px);
