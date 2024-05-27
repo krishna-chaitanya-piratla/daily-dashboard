@@ -1,8 +1,32 @@
 import styled from 'styled-components';
 
+export const StyledTodoInput = styled.input`
+  width: 80%;
+  height: 2.5rem;
+  background: inherit;
+  border: none;
+  border-radius: 10px;
+  color: slategray;
+  padding: 0 1rem;
+  
+  &:focus, &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 0.5px #999;
+  }
+
+  &:hover {
+    outline: none;
+    box-shadow: 0 0 0 0.5px #999;
+  }
+
+  &::placeholder {
+    color: gray;
+  }
+`;
+
 export const StyledTodoItem = styled.div<{ completed: boolean }>`
   padding: 10px 10px 10px 30px; /* Adjust padding to create space for the icon */
-  border-bottom: 1px solid #ccc;
+  border-bottom: 0.5px dashed rgba(0, 0, 0, 0.3);
   text-align: left;
   color: inherit;
   word-wrap: break-word;
@@ -33,7 +57,7 @@ export const StyledTodoListContainer = styled.div`
   height:fit-content;
   margin: 20px auto;
   text-align: center;
-  border: 1px solid #999;
+  border: 0.5px solid #999;
   border-radius: 10px;
   padding: 20px;
   background-color: rgba(0, 0, 0, 0.2);

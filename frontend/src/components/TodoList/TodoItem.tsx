@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyledTodoItem, StyledItemDeleteIcon } from '../styled-components/Todo';
+import { StyledTodoItem, StyledItemDeleteIcon } from '../../styled-components/Todo';
 
 interface TodoItemProps {
   todo: string;

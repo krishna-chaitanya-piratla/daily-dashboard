@@ -4,8 +4,9 @@ import Draggable from 'react-draggable';
 import { ResizableBox } from 'react-resizable';
 import axios from 'axios';
 import TodoItem from './TodoItem';
-import { StyledTodoListContainer, StyledHeader, StyledDeleteIcon } from '../styled-components/Todo';
+import { StyledTodoListContainer, StyledHeader, StyledDeleteIcon } from '../../styled-components/Todo';
 import 'react-resizable/css/styles.css';
+import TodoInput from './TodoInput';
 
 interface Todo {
   text: string;
@@ -99,14 +100,11 @@ const TodoList: React.FC = () => {
             <h1>To-Do List</h1>
             <StyledDeleteIcon onClick={clearTodos}>&#x1F5D1;</StyledDeleteIcon> {/* Unicode for delete icon */}
           </StyledHeader>
-          <input
-            type="text"
+          <TodoInput type="text"
             value={newTodo}
             onChange={(e) => setNewTodo(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Add a new to-do"
-            style={{ width: '100%', height: '40px' }}
-          />
+            placeholder="Add a new to-do"/>
           <div>
             {todos.map((todo, index) => (
               <TodoItem

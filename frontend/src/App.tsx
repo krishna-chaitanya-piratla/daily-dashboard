@@ -1,6 +1,6 @@
 import React from 'react';
 import DateTimeLocation from './components/DateTimeLocation';
-import TodoList from './components/TodoList';
+import TodoList from './components/TodoList/TodoList';
 import { GlobalStyles, AppContainer, Header } from './styled-components/GlobalStyles';
 import { Helmet } from 'react-helmet';
 import BackgroundImage from './components/BackgroundImage';
