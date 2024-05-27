@@ -3,10 +3,9 @@ import styled from 'styled-components';
 export const StyledTodoInput = styled.input`
   width: 80%;
   height: 2.5rem;
-  background: inherit;
+  background: none;
   border: none;
   border-radius: 10px;
-  color: slategray;
   padding: 0 1rem;
   
   &:focus, &:focus-visible {
