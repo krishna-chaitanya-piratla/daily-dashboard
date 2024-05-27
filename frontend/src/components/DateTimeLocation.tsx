@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyledDateTimeLocation, StyledTime, StyledDate, StyledLocation } from '../styled-components/DateTimeLocation';
 import Draggable from 'react-draggable';
+import axios from 'axios';
 
 const DateTimeLocation: React.FC = () => {
   const [dateTime, setDateTime] = useState<{ time: string, date: string }>({ time: '', date: '' });
@@ -26,23 +27,24 @@ const DateTimeLocation: React.FC = () => {
   useEffect(() => {
     const fetchLocation = async () => {
       try {
-        const response = await fetch('https://ipapi.co/json/');
-        const data = await response.json();
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/ip`);
+        const { data } = response.data;
         setLocation(`${data.city}, ${data.region}, ${data.country}`);
       } catch (error) {
         setLocation('Location not found');
       }
     };
+
     fetchLocation();
   }, []);
 
   return (
     <Draggable>
-        <StyledDateTimeLocation>
+      <StyledDateTimeLocation>
         <StyledTime>{dateTime.time}</StyledTime>
         <StyledDate>{dateTime.date}</StyledDate>
         <StyledLocation>{location}</StyledLocation>
-        </StyledDateTimeLocation>
+      </StyledDateTimeLocation>
     </Draggable>
   );
 };

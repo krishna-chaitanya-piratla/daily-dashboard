@@ -19,7 +19,7 @@ const TodoList: React.FC = () => {
   const [isResizing, setIsResizing] = useState(false);
 
   useEffect(() => {
-    axios.get('http://localhost:9988/todos')
+    axios.get(`${process.env.REACT_APP_BACKEND_URL}/todos`)
       .then(response => {
         setTodos(response.data);
         setIsInitialized(true);
@@ -32,7 +32,7 @@ const TodoList: React.FC = () => {
   const addTodo = () => {
     if (newTodo.trim()) {
       const todo = { text: newTodo, completed: false };
-      axios.post('http://localhost:9988/todos', todo)
+      axios.post(`${process.env.REACT_APP_BACKEND_URL}/todos`, todo)
         .then(response => {
           setTodos([...todos, response.data]);
           setNewTodo('');
@@ -51,7 +51,7 @@ const TodoList: React.FC = () => {
 
   const toggleTodo = (index: number) => {
     const updatedTodo = { ...todos[index], completed: !todos[index].completed };
-    axios.put(`http://localhost:9988/todos/${index}`, updatedTodo)
+    axios.put(`${process.env.REACT_APP_BACKEND_URL}/todos/${index}`, updatedTodo)
       .then(response => {
         const updatedTodos = [...todos];
         updatedTodos[index] = response.data;
@@ -63,7 +63,7 @@ const TodoList: React.FC = () => {
   };
 
   const deleteTodo = (index: number) => {
-    axios.delete(`http://localhost:9988/todos/${index}`)
+    axios.delete(`${process.env.REACT_APP_BACKEND_URL}/todos/${index}`)
       .then(() => {
         const updatedTodos = todos.filter((_, i) => i !== index);
         setTodos(updatedTodos);
@@ -74,7 +74,7 @@ const TodoList: React.FC = () => {
   };
 
   const clearTodos = () => {
-    axios.delete('http://localhost:9988/todos')
+    axios.delete(`${process.env.REACT_APP_BACKEND_URL}/todos`)
       .then(() => {
         setTodos([]);
       })
