@@ -30,7 +30,7 @@ export const StyledItemDeleteIcon = styled.span`
 
 export const StyledTodoListContainer = styled.div`
   width: 100%;
-  height: 100%;
+  height:fit-content;
   margin: 20px auto;
   text-align: center;
   border: 1px solid #999;
