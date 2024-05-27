@@ -1,28 +1,38 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import * as fs from 'fs';
 import * as path from 'path';
-
-const TODO_FILE_PATH = path.resolve(__dirname, '../../data/todos.json');
 
 @Injectable()
 export class TodosService {
   private todos: any[] = [];
+  private TODO_FILE_PATH: string;
 
-  constructor() {
+  constructor(private configService: ConfigService) {
+    const DATA_LOCATION = this.configService.get<string>('DATA_LOCATION_LOCAL');
+
+    this.TODO_FILE_PATH = path.resolve(DATA_LOCATION, 'todos.json');
+    this.ensureDataFileExists();
     this.loadTodos();
   }
 
-  private loadTodos() {
-    if (fs.existsSync(TODO_FILE_PATH)) {
-      const data = fs.readFileSync(TODO_FILE_PATH, 'utf8');
-      this.todos = JSON.parse(data) || [];
-    } else {
-      this.todos = [];
+  private ensureDataFileExists() {
+    const dirPath = path.dirname(this.TODO_FILE_PATH);
+    if (!fs.existsSync(dirPath)) {
+      fs.mkdirSync(dirPath, { recursive: true });
+    }
+    if (!fs.existsSync(this.TODO_FILE_PATH)) {
+      fs.writeFileSync(this.TODO_FILE_PATH, '[]', 'utf8');
     }
   }
 
+  private loadTodos() {
+    const data = fs.readFileSync(this.TODO_FILE_PATH, 'utf8');
+    this.todos = JSON.parse(data) || [];
+  }
+
   private saveTodos() {
-    fs.writeFileSync(TODO_FILE_PATH, JSON.stringify(this.todos, null, 2), 'utf8');
+    fs.writeFileSync(this.TODO_FILE_PATH, JSON.stringify(this.todos, null, 2), 'utf8');
   }
 
   getAllTodos() {

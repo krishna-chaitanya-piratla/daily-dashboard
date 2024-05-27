@@ -12,8 +12,6 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   
   app.enableCors(defaultCorsOptionsFactory(configService));
-
-  console.log(`corsOptions = ${JSON.stringify(defaultCorsOptionsFactory(configService))}`);
   
   await app.listen(envVars(configService).server_port);
   

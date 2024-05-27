@@ -1,6 +1,8 @@
+// components/TodoList.tsx
 import React, { useState, useEffect } from 'react';
 import Draggable from 'react-draggable';
 import { ResizableBox } from 'react-resizable';
+import axios from 'axios';
 import TodoItem from './TodoItem';
 import { StyledTodoListContainer, StyledHeader, StyledDeleteIcon } from '../styled-components/Todo';
 import 'react-resizable/css/styles.css';
@@ -17,23 +19,27 @@ const TodoList: React.FC = () => {
   const [isResizing, setIsResizing] = useState(false);
 
   useEffect(() => {
-    const savedTodos = localStorage.getItem('todos');
-    if (savedTodos) {
-      setTodos(JSON.parse(savedTodos));
-    }
-    setIsInitialized(true);
+    axios.get('http://localhost:9988/todos')
+      .then(response => {
+        setTodos(response.data);
+        setIsInitialized(true);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the todos!', error);
+      });
   }, []);
-
-  useEffect(() => {
-    if (isInitialized) {
-      localStorage.setItem('todos', JSON.stringify(todos));
-    }
-  }, [todos, isInitialized]);
 
   const addTodo = () => {
     if (newTodo.trim()) {
-      setTodos([...todos, { text: newTodo, completed: false }]);
-      setNewTodo('');
+      const todo = { text: newTodo, completed: false };
+      axios.post('http://localhost:9988/todos', todo)
+        .then(response => {
+          setTodos([...todos, response.data]);
+          setNewTodo('');
+        })
+        .catch(error => {
+          console.error('There was an error adding the todo!', error);
+        });
     }
   };
 
@@ -44,26 +50,45 @@ const TodoList: React.FC = () => {
   };
 
   const toggleTodo = (index: number) => {
-    const updatedTodos = [...todos];
-    updatedTodos[index].completed = !updatedTodos[index].completed;
-    setTodos(updatedTodos);
+    const updatedTodo = { ...todos[index], completed: !todos[index].completed };
+    axios.put(`http://localhost:9988/todos/${index}`, updatedTodo)
+      .then(response => {
+        const updatedTodos = [...todos];
+        updatedTodos[index] = response.data;
+        setTodos(updatedTodos);
+      })
+      .catch(error => {
+        console.error('There was an error updating the todo!', error);
+      });
   };
 
   const deleteTodo = (index: number) => {
-    const updatedTodos = todos.filter((_, i) => i !== index);
-    setTodos(updatedTodos);
+    axios.delete(`http://localhost:9988/todos/${index}`)
+      .then(() => {
+        const updatedTodos = todos.filter((_, i) => i !== index);
+        setTodos(updatedTodos);
+      })
+      .catch(error => {
+        console.error('There was an error deleting the todo!', error);
+      });
   };
 
   const clearTodos = () => {
-    setTodos([]);
+    axios.delete('http://localhost:9988/todos')
+      .then(() => {
+        setTodos([]);
+      })
+      .catch(error => {
+        console.error('There was an error clearing the todos!', error);
+      });
   };
 
   return (
     <Draggable handle=".handle" disabled={isResizing}>
-      <ResizableBox 
-        width={400} 
-        height={400} 
-        minConstraints={[300, 300]} 
+      <ResizableBox
+        width={400}
+        height={400}
+        minConstraints={[300, 300]}
         maxConstraints={[1000, 1000]}
         onResizeStart={() => setIsResizing(true)}
         onResizeStop={() => setIsResizing(false)}

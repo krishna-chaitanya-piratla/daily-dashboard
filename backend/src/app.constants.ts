@@ -33,8 +33,6 @@ export const defaultCorsOptionsFactory = (configService: ConfigService): CorsOpt
     origin: (requestOrigin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
         const allowedOrigin = `${envVars(configService).client_url}:${envVars(configService).client_port}`;
     
-        console.log(`allowed Origin = ${allowedOrigin}`);
-    
         // Allow requests with no origin (like mobile apps or curl requests)
         if (!requestOrigin) {
         callback(null, true);
