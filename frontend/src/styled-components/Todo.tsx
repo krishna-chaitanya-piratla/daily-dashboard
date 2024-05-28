@@ -11,6 +11,7 @@ export const StyledTodoInput = styled.input`
   &:focus, &:focus-visible {
     outline: none;
     box-shadow: 0 0 0 0.5px #999;
+    color: gray;
   }
 
   &:hover {
