@@ -11,6 +11,7 @@ export interface Todo {
 
 export interface TodoList {
   id: string;
+  title: string;
   todos: Todo[];
 }
 
@@ -45,18 +46,28 @@ export class TodosService {
     fs.writeFileSync(this.TODO_FILE_PATH, JSON.stringify(this.todoLists, null, 2), 'utf8');
   }
 
-  getAllTodoLists() {
+  getAllTodoLists(): TodoList[] {
     return this.todoLists;
   }
 
-  addTodoList() {
-    const newList: TodoList = { id: uuidv4(), todos: [] };
+  addTodoList(): TodoList {
+    const newList: TodoList = { id: uuidv4(), title: 'New List', todos: [] };
     this.todoLists.push(newList);
     this.saveTodoLists();
     return newList;
   }
 
-  addTodo(listId: string, todo: Todo) {
+  updateTodoListTitle(listId: string, title: string): TodoList {
+    const list = this.todoLists.find(list => list.id === listId);
+    if (list) {
+      list.title = title;
+      this.saveTodoLists();
+      return list;
+    }
+    return null;
+  }
+
+  addTodo(listId: string, todo: Todo): Todo {
     const list = this.todoLists.find(list => list.id === listId);
     if (list) {
       list.todos.push(todo);
@@ -66,7 +77,7 @@ export class TodosService {
     return null;
   }
 
-  updateTodo(listId: string, todoIndex: number, todo: Todo) {
+  updateTodo(listId: string, todoIndex: number, todo: Todo): Todo {
     const list = this.todoLists.find(list => list.id === listId);
     if (list && todoIndex >= 0 && todoIndex < list.todos.length) {
       list.todos[todoIndex] = todo;
@@ -76,7 +87,7 @@ export class TodosService {
     return null;
   }
 
-  deleteTodoList(listId: string) {
+  deleteTodoList(listId: string): TodoList {
     const index = this.todoLists.findIndex(list => list.id === listId);
     if (index >= 0) {
       const deletedList = this.todoLists.splice(index, 1);
@@ -86,7 +97,7 @@ export class TodosService {
     return null;
   }
 
-  deleteTodoFromList(listId: string, todoIndex: number) {
+  deleteTodoFromList(listId: string, todoIndex: number): Todo {
     const list = this.todoLists.find(list => list.id === listId);
     if (list && todoIndex >= 0 && todoIndex < list.todos.length) {
       const deleted = list.todos.splice(todoIndex, 1);

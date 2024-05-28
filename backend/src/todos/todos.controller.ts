@@ -15,6 +15,11 @@ export class TodosController {
     return this.todoService.addTodoList();
   }
 
+  @Put(':listId/title')
+  updateTodoListTitle(@Param('listId') listId: string, @Body('title') title: string): TodoList {
+    return this.todoService.updateTodoListTitle(listId, title);
+  }
+
   @Post(':listId')
   addTodo(@Param('listId') listId: string, @Body() todo: Todo): Todo {
     return this.todoService.addTodo(listId, todo);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Draggable from 'react-draggable';
 import { ResizableBox } from 'react-resizable';
 import axios from 'axios';
@@ -14,13 +14,16 @@ interface Todo {
 
 interface TodoListProps {
   listId: string;
+  title: string;
   todos: Todo[];
 }
 
-const TodoList: React.FC<TodoListProps> = ({ listId, todos: initialTodos = [] }) => {
+const TodoList: React.FC<TodoListProps> = ({ listId, title: initialTitle, todos: initialTodos = [] }) => {
   const [todos, setTodos] = useState<Todo[]>(initialTodos);
   const [newTodo, setNewTodo] = useState<string>('');
   const [isResizing, setIsResizing] = useState(false);
+  const [title, setTitle] = useState<string>(initialTitle);
+  const [isEditingTitle, setIsEditingTitle] = useState<boolean>(false);
 
   const addTodo = () => {
     if (newTodo.trim()) {
@@ -76,6 +79,18 @@ const TodoList: React.FC<TodoListProps> = ({ listId, todos: initialTodos = [] })
       });
   };
 
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+  };
+
+  const handleTitleBlur = () => {
+    setIsEditingTitle(false);
+    axios.put(`${process.env.REACT_APP_BACKEND_URL}/todos/${listId}/title`, { title })
+      .catch(error => {
+        console.error('There was an error updating the title!', error);
+      });
+  };
+
   return (
     <Draggable handle=".handle" disabled={isResizing}>
       <ResizableBox
@@ -89,14 +104,26 @@ const TodoList: React.FC<TodoListProps> = ({ listId, todos: initialTodos = [] })
       >
         <StyledTodoListContainer>
           <StyledHeader className="handle">
-            <h1>{listId}</h1>
+            {isEditingTitle ? (
+              <input
+                type="text"
+                value={title}
+                onChange={handleTitleChange}
+                onBlur={handleTitleBlur}
+                autoFocus
+              />
+            ) : (
+              <h1 onDoubleClick={() => setIsEditingTitle(true)}>{title}</h1>
+            )}
             <StyledDeleteIcon onClick={clearTodos}>&#x1F5D1;</StyledDeleteIcon>
           </StyledHeader>
-          <TodoInput type="text"
+          <TodoInput
+            type="text"
             value={newTodo}
             onChange={(e) => setNewTodo(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Add a new to-do" />
+            placeholder="Add a new to-do"
+          />
           <div>
             {todos.map((todo, index) => (
               <TodoItem

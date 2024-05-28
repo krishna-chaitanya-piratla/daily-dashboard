@@ -46,7 +46,7 @@ const App: React.FC = () => {
           </Header>
           <div>
             {todoLists.map((list) => (
-              <TodoList key={list.id} listId={list.id} todos={list.todos} />
+              <TodoList key={list.id} listId={list.id} title={list.title} todos={list.todos} />
             ))}
           </div>
         </AppContainer>
