@@ -113,7 +113,10 @@ const TodoList: React.FC<TodoListProps> = ({ listId, title: initialTitle, todos:
                 autoFocus
               />
             ) : (
-              <h1 onDoubleClick={() => setIsEditingTitle(true)}>{title}</h1>
+              <>
+                <h1 onDoubleClick={() => setIsEditingTitle(true)}>{title}</h1>
+                <span className="edit-icon" onClick={() => setIsEditingTitle(true)}>&#x270E;</span> {/* Pencil icon */}
+              </>
             )}
             <StyledDeleteIcon onClick={clearTodos}>&#x1F5D1;</StyledDeleteIcon>
           </StyledHeader>

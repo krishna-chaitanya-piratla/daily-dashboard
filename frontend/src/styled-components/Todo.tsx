@@ -54,7 +54,7 @@ export const StyledItemDeleteIcon = styled.span`
 
 export const StyledTodoListContainer = styled.div`
   width: 100%;
-  height:fit-content;
+  height: fit-content;
   margin: 20px auto;
   text-align: center;
   border: 0.5px solid #999;
@@ -66,13 +66,30 @@ export const StyledTodoListContainer = styled.div`
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-
 `;
 
 export const StyledHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  h1 {
+    margin: 0;
+    font-size: 24px;
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  .edit-icon {
+    display: none;
+    margin-left: 10px;
+    cursor: pointer;
+    font-size: 1.2em;
+  }
+
+  &:hover .edit-icon {
+    display: inline-block;
+  }
 `;
 
 export const StyledDeleteIcon = styled.span`
