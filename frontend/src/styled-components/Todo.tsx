@@ -5,6 +5,7 @@ export const StyledHeader = styled.div`
   justify-content: flex-start; 
   align-items: center;
   padding: 10px;
+  position: relative;
 
   h1 {
     margin: 0;
@@ -14,14 +15,20 @@ export const StyledHeader = styled.div`
     margin-right: 5px; 
   }
 
-  .edit-icon {
+  .edit-icon,
+  .clear-all-icon { 
     display: none;
     cursor: pointer;
     font-size: 1.2em;
   }
 
-  &:hover .edit-icon {
+  &:hover .edit-icon,
+  &:hover .clear-all-icon {
     display: inline-block;
+  }
+
+  .clear-all-icon {
+    margin-left: auto;
   }
 `;
 
@@ -60,7 +67,7 @@ export const StyledTodoInput = styled.input`
   &:focus, &:focus-visible {
     outline: none;
     box-shadow: 0 0 0 0.5px #999;
-    color: gray;
+    color: gray.
   }
 
   &:hover {
@@ -69,7 +76,7 @@ export const StyledTodoInput = styled.input`
   }
 
   &::placeholder {
-    color: gray;
+    color: gray.
   }
 `;
 
@@ -82,7 +89,7 @@ export const StyledTodoItem = styled.div<{ completed: boolean }>`
   position: relative;
   text-decoration: ${(props) => (props.completed ? 'line-through' : 'none')};
 
-  &:hover .delete-icon {
+  &:hover .delete-item-icon {
     display: inline;
   }
 `;
@@ -120,7 +127,8 @@ export const StyledTodoListContainer = styled.div`
 export const StyledDeleteIcon = styled.span`
   cursor: pointer;
   font-size: 1.5em;
-  margin-left: auto; /* Move delete icon to the far right */
+  margin-left: auto;
+  display: none; /* Initially hidden */
   &:hover {
     color: red;
   }

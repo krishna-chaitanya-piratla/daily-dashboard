@@ -11,7 +11,7 @@ interface TodoItemProps {
 const TodoItem: React.FC<TodoItemProps> = ({ todo, completed, onToggle, onDelete }) => {
   return (
     <StyledTodoItem onClick={onToggle} completed={completed}>
-      <StyledItemDeleteIcon className="delete-icon" onClick={(e) => { e.stopPropagation(); onDelete(); }}>
+      <StyledItemDeleteIcon className="delete-item-icon" onClick={(e) => { e.stopPropagation(); onDelete(); }}>
         &#x1F5D1; {/* Unicode for delete icon */}
       </StyledItemDeleteIcon>
       {todo}
