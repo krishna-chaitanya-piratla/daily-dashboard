@@ -1,5 +1,30 @@
 import styled from 'styled-components';
 
+export const StyledHeader = styled.div`
+  display: flex;
+  justify-content: flex-start; 
+  align-items: center;
+  padding: 10px;
+
+  h1 {
+    margin: 0;
+    font-size: 24px;
+    display: inline-block;
+    cursor: pointer;
+    margin-right: 5px; 
+  }
+
+  .edit-icon {
+    display: none;
+    cursor: pointer;
+    font-size: 1.2em;
+  }
+
+  &:hover .edit-icon {
+    display: inline-block;
+  }
+`;
+
 export const StyledHeaderEditBox = styled.input`
   width: 80%;
   height: 2.5rem;
@@ -92,35 +117,10 @@ export const StyledTodoListContainer = styled.div`
   position: relative;
 `;
 
-export const StyledHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-
-  h1 {
-    margin: 0;
-    font-size: 24px;
-    display: inline-block;
-    cursor: pointer;
-    flex-grow: 1;
-  }
-
-  .edit-icon {
-    display: none;
-    margin-left: 10px;
-    cursor: pointer;
-    font-size: 1.2em;
-  }
-
-  &:hover .edit-icon {
-    display: inline-block;
-  }
-`;
-
 export const StyledDeleteIcon = styled.span`
   cursor: pointer;
   font-size: 1.5em;
+  margin-left: auto; /* Move delete icon to the far right */
   &:hover {
     color: red;
   }
