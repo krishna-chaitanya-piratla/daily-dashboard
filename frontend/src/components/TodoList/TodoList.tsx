@@ -97,8 +97,6 @@ const TodoList: React.FC<TodoListProps> = ({ listId, title: initialTitle, todos:
       <ResizableBox
         width={400}
         height={400}
-        minConstraints={[300, 300]}
-        maxConstraints={[1000, 1000]}
         onResizeStart={() => setIsResizing(true)}
         onResizeStop={() => setIsResizing(false)}
         resizeHandles={['s', 'w', 'e', 'n', 'sw', 'nw', 'se', 'ne']}

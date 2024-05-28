@@ -96,12 +96,14 @@ export const StyledHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 10px; /* Add padding to increase the clickable area */
 
   h1 {
     margin: 0;
     font-size: 24px;
     display: inline-block;
     cursor: pointer;
+    flex-grow: 1; /* Ensure h1 takes up available space */
   }
 
   .edit-icon {
