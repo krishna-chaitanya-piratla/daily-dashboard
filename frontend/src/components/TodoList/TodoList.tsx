@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import Draggable from 'react-draggable';
-import { ResizableBox } from 'react-resizable';
 import axios from 'axios';
 import TodoItem from './TodoItem';
 import TodoListTitle from './TodoListTitle';
 import { StyledTodoListContainer } from '../../styled-components/Todo';
-import 'react-resizable/css/styles.css';
 import TodoInput from './TodoInput';
 
 interface Todo {
@@ -22,7 +20,6 @@ interface TodoListProps {
 const TodoList: React.FC<TodoListProps> = ({ listId, title: initialTitle, todos: initialTodos = [] }) => {
   const [todos, setTodos] = useState<Todo[]>(initialTodos);
   const [newTodo, setNewTodo] = useState<string>('');
-  const [isResizing, setIsResizing] = useState(false);
   const [title, setTitle] = useState<string>(initialTitle);
   const [isEditingTitle, setIsEditingTitle] = useState<boolean>(false);
 
@@ -93,43 +90,35 @@ const TodoList: React.FC<TodoListProps> = ({ listId, title: initialTitle, todos:
   };
 
   return (
-    <Draggable handle=".handle" disabled={isResizing}>
-      <ResizableBox
-        width={400}
-        height={400}
-        onResizeStart={() => setIsResizing(true)}
-        onResizeStop={() => setIsResizing(false)}
-        resizeHandles={['s', 'w', 'e', 'n', 'sw', 'nw', 'se', 'ne']}
-      >
-        <StyledTodoListContainer>
-          <TodoListTitle
-            title={title}
-            isEditingTitle={isEditingTitle}
-            setIsEditingTitle={setIsEditingTitle}
-            handleTitleChange={handleTitleChange}
-            handleTitleBlur={handleTitleBlur}
-            clearTodos={clearTodos}
-          />
-          <TodoInput
-            type="text"
-            value={newTodo}
-            onChange={(e) => setNewTodo(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="Add a new to-do"
-          />
-          <div>
-            {todos.map((todo, index) => (
-              <TodoItem
-                key={index}
-                todo={todo.text}
-                completed={todo.completed}
-                onToggle={() => toggleTodo(index)}
-                onDelete={() => deleteTodo(index)}
-              />
-            ))}
-          </div>
-        </StyledTodoListContainer>
-      </ResizableBox>
+    <Draggable handle=".handle">
+      <StyledTodoListContainer>
+        <TodoListTitle
+          title={title}
+          isEditingTitle={isEditingTitle}
+          setIsEditingTitle={setIsEditingTitle}
+          handleTitleChange={handleTitleChange}
+          handleTitleBlur={handleTitleBlur}
+          clearTodos={clearTodos}
+        />
+        <TodoInput
+          type="text"
+          value={newTodo}
+          onChange={(e) => setNewTodo(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="Add a new to-do"
+        />
+        <div>
+          {todos.map((todo, index) => (
+            <TodoItem
+              key={index}
+              todo={todo.text}
+              completed={todo.completed}
+              onToggle={() => toggleTodo(index)}
+              onDelete={() => deleteTodo(index)}
+            />
+          ))}
+        </div>
+      </StyledTodoListContainer>
     </Draggable>
   );
 };
