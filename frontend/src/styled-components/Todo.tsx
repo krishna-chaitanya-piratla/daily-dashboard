@@ -67,7 +67,7 @@ export const StyledTodoInput = styled.input`
   &:focus, &:focus-visible {
     outline: none;
     box-shadow: 0 0 0 0.5px #999;
-    color: gray.
+    color: gray;
   }
 
   &:hover {
@@ -76,7 +76,7 @@ export const StyledTodoInput = styled.input`
   }
 
   &::placeholder {
-    color: gray.
+    color: gray;
   }
 `;
 
@@ -86,6 +86,8 @@ export const StyledTodoItem = styled.div<{ completed: boolean }>`
   text-align: left;
   color: inherit;
   word-wrap: break-word;
+  overflow-wrap: break-word; /* Ensures long words break properly */
+  white-space: normal; /* Allows wrapping */
   position: relative;
   text-decoration: ${(props) => (props.completed ? 'line-through' : 'none')};
 
@@ -109,7 +111,7 @@ export const StyledItemDeleteIcon = styled.span`
 `;
 
 export const StyledTodoListContainer = styled.div`
-  width: 100%;
+  width: 400px; /* Fixed width */
   margin: 20px auto;
   text-align: center;
   border: 0.5px solid #999;
