@@ -1,33 +1,37 @@
-// src/todo/todo.controller.ts
 import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
-import { TodosService } from './todos.service';
+import { TodosService, Todo, TodoList } from './todos.service';
 
 @Controller('todos')
 export class TodosController {
   constructor(private readonly todoService: TodosService) {}
 
   @Get()
-  getAllTodos() {
-    return this.todoService.getAllTodos();
+  getAllTodoLists(): TodoList[] {
+    return this.todoService.getAllTodoLists();
   }
 
   @Post()
-  addTodo(@Body() todo: any) {
-    return this.todoService.addTodo(todo);
+  addTodoList(): TodoList {
+    return this.todoService.addTodoList();
   }
 
-  @Put(':index')
-  updateTodo(@Param('index') index: number, @Body() todo: any) {
-    return this.todoService.updateTodo(index, todo);
+  @Post(':listId')
+  addTodo(@Param('listId') listId: string, @Body() todo: Todo): Todo {
+    return this.todoService.addTodo(listId, todo);
   }
 
-  @Delete(':index')
-  deleteTodo(@Param('index') index: number) {
-    return this.todoService.deleteTodo(index);
+  @Put(':listId/:todoIndex')
+  updateTodo(@Param('listId') listId: string, @Param('todoIndex') todoIndex: number, @Body() todo: Todo): Todo {
+    return this.todoService.updateTodo(listId, todoIndex, todo);
   }
 
-  @Delete()
-  clearTodos() {
-    this.todoService.clearTodos();
+  @Delete(':listId')
+  deleteTodoList(@Param('listId') listId: string): TodoList {
+    return this.todoService.deleteTodoList(listId);
+  }
+
+  @Delete(':listId/:todoIndex')
+  deleteTodoFromList(@Param('listId') listId: string, @Param('todoIndex') todoIndex: number): Todo {
+    return this.todoService.deleteTodoFromList(listId, todoIndex);
   }
 }

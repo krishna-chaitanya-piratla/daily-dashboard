@@ -1,4 +1,3 @@
-// components/TodoList.tsx
 import React, { useState, useEffect } from 'react';
 import Draggable from 'react-draggable';
 import { ResizableBox } from 'react-resizable';
@@ -13,27 +12,20 @@ interface Todo {
   completed: boolean;
 }
 
-const TodoList: React.FC = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
-  const [newTodo, setNewTodo] = useState<string>('');
-  const [isInitialized, setIsInitialized] = useState(false);
-  const [isResizing, setIsResizing] = useState(false);
+interface TodoListProps {
+  listId: string;
+  todos: Todo[];
+}
 
-  useEffect(() => {
-    axios.get(`${process.env.REACT_APP_BACKEND_URL}/todos`)
-      .then(response => {
-        setTodos(response.data);
-        setIsInitialized(true);
-      })
-      .catch(error => {
-        console.error('There was an error fetching the todos!', error);
-      });
-  }, []);
+const TodoList: React.FC<TodoListProps> = ({ listId, todos: initialTodos = [] }) => {
+  const [todos, setTodos] = useState<Todo[]>(initialTodos);
+  const [newTodo, setNewTodo] = useState<string>('');
+  const [isResizing, setIsResizing] = useState(false);
 
   const addTodo = () => {
     if (newTodo.trim()) {
       const todo = { text: newTodo, completed: false };
-      axios.post(`${process.env.REACT_APP_BACKEND_URL}/todos`, todo)
+      axios.post(`${process.env.REACT_APP_BACKEND_URL}/todos/${listId}`, todo)
         .then(response => {
           setTodos([...todos, response.data]);
           setNewTodo('');
@@ -52,7 +44,7 @@ const TodoList: React.FC = () => {
 
   const toggleTodo = (index: number) => {
     const updatedTodo = { ...todos[index], completed: !todos[index].completed };
-    axios.put(`${process.env.REACT_APP_BACKEND_URL}/todos/${index}`, updatedTodo)
+    axios.put(`${process.env.REACT_APP_BACKEND_URL}/todos/${listId}/${index}`, updatedTodo)
       .then(response => {
         const updatedTodos = [...todos];
         updatedTodos[index] = response.data;
@@ -64,7 +56,7 @@ const TodoList: React.FC = () => {
   };
 
   const deleteTodo = (index: number) => {
-    axios.delete(`${process.env.REACT_APP_BACKEND_URL}/todos/${index}`)
+    axios.delete(`${process.env.REACT_APP_BACKEND_URL}/todos/${listId}/${index}`)
       .then(() => {
         const updatedTodos = todos.filter((_, i) => i !== index);
         setTodos(updatedTodos);
@@ -75,7 +67,7 @@ const TodoList: React.FC = () => {
   };
 
   const clearTodos = () => {
-    axios.delete(`${process.env.REACT_APP_BACKEND_URL}/todos`)
+    axios.delete(`${process.env.REACT_APP_BACKEND_URL}/todos/${listId}`)
       .then(() => {
         setTodos([]);
       })
@@ -97,14 +89,14 @@ const TodoList: React.FC = () => {
       >
         <StyledTodoListContainer>
           <StyledHeader className="handle">
-            <h1>To-Do List</h1>
-            <StyledDeleteIcon onClick={clearTodos}>&#x1F5D1;</StyledDeleteIcon> {/* Unicode for delete icon */}
+            <h1>{listId}</h1>
+            <StyledDeleteIcon onClick={clearTodos}>&#x1F5D1;</StyledDeleteIcon>
           </StyledHeader>
           <TodoInput type="text"
             value={newTodo}
             onChange={(e) => setNewTodo(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Add a new to-do"/>
+            placeholder="Add a new to-do" />
           <div>
             {todos.map((todo, index) => (
               <TodoItem

@@ -2,18 +2,28 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as fs from 'fs';
 import * as path from 'path';
+import { v4 as uuidv4 } from 'uuid';
+
+export interface Todo {
+  text: string;
+  completed: boolean;
+}
+
+export interface TodoList {
+  id: string;
+  todos: Todo[];
+}
 
 @Injectable()
 export class TodosService {
-  private todos: any[] = [];
+  private todoLists: TodoList[] = [];
   private TODO_FILE_PATH: string;
 
   constructor(private configService: ConfigService) {
     const DATA_LOCATION = this.configService.get<string>('DATA_LOCATION_LOCAL');
-
     this.TODO_FILE_PATH = path.resolve(DATA_LOCATION, 'todos.json');
     this.ensureDataFileExists();
-    this.loadTodos();
+    this.loadTodoLists();
   }
 
   private ensureDataFileExists() {
@@ -26,45 +36,63 @@ export class TodosService {
     }
   }
 
-  private loadTodos() {
+  private loadTodoLists() {
     const data = fs.readFileSync(this.TODO_FILE_PATH, 'utf8');
-    this.todos = JSON.parse(data) || [];
+    this.todoLists = JSON.parse(data) || [];
   }
 
-  private saveTodos() {
-    fs.writeFileSync(this.TODO_FILE_PATH, JSON.stringify(this.todos, null, 2), 'utf8');
+  private saveTodoLists() {
+    fs.writeFileSync(this.TODO_FILE_PATH, JSON.stringify(this.todoLists, null, 2), 'utf8');
   }
 
-  getAllTodos() {
-    return this.todos;
+  getAllTodoLists() {
+    return this.todoLists;
   }
 
-  addTodo(todo: any) {
-    this.todos.push(todo);
-    this.saveTodos();
-    return todo;
+  addTodoList() {
+    const newList: TodoList = { id: uuidv4(), todos: [] };
+    this.todoLists.push(newList);
+    this.saveTodoLists();
+    return newList;
   }
 
-  updateTodo(index: number, todo: any) {
-    if (index >= 0 && index < this.todos.length) {
-      this.todos[index] = todo;
-      this.saveTodos();
+  addTodo(listId: string, todo: Todo) {
+    const list = this.todoLists.find(list => list.id === listId);
+    if (list) {
+      list.todos.push(todo);
+      this.saveTodoLists();
       return todo;
     }
     return null;
   }
 
-  deleteTodo(index: number) {
-    if (index >= 0 && index < this.todos.length) {
-      const deleted = this.todos.splice(index, 1);
-      this.saveTodos();
-      return deleted[0];
+  updateTodo(listId: string, todoIndex: number, todo: Todo) {
+    const list = this.todoLists.find(list => list.id === listId);
+    if (list && todoIndex >= 0 && todoIndex < list.todos.length) {
+      list.todos[todoIndex] = todo;
+      this.saveTodoLists();
+      return todo;
     }
     return null;
   }
 
-  clearTodos() {
-    this.todos = [];
-    this.saveTodos();
+  deleteTodoList(listId: string) {
+    const index = this.todoLists.findIndex(list => list.id === listId);
+    if (index >= 0) {
+      const deletedList = this.todoLists.splice(index, 1);
+      this.saveTodoLists();
+      return deletedList[0];
+    }
+    return null;
+  }
+
+  deleteTodoFromList(listId: string, todoIndex: number) {
+    const list = this.todoLists.find(list => list.id === listId);
+    if (list && todoIndex >= 0 && todoIndex < list.todos.length) {
+      const deleted = list.todos.splice(todoIndex, 1);
+      this.saveTodoLists();
+      return deleted[0];
+    }
+    return null;
   }
 }
