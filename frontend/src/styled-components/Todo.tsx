@@ -1,5 +1,29 @@
 import styled from 'styled-components';
 
+export const StyledHeaderEditBox = styled.input`
+  width: 80%;
+  height: 2.5rem;
+  background: none;
+  border: none;
+  border-radius: 10px;
+  padding: 0 1rem;
+  
+  &:focus, &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 0.5px #999;
+    color: gray;
+  }
+
+  &:hover {
+    outline: none;
+    box-shadow: 0 0 0 0.5px #999;
+  }
+
+  &::placeholder {
+    color: gray;
+  }
+`;
+
 export const StyledTodoInput = styled.input`
   width: 80%;
   height: 2.5rem;

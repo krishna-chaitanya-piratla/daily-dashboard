@@ -3,7 +3,8 @@ import Draggable from 'react-draggable';
 import { ResizableBox } from 'react-resizable';
 import axios from 'axios';
 import TodoItem from './TodoItem';
-import { StyledTodoListContainer, StyledHeader, StyledDeleteIcon } from '../../styled-components/Todo';
+import TodoListTitle from './TodoListTitle';
+import { StyledTodoListContainer } from '../../styled-components/Todo';
 import 'react-resizable/css/styles.css';
 import TodoInput from './TodoInput';
 
@@ -103,23 +104,14 @@ const TodoList: React.FC<TodoListProps> = ({ listId, title: initialTitle, todos:
         resizeHandles={['s', 'w', 'e', 'n', 'sw', 'nw', 'se', 'ne']}
       >
         <StyledTodoListContainer>
-          <StyledHeader className="handle">
-            {isEditingTitle ? (
-              <input
-                type="text"
-                value={title}
-                onChange={handleTitleChange}
-                onBlur={handleTitleBlur}
-                autoFocus
-              />
-            ) : (
-              <>
-                <h1 onDoubleClick={() => setIsEditingTitle(true)}>{title}</h1>
-                <span className="edit-icon" onClick={() => setIsEditingTitle(true)}>&#x270E;</span> {/* Pencil icon */}
-              </>
-            )}
-            <StyledDeleteIcon onClick={clearTodos}>&#x1F5D1;</StyledDeleteIcon>
-          </StyledHeader>
+          <TodoListTitle
+            title={title}
+            isEditingTitle={isEditingTitle}
+            setIsEditingTitle={setIsEditingTitle}
+            handleTitleChange={handleTitleChange}
+            handleTitleBlur={handleTitleBlur}
+            clearTodos={clearTodos}
+          />
           <TodoInput
             type="text"
             value={newTodo}
