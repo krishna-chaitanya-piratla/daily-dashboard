@@ -1,3 +1,5 @@
+// src/components/TodoList/TodoList.tsx
+
 import React, { useState } from 'react';
 import Draggable from 'react-draggable';
 import axios from 'axios';
@@ -5,8 +7,17 @@ import TodoItem from './TodoItem';
 import TodoListTitle from './TodoListTitle';
 import { StyledTodoListContainer } from '../../styled-components/Todo';
 import TodoInput from './TodoInput';
+import {
+  addTodo,
+  handleKeyDown,
+  toggleTodo,
+  deleteTodo,
+  clearTodos,
+  handleTitleChange,
+  handleTitleBlur,
+} from '../../utils/todoFunctions';
 
-interface Todo {
+export interface Todo {
   text: string;
   completed: boolean;
 }
@@ -23,72 +34,6 @@ const TodoList: React.FC<TodoListProps> = ({ listId, title: initialTitle, todos:
   const [title, setTitle] = useState<string>(initialTitle);
   const [isEditingTitle, setIsEditingTitle] = useState<boolean>(false);
 
-  const addTodo = () => {
-    if (newTodo.trim()) {
-      const todo = { text: newTodo, completed: false };
-      axios.post(`${process.env.REACT_APP_BACKEND_URL}/todos/${listId}`, todo)
-        .then(response => {
-          setTodos([...todos, response.data]);
-          setNewTodo('');
-        })
-        .catch(error => {
-          console.error('There was an error adding the todo!', error);
-        });
-    }
-  };
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      addTodo();
-    }
-  };
-
-  const toggleTodo = (index: number) => {
-    const updatedTodo = { ...todos[index], completed: !todos[index].completed };
-    axios.put(`${process.env.REACT_APP_BACKEND_URL}/todos/${listId}/${index}`, updatedTodo)
-      .then(response => {
-        const updatedTodos = [...todos];
-        updatedTodos[index] = response.data;
-        setTodos(updatedTodos);
-      })
-      .catch(error => {
-        console.error('There was an error updating the todo!', error);
-      });
-  };
-
-  const deleteTodo = (index: number) => {
-    axios.delete(`${process.env.REACT_APP_BACKEND_URL}/todos/${listId}/${index}`)
-      .then(() => {
-        const updatedTodos = todos.filter((_, i) => i !== index);
-        setTodos(updatedTodos);
-      })
-      .catch(error => {
-        console.error('There was an error deleting the todo!', error);
-      });
-  };
-
-  const clearTodos = () => {
-    axios.delete(`${process.env.REACT_APP_BACKEND_URL}/todos/${listId}`)
-      .then(() => {
-        setTodos([]);
-      })
-      .catch(error => {
-        console.error('There was an error clearing the todos!', error);
-      });
-  };
-
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.target.value);
-  };
-
-  const handleTitleBlur = () => {
-    setIsEditingTitle(false);
-    axios.put(`${process.env.REACT_APP_BACKEND_URL}/todos/${listId}/title`, { title })
-      .catch(error => {
-        console.error('There was an error updating the title!', error);
-      });
-  };
-
   return (
     <Draggable handle=".handle">
       <StyledTodoListContainer>
@@ -96,15 +41,15 @@ const TodoList: React.FC<TodoListProps> = ({ listId, title: initialTitle, todos:
           title={title}
           isEditingTitle={isEditingTitle}
           setIsEditingTitle={setIsEditingTitle}
-          handleTitleChange={handleTitleChange}
-          handleTitleBlur={handleTitleBlur}
-          clearTodos={clearTodos}
+          handleTitleChange={(e) => handleTitleChange(e, setTitle)}
+          handleTitleBlur={() => handleTitleBlur(title, listId, setIsEditingTitle)}
+          clearTodos={() => clearTodos(listId, setTodos)}
         />
         <TodoInput
           type="text"
           value={newTodo}
           onChange={(e) => setNewTodo(e.target.value)}
-          onKeyDown={handleKeyDown}
+          onKeyDown={(event) => handleKeyDown(event, newTodo, listId, setTodos, setNewTodo)}
           placeholder="Add a new to-do"
         />
         <div>
@@ -113,8 +58,8 @@ const TodoList: React.FC<TodoListProps> = ({ listId, title: initialTitle, todos:
               key={index}
               todo={todo.text}
               completed={todo.completed}
-              onToggle={() => toggleTodo(index)}
-              onDelete={() => deleteTodo(index)}
+              onToggle={() => toggleTodo(index, todos, listId, setTodos)}
+              onDelete={() => deleteTodo(index, todos, listId, setTodos)}
             />
           ))}
         </div>
