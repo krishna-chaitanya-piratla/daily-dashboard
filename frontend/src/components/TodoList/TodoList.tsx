@@ -12,6 +12,7 @@ import {
   handleTitleChange,
   handleTitleBlur,
   editTodo,
+  deleteTodoList
 } from '../../utils/todoFunctions';
 
 export interface Todo {
@@ -24,9 +25,10 @@ interface TodoListProps {
   listId: string;
   title: string;
   todos: Todo[];
+  removeTodoList: (listId: string) => void;
 }
 
-const TodoList: React.FC<TodoListProps> = ({ listId, title: initialTitle, todos: initialTodos = [] }) => {
+const TodoList: React.FC<TodoListProps> = ({ listId, title: initialTitle, todos: initialTodos = [], removeTodoList }) => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodo, setNewTodo] = useState<string>('');
   const [title, setTitle] = useState<string>(initialTitle);
@@ -40,6 +42,11 @@ const TodoList: React.FC<TodoListProps> = ({ listId, title: initialTitle, todos:
     editTodo(todoId, newText, todos, listId, setTodos);
   };
 
+  const handleDeleteTodoList = async () => {
+    await deleteTodoList(listId);
+    removeTodoList(listId);
+  };
+
   return (
     <Draggable handle=".handle" disabled={isEditingTitle}>
       <StyledTodoListContainer>
@@ -50,6 +57,7 @@ const TodoList: React.FC<TodoListProps> = ({ listId, title: initialTitle, todos:
           handleTitleChange={(e) => handleTitleChange(e, setTitle)}
           handleTitleBlur={() => handleTitleBlur(title, listId, setIsEditingTitle)}
           clearTodos={() => clearTodos(listId, setTodos)}
+          deleteTodoList={handleDeleteTodoList}
         />
         <StyledTodoInputContainer isEditingTitle={isEditingTitle}>
           <TodoInput

@@ -30,6 +30,10 @@ const App: React.FC = () => {
       });
   };
 
+  const removeTodoList = (listId: string) => {
+    setTodoLists((prevLists) => prevLists.filter((list) => list.id !== listId));
+  };
+
   return (
     <>
       <Helmet>
@@ -47,7 +51,13 @@ const App: React.FC = () => {
           </Header>
           <div>
             {todoLists.map((list) => (
-              <TodoList key={list.id} listId={list.id} title={list.title} todos={list.todos} />
+              <TodoList
+              key={list.id}
+              listId={list.id}
+              title={list.title}
+              todos={list.todos}
+              removeTodoList={removeTodoList}
+            />
             ))}
           </div>
         </AppContainer>

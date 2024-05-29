@@ -126,3 +126,13 @@ export const editTodo = async (
     }
   };
   
+  export const deleteTodoList = async (
+    listId: string
+  ) => {
+    try {
+      await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/todos/${listId}`);
+      // You can also add any additional cleanup logic here if necessary
+    } catch (error) {
+      console.error('There was an error deleting the todo list!', error);
+    }
+  };

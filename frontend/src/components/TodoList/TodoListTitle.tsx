@@ -10,6 +10,7 @@ interface TodoListTitleProps {
   handleTitleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleTitleBlur: () => void;
   clearTodos: () => void;
+  deleteTodoList: () => void;
 }
 
 const TodoListTitle: React.FC<TodoListTitleProps> = ({
@@ -18,7 +19,8 @@ const TodoListTitle: React.FC<TodoListTitleProps> = ({
   setIsEditingTitle,
   handleTitleChange,
   handleTitleBlur,
-  clearTodos
+  clearTodos,
+  deleteTodoList
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -47,7 +49,7 @@ const TodoListTitle: React.FC<TodoListTitleProps> = ({
         </>
       )}
       <span className="clear-all-icon" onClick={clearTodos}><DeleteIcon /></span> {/* Clear all icon */}
-      <span className="delete-list-icon"><BlockIcon /></span> {/* New delete list icon */}
+      <span className="delete-list-icon" onClick={deleteTodoList}><BlockIcon /></span> {/* New delete list icon */}
     </StyledHeader>
   );
 };
