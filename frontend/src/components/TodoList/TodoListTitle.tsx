@@ -1,5 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { StyledHeader, StyledHeaderEditBox } from '../../styled-components/Todo';
+import DeleteIcon from '@mui/icons-material/Delete';
+import BlockIcon from '@mui/icons-material/Block';
 
 interface TodoListTitleProps {
   title: string;
@@ -44,7 +46,8 @@ const TodoListTitle: React.FC<TodoListTitleProps> = ({
           <span className="edit-icon" onClick={() => setIsEditingTitle(true)}>&#x270E;</span> {/* Pencil icon */}
         </>
       )}
-      <span className="clear-all-icon" onClick={clearTodos}>&#x1F5D1;</span> {/* Clear all icon */}
+      <span className="clear-all-icon" onClick={clearTodos}><DeleteIcon /></span> {/* Clear all icon */}
+      <span className="delete-list-icon"><BlockIcon /></span> {/* New delete list icon */}
     </StyledHeader>
   );
 };

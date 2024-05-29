@@ -20,19 +20,27 @@ export const StyledHeader = styled.div`
   }
 
   .edit-icon,
-  .clear-all-icon { 
+  .clear-all-icon,
+  .delete-list-icon { 
     display: none;
     cursor: pointer;
     font-size: 1.2em;
   }
 
   &:hover .edit-icon,
-  &:hover .clear-all-icon {
+  &:hover .clear-all-icon,
+  &:hover .delete-list-icon {
     display: inline-block;
   }
 
   .clear-all-icon {
-    margin-left: auto;
+    margin-left: auto; /* Adjust spacing as needed */
+    margin-right: 5px; /* Adjust spacing as needed */
+  }
+
+  .delete-list-icon {
+    margin-right: 5px;
+    
   }
 `;
 
@@ -140,7 +148,7 @@ export const StyledTodoListContainer = styled.div`
   --scrollbar-thumb-color: #999;
   --scrollbar-thumb-hover-color: #999;
 
-  width: 20rem; /* Fixed width */
+  width: 25rem; /* Fixed width */
   max-height: 27rem; /* Fixed max-height */
   overflow-y: auto;
   margin: 20px auto;
