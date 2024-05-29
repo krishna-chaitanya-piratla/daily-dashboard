@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { StyledHeader, StyledHeaderEditBox } from '../../styled-components/Todo';
 
 interface TodoListTitleProps {
@@ -18,10 +18,20 @@ const TodoListTitle: React.FC<TodoListTitleProps> = ({
   handleTitleBlur,
   clearTodos
 }) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (isEditingTitle && inputRef.current) {
+      inputRef.current.focus();
+      inputRef.current.select(); // Automatically select the text for convenience
+    }
+  }, [isEditingTitle]);
+
   return (
     <StyledHeader className="handle">
       {isEditingTitle ? (
         <StyledHeaderEditBox
+          ref={inputRef}
           type="text"
           value={title}
           onChange={handleTitleChange}

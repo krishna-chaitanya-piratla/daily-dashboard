@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Draggable from 'react-draggable';
-import axios from 'axios';
 import TodoItem from './TodoItem';
 import TodoListTitle from './TodoListTitle';
 import { StyledTodoListContainer } from '../../styled-components/Todo';
 import TodoInput from './TodoInput';
 import {
-  addTodo,
   handleKeyDown,
   toggleTodo,
   deleteTodo,
@@ -43,7 +41,7 @@ const TodoList: React.FC<TodoListProps> = ({ listId, title: initialTitle, todos:
   };
 
   return (
-    <Draggable handle=".handle">
+    <Draggable handle=".handle" disabled={isEditingTitle}>
       <StyledTodoListContainer>
         <TodoListTitle
           title={title}
