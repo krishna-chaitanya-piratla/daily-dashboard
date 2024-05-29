@@ -73,16 +73,16 @@ export const deleteTodo = async (
 };
 
 export const clearTodos = async (
-  listId: string,
-  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>
-) => {
-  try {
-    await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/todos/${listId}`);
-    setTodos([]);
-  } catch (error) {
-    console.error('There was an error clearing the todos!', error);
-  }
-};
+    listId: string,
+    setTodos: React.Dispatch<React.SetStateAction<Todo[]>>
+  ) => {
+    try {
+      await axios.put(`${process.env.REACT_APP_BACKEND_URL}/todos/${listId}/clear`);
+      setTodos([]);
+    } catch (error) {
+      console.error('There was an error clearing the todos!', error);
+    }
+  };
 
 export const handleTitleChange = (
   e: React.ChangeEvent<HTMLInputElement>,

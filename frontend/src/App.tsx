@@ -38,7 +38,7 @@ const App: React.FC = () => {
         />
       </Helmet>
       <GlobalStyles />
-      <BackgroundImage query="space">
+      {/* <BackgroundImage query="space"> */}
         <AppContainer>
           <Header>
             <DateTimeLocation />
@@ -50,7 +50,7 @@ const App: React.FC = () => {
             ))}
           </div>
         </AppContainer>
-      </BackgroundImage>
+      {/* </BackgroundImage> */}
     </>
   );
 };

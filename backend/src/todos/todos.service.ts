@@ -115,4 +115,14 @@ export class TodosService {
     }
     return null;
   }
+
+  clearTodoList(listId: string): TodoList {
+    const list = this.todoLists.find(list => list.id === listId);
+    if (list) {
+      list.todos = [];
+      this.saveTodoLists();
+      return list;
+    }
+    return null;
+  }
 }
