@@ -5,6 +5,7 @@ import { GlobalStyles, AppContainer, Header } from './styled-components/GlobalSt
 import { Helmet } from 'react-helmet';
 import BackgroundImage from './components/BackgroundImage';
 import axios from 'axios';
+import Sidebar from './components/Sidebar';
 
 const App: React.FC = () => {
   const [todoLists, setTodoLists] = useState<any[]>([]);
@@ -38,7 +39,8 @@ const App: React.FC = () => {
         />
       </Helmet>
       <GlobalStyles />
-      {/* <BackgroundImage query="space"> */}
+      <BackgroundImage query="space">
+      <Sidebar />
         <AppContainer>
           <Header>
             <DateTimeLocation />
@@ -50,7 +52,7 @@ const App: React.FC = () => {
             ))}
           </div>
         </AppContainer>
-      {/* </BackgroundImage> */}
+      </BackgroundImage>
     </>
   );
 };
