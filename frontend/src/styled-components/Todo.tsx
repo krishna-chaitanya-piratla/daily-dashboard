@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+export const StyledTodoInputContainer = styled.div<{ isEditingTitle: boolean }>`
+  pointer-events: ${(props) => (props.isEditingTitle ? 'none' : 'auto')};
+`;
+
 export const StyledHeader = styled.div`
   display: flex;
   justify-content: flex-start; 
@@ -63,24 +67,26 @@ export const StyledTodoInput = styled.input`
   border: none;
   border-radius: 10px;
   padding: 0 1rem;
-  
-  &:focus, &:focus-visible {
+  &:focus,
+  &:focus-visible {
     outline: none;
     box-shadow: 0 0 0 0.5px #999;
     color: gray;
   }
-
   &:hover {
     outline: none;
     box-shadow: 0 0 0 0.5px #999;
   }
-
   &::placeholder {
     color: gray;
   }
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
 `;
 
-export const StyledTodoItem = styled.div<{ completed: boolean; isEditing?: boolean }>`
+export const StyledTodoItem = styled.div<{ completed: boolean; isEditing?: boolean; isEditingTitle?: boolean }>`
   padding: 10px 10px 10px 30px;
   border-bottom: 0.5px dashed rgba(0, 0, 0, 0.3);
   text-align: left;
@@ -91,6 +97,7 @@ export const StyledTodoItem = styled.div<{ completed: boolean; isEditing?: boole
   position: relative;
   text-decoration: ${(props) => (props.completed ? 'line-through' : 'none')};
   background-color: inherit;
+  pointer-events: ${(props) => (props.isEditingTitle ? 'none' : 'auto')}; /* Disable interaction */
 
   &:hover .delete-item-icon {
     display: inline;
@@ -105,7 +112,8 @@ export const StyledTodoEditInput = styled.input`
   box-sizing: border-box;
   color: gray;
 
-  &:focus, &:focus-visible {
+  &:focus,
+  &:focus-visible {
     outline: none;
     background-color: rgba(0, 0, 0, 0.2); /* Slightly darker background when focused */
   }

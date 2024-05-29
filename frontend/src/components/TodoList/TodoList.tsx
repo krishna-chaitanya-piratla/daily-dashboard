@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Draggable from 'react-draggable';
 import TodoItem from './TodoItem';
 import TodoListTitle from './TodoListTitle';
-import { StyledTodoListContainer } from '../../styled-components/Todo';
+import { StyledTodoListContainer, StyledTodoInputContainer } from '../../styled-components/Todo';
 import TodoInput from './TodoInput';
 import {
   handleKeyDown,
@@ -51,13 +51,16 @@ const TodoList: React.FC<TodoListProps> = ({ listId, title: initialTitle, todos:
           handleTitleBlur={() => handleTitleBlur(title, listId, setIsEditingTitle)}
           clearTodos={() => clearTodos(listId, setTodos)}
         />
-        <TodoInput
-          type="text"
-          value={newTodo}
-          onChange={(e) => setNewTodo(e.target.value)}
-          onKeyDown={(event) => handleKeyDown(event, newTodo, listId, setTodos, setNewTodo)}
-          placeholder="Add a new to-do"
-        />
+        <StyledTodoInputContainer isEditingTitle={isEditingTitle}>
+          <TodoInput
+            type="text"
+            value={newTodo}
+            onChange={(e) => setNewTodo(e.target.value)}
+            onKeyDown={(event) => handleKeyDown(event, newTodo, listId, setTodos, setNewTodo)}
+            placeholder="Add a new to-do"
+            disabled={isEditingTitle}
+          />
+        </StyledTodoInputContainer>
         <div>
           {todos.map((todo, index) => (
             <TodoItem
@@ -67,6 +70,7 @@ const TodoList: React.FC<TodoListProps> = ({ listId, title: initialTitle, todos:
               onToggle={() => toggleTodo(todo.id, todos, listId, setTodos)}
               onDelete={() => deleteTodo(todo.id, todos, listId, setTodos)}
               onEdit={(newText) => handleEditTodo(todo.id, newText)}
+              isEditingTitle={isEditingTitle}
             />
           ))}
         </div>

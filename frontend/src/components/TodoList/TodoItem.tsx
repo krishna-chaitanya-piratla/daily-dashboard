@@ -7,9 +7,10 @@ interface TodoItemProps {
   onToggle: () => void;
   onDelete: () => void;
   onEdit: (newText: string) => void;
+  isEditingTitle: boolean;
 }
 
-const TodoItem: React.FC<TodoItemProps> = ({ todo, completed, onToggle, onDelete, onEdit }) => {
+const TodoItem: React.FC<TodoItemProps> = ({ todo, completed, onToggle, onDelete, onEdit, isEditingTitle }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(todo);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -21,7 +22,9 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, completed, onToggle, onDelete
   }, [isEditing]);
 
   const handleDoubleClick = () => {
-    setIsEditing(true);
+    if (!isEditingTitle) {
+      setIsEditing(true);
+    }
   };
 
   const handleBlur = () => {
@@ -39,12 +42,21 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, completed, onToggle, onDelete
 
   return (
     <StyledTodoItem
-      onClick={isEditing ? undefined : onToggle}
+      onClick={isEditing || isEditingTitle ? undefined : onToggle}
       completed={completed}
       onDoubleClick={handleDoubleClick}
       isEditing={isEditing} // Add this prop to style conditionally
+      isEditingTitle={isEditingTitle}
     >
-      <StyledItemDeleteIcon className="delete-item-icon" onClick={(e) => { e.stopPropagation(); onDelete(); }}>
+      <StyledItemDeleteIcon
+        className="delete-item-icon"
+        onClick={(e) => {
+          e.stopPropagation();
+          if (!isEditingTitle) {
+            onDelete();
+          }
+        }}
+      >
         &#x1F5D1; {/* Unicode for delete icon */}
       </StyledItemDeleteIcon>
       {isEditing ? (

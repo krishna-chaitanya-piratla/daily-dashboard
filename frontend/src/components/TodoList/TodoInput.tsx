@@ -7,9 +7,10 @@ interface TodoInputProps {
     onChange: (e: any) => void;
     onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
     placeholder: string;
+    disabled: boolean;
   }
 
-const TodoInput: React.FC<TodoInputProps> = ({ type, value, onChange, onKeyDown, placeholder}) => {
+const TodoInput: React.FC<TodoInputProps> = ({ type, value, onChange, onKeyDown, placeholder, disabled }) => {
     const [isHovered, setIsHovered] = useState(false);
 
     return (
@@ -21,6 +22,7 @@ const TodoInput: React.FC<TodoInputProps> = ({ type, value, onChange, onKeyDown,
             placeholder={isHovered ? placeholder : ''}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
+            disabled={disabled}
         />
     )
 };
