@@ -5,7 +5,7 @@ import { GlobalStyles, AppContainer, Header } from './styled-components/GlobalSt
 import { Helmet } from 'react-helmet';
 import BackgroundImage from './components/BackgroundImage';
 import axios from 'axios';
-import Sidebar from './components/Sidebar';
+import Sidebar from './components/Sidebar/Sidebar';
 
 const App: React.FC = () => {
   const [todoLists, setTodoLists] = useState<any[]>([]);
@@ -40,11 +40,10 @@ const App: React.FC = () => {
       </Helmet>
       <GlobalStyles />
       <BackgroundImage query="space">
-      <Sidebar />
+      <Sidebar addTodoList={addTodoList}/>
         <AppContainer>
           <Header>
             <DateTimeLocation />
-            <button onClick={addTodoList}>New To-Do List</button>
           </Header>
           <div>
             {todoLists.map((list) => (

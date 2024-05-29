@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
-import { StyledSidebarContainer, StyledSidebar, StyledHamburgerIcon, StyledCloseIcon } from '../styled-components/Sidebar';
+import { StyledSidebarContainer, StyledSidebar, StyledHamburgerIcon, StyledCloseIcon } from '../../styled-components/Sidebar/Sidebar';
+import SidebarContents from './SidebarContents';
 
-const Sidebar: React.FC = () => {
+const Sidebar: React.FC<{ addTodoList: () => void }> = ({ addTodoList }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const openSidebar = () => {
@@ -30,7 +31,7 @@ const Sidebar: React.FC = () => {
           <StyledCloseIcon onClick={closeSidebar}>
             <CloseIcon />
           </StyledCloseIcon>
-          {/* Add sidebar content here */}
+          <SidebarContents addTodoList={addTodoList} />
         </StyledSidebar>
       </StyledSidebarContainer>
     </>
