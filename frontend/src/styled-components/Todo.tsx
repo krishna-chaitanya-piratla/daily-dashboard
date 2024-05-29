@@ -134,7 +134,9 @@ export const StyledItemDeleteIcon = styled.span`
 `;
 
 export const StyledTodoListContainer = styled.div`
-  width: 400px; /* Fixed width */
+  width: 20rem; /* Fixed width */
+  max-height: 27rem; /* Fixed max-height */
+  overflow-y: auto;
   margin: 20px auto;
   text-align: center;
   border: 0.5px solid #999;
