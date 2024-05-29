@@ -7,36 +7,43 @@ export class TodosController {
 
   @Get()
   getAllTodoLists(): TodoList[] {
-    return this.todoService.getAllTodoLists();
+    const lists = this.todoService.getAllTodoLists();
+    return lists;
   }
 
   @Post()
   addTodoList(): TodoList {
-    return this.todoService.addTodoList();
+    const newList = this.todoService.addTodoList();
+    return newList;
   }
 
   @Put(':listId/title')
   updateTodoListTitle(@Param('listId') listId: string, @Body('title') title: string): TodoList {
-    return this.todoService.updateTodoListTitle(listId, title);
+    const updatedList = this.todoService.updateTodoListTitle(listId, title);
+    return updatedList;
   }
 
   @Post(':listId')
-  addTodo(@Param('listId') listId: string, @Body() todo: Todo): Todo {
-    return this.todoService.addTodo(listId, todo);
+  addTodo(@Param('listId') listId: string, @Body() todo: Omit<Todo, 'id'>): Todo {
+    const newTodo = this.todoService.addTodo(listId, todo);
+    return newTodo;
   }
 
-  @Put(':listId/:todoIndex')
-  updateTodo(@Param('listId') listId: string, @Param('todoIndex') todoIndex: number, @Body() todo: Todo): Todo {
-    return this.todoService.updateTodo(listId, todoIndex, todo);
+  @Put(':listId/:todoId')
+  updateTodo(@Param('listId') listId: string, @Param('todoId') todoId: string, @Body() todo: Omit<Todo, 'id'>): Todo {
+    const updatedTodo = this.todoService.updateTodo(listId, todoId, todo);
+    return updatedTodo;
   }
 
   @Delete(':listId')
   deleteTodoList(@Param('listId') listId: string): TodoList {
-    return this.todoService.deleteTodoList(listId);
+    const deletedList = this.todoService.deleteTodoList(listId);
+    return deletedList;
   }
 
-  @Delete(':listId/:todoIndex')
-  deleteTodoFromList(@Param('listId') listId: string, @Param('todoIndex') todoIndex: number): Todo {
-    return this.todoService.deleteTodoFromList(listId, todoIndex);
+  @Delete(':listId/:todoId')
+  deleteTodoFromList(@Param('listId') listId: string, @Param('todoId') todoId: string): Todo {
+    const deletedTodo = this.todoService.deleteTodoFromList(listId, todoId);
+    return deletedTodo;
   }
 }

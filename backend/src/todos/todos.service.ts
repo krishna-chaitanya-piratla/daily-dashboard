@@ -5,6 +5,7 @@ import * as path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 
 export interface Todo {
+  id: string;
   text: string;
   completed: boolean;
 }
@@ -67,22 +68,27 @@ export class TodosService {
     return null;
   }
 
-  addTodo(listId: string, todo: Todo): Todo {
+  addTodo(listId: string, todo: Omit<Todo, 'id'>): Todo {
     const list = this.todoLists.find(list => list.id === listId);
     if (list) {
-      list.todos.push(todo);
+      const newTodo = { ...todo, id: uuidv4() };
+      list.todos.push(newTodo);
       this.saveTodoLists();
-      return todo;
+      return newTodo;
     }
     return null;
   }
 
-  updateTodo(listId: string, todoIndex: number, todo: Todo): Todo {
+  updateTodo(listId: string, todoId: string, todo: Omit<Todo, 'id'>): Todo {
     const list = this.todoLists.find(list => list.id === listId);
-    if (list && todoIndex >= 0 && todoIndex < list.todos.length) {
-      list.todos[todoIndex] = todo;
-      this.saveTodoLists();
-      return todo;
+    if (list) {
+      const index = list.todos.findIndex(t => t.id === todoId);
+      if (index >= 0) {
+        const updatedTodo = { ...todo, id: todoId };
+        list.todos[index] = updatedTodo;
+        this.saveTodoLists();
+        return updatedTodo;
+      }
     }
     return null;
   }
@@ -97,12 +103,15 @@ export class TodosService {
     return null;
   }
 
-  deleteTodoFromList(listId: string, todoIndex: number): Todo {
+  deleteTodoFromList(listId: string, todoId: string): Todo {
     const list = this.todoLists.find(list => list.id === listId);
-    if (list && todoIndex >= 0 && todoIndex < list.todos.length) {
-      const deleted = list.todos.splice(todoIndex, 1);
-      this.saveTodoLists();
-      return deleted[0];
+    if (list) {
+      const index = list.todos.findIndex(t => t.id === todoId);
+      if (index >= 0) {
+        const deleted = list.todos.splice(index, 1);
+        this.saveTodoLists();
+        return deleted[0];
+      }
     }
     return null;
   }

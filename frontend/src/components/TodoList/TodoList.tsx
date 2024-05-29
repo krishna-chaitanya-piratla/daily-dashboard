@@ -1,6 +1,6 @@
 // src/components/TodoList/TodoList.tsx
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Draggable from 'react-draggable';
 import axios from 'axios';
 import TodoItem from './TodoItem';
@@ -18,6 +18,7 @@ import {
 } from '../../utils/todoFunctions';
 
 export interface Todo {
+  id: string;
   text: string;
   completed: boolean;
 }
@@ -29,10 +30,16 @@ interface TodoListProps {
 }
 
 const TodoList: React.FC<TodoListProps> = ({ listId, title: initialTitle, todos: initialTodos = [] }) => {
-  const [todos, setTodos] = useState<Todo[]>(initialTodos);
+  const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodo, setNewTodo] = useState<string>('');
   const [title, setTitle] = useState<string>(initialTitle);
   const [isEditingTitle, setIsEditingTitle] = useState<boolean>(false);
+
+  useEffect(() => {
+    const sortedTodos = initialTodos.sort((a, b) => Number(a.completed) - Number(b.completed));
+    setTodos(sortedTodos);
+  }, [initialTodos]);
+
 
   return (
     <Draggable handle=".handle">
@@ -53,13 +60,13 @@ const TodoList: React.FC<TodoListProps> = ({ listId, title: initialTitle, todos:
           placeholder="Add a new to-do"
         />
         <div>
-          {todos.map((todo, index) => (
+          {todos.map((todo) => (
             <TodoItem
-              key={index}
+              key={todo.id}
               todo={todo.text}
               completed={todo.completed}
-              onToggle={() => toggleTodo(index, todos, listId, setTodos)}
-              onDelete={() => deleteTodo(index, todos, listId, setTodos)}
+              onToggle={() => toggleTodo(todo.id, todos, listId, setTodos)}
+              onDelete={() => deleteTodo(todo.id, todos, listId, setTodos)}
             />
           ))}
         </div>
