@@ -21,7 +21,8 @@ export const StyledHeader = styled.div`
 
   .edit-icon,
   .clear-all-icon,
-  .delete-list-icon { 
+  .delete-list-icon,
+  .minimize-icon { 
     display: none;
     cursor: pointer;
     font-size: 1.2em;
@@ -29,18 +30,22 @@ export const StyledHeader = styled.div`
 
   &:hover .edit-icon,
   &:hover .clear-all-icon,
-  &:hover .delete-list-icon {
+  &:hover .delete-list-icon,
+  &:hover .minimize-icon {
     display: inline-block;
   }
 
-  .clear-all-icon {
+  .minimize-icon {
     margin-left: auto; /* Adjust spacing as needed */
     margin-right: 5px; /* Adjust spacing as needed */
   }
 
+  .clear-all-icon {
+    margin-right: 5px;
+  }
+
   .delete-list-icon {
     margin-right: 5px;
-    
   }
 `;
 
@@ -148,8 +153,8 @@ export const StyledTodoListContainer = styled.div`
   --scrollbar-thumb-color: #999;
   --scrollbar-thumb-hover-color: #999;
 
-  width: 25rem; /* Fixed width */
-  max-height: 27rem; /* Fixed max-height */
+  width: 25rem;
+  max-height: 27rem;
   overflow-y: auto;
   margin: 20px auto;
   text-align: center;
@@ -196,7 +201,7 @@ export const StyledDeleteIcon = styled.span`
   cursor: pointer;
   font-size: 1.5em;
   margin-left: auto;
-  display: none; /* Initially hidden */
+  display: none;
   &:hover {
     color: red;
   }

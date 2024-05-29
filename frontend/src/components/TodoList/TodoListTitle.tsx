@@ -2,11 +2,15 @@ import React, { useRef, useEffect } from 'react';
 import { StyledHeader, StyledHeaderEditBox } from '../../styled-components/Todo';
 import DeleteIcon from '@mui/icons-material/Delete';
 import BlockIcon from '@mui/icons-material/Block';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 interface TodoListTitleProps {
   title: string;
   isEditingTitle: boolean;
+  isMinimized: boolean;
   setIsEditingTitle: (isEditing: boolean) => void;
+  toggleMinimize: () => void;
   handleTitleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleTitleBlur: () => void;
   clearTodos: () => void;
@@ -16,7 +20,9 @@ interface TodoListTitleProps {
 const TodoListTitle: React.FC<TodoListTitleProps> = ({
   title,
   isEditingTitle,
+  isMinimized,
   setIsEditingTitle,
+  toggleMinimize,
   handleTitleChange,
   handleTitleBlur,
   clearTodos,
@@ -48,6 +54,9 @@ const TodoListTitle: React.FC<TodoListTitleProps> = ({
           <span className="edit-icon" onClick={() => setIsEditingTitle(true)}>&#x270E;</span> {/* Pencil icon */}
         </>
       )}
+      <span className="minimize-icon" onClick={toggleMinimize}>
+        {isMinimized ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+      </span>
       <span className="clear-all-icon" onClick={clearTodos}><DeleteIcon /></span> {/* Clear all icon */}
       <span className="delete-list-icon" onClick={deleteTodoList}><BlockIcon /></span> {/* New delete list icon */}
     </StyledHeader>

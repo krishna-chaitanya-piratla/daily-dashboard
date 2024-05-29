@@ -33,6 +33,7 @@ const TodoList: React.FC<TodoListProps> = ({ listId, title: initialTitle, todos:
   const [newTodo, setNewTodo] = useState<string>('');
   const [title, setTitle] = useState<string>(initialTitle);
   const [isEditingTitle, setIsEditingTitle] = useState<boolean>(false);
+  const [isMinimized, setIsMinimized] = useState<boolean>(false);
 
   useEffect(() => {
     setTodos(initialTodos.sort((a, b) => Number(a.completed) - Number(b.completed)));
@@ -47,41 +48,51 @@ const TodoList: React.FC<TodoListProps> = ({ listId, title: initialTitle, todos:
     removeTodoList(listId);
   };
 
+  const toggleMinimize = () => {
+    setIsMinimized(!isMinimized);
+  };
+
   return (
     <Draggable handle=".handle" disabled={isEditingTitle}>
       <StyledTodoListContainer>
         <TodoListTitle
           title={title}
           isEditingTitle={isEditingTitle}
+          isMinimized={isMinimized}
           setIsEditingTitle={setIsEditingTitle}
+          toggleMinimize={toggleMinimize}
           handleTitleChange={(e) => handleTitleChange(e, setTitle)}
           handleTitleBlur={() => handleTitleBlur(title, listId, setIsEditingTitle)}
           clearTodos={() => clearTodos(listId, setTodos)}
           deleteTodoList={handleDeleteTodoList}
         />
-        <div>
-          {todos.map((todo, index) => (
-            <TodoItem
-              key={todo.id}
-              todo={todo.text}
-              completed={todo.completed}
-              onToggle={() => toggleTodo(todo.id, todos, listId, setTodos)}
-              onDelete={() => deleteTodo(todo.id, todos, listId, setTodos)}
-              onEdit={(newText) => handleEditTodo(todo.id, newText)}
-              isEditingTitle={isEditingTitle}
-            />
-          ))}
-        </div>
-        <StyledTodoInputContainer isEditingTitle={isEditingTitle}>
-          <TodoInput
-            type="text"
-            value={newTodo}
-            onChange={(e) => setNewTodo(e.target.value)}
-            onKeyDown={(event) => handleKeyDown(event, newTodo, listId, setTodos, setNewTodo)}
-            placeholder="Add a new to-do"
-            disabled={isEditingTitle}
-          />
-        </StyledTodoInputContainer>
+        {!isMinimized && (
+          <>
+            <div>
+              {todos.map((todo, index) => (
+                <TodoItem
+                  key={todo.id}
+                  todo={todo.text}
+                  completed={todo.completed}
+                  onToggle={() => toggleTodo(todo.id, todos, listId, setTodos)}
+                  onDelete={() => deleteTodo(todo.id, todos, listId, setTodos)}
+                  onEdit={(newText) => handleEditTodo(todo.id, newText)}
+                  isEditingTitle={isEditingTitle}
+                />
+              ))}
+            </div>
+            <StyledTodoInputContainer isEditingTitle={isEditingTitle}>
+              <TodoInput
+                type="text"
+                value={newTodo}
+                onChange={(e) => setNewTodo(e.target.value)}
+                onKeyDown={(event) => handleKeyDown(event, newTodo, listId, setTodos, setNewTodo)}
+                placeholder="Add a new to-do"
+                disabled={isEditingTitle}
+              />
+            </StyledTodoInputContainer>
+          </>
+        )}
       </StyledTodoListContainer>
     </Draggable>
   );
