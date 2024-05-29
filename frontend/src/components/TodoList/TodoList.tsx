@@ -59,16 +59,6 @@ const TodoList: React.FC<TodoListProps> = ({ listId, title: initialTitle, todos:
           clearTodos={() => clearTodos(listId, setTodos)}
           deleteTodoList={handleDeleteTodoList}
         />
-        <StyledTodoInputContainer isEditingTitle={isEditingTitle}>
-          <TodoInput
-            type="text"
-            value={newTodo}
-            onChange={(e) => setNewTodo(e.target.value)}
-            onKeyDown={(event) => handleKeyDown(event, newTodo, listId, setTodos, setNewTodo)}
-            placeholder="Add a new to-do"
-            disabled={isEditingTitle}
-          />
-        </StyledTodoInputContainer>
         <div>
           {todos.map((todo, index) => (
             <TodoItem
@@ -82,6 +72,16 @@ const TodoList: React.FC<TodoListProps> = ({ listId, title: initialTitle, todos:
             />
           ))}
         </div>
+        <StyledTodoInputContainer isEditingTitle={isEditingTitle}>
+          <TodoInput
+            type="text"
+            value={newTodo}
+            onChange={(e) => setNewTodo(e.target.value)}
+            onKeyDown={(event) => handleKeyDown(event, newTodo, listId, setTodos, setNewTodo)}
+            placeholder="Add a new to-do"
+            disabled={isEditingTitle}
+          />
+        </StyledTodoInputContainer>
       </StyledTodoListContainer>
     </Draggable>
   );
