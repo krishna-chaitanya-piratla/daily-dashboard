@@ -80,7 +80,7 @@ export const StyledTodoInput = styled.input`
   }
 `;
 
-export const StyledTodoItem = styled.div<{ completed: boolean }>`
+export const StyledTodoItem = styled.div<{ completed: boolean; isEditing?: boolean }>`
   padding: 10px 10px 10px 30px;
   border-bottom: 0.5px dashed rgba(0, 0, 0, 0.3);
   text-align: left;
@@ -90,9 +90,24 @@ export const StyledTodoItem = styled.div<{ completed: boolean }>`
   white-space: normal; /* Allows wrapping */
   position: relative;
   text-decoration: ${(props) => (props.completed ? 'line-through' : 'none')};
+  background-color: inherit;
 
   &:hover .delete-item-icon {
     display: inline;
+  }
+`;
+
+export const StyledTodoEditInput = styled.input`
+  width: calc(100% - 40px); /* Adjust based on padding and delete icon */
+  background: none;
+  border: none;
+  padding: 10px 10px 10px 30px;
+  box-sizing: border-box;
+  color: gray;
+
+  &:focus, &:focus-visible {
+    outline: none;
+    background-color: rgba(0, 0, 0, 0.2); /* Slightly darker background when focused */
   }
 `;
 

@@ -103,3 +103,26 @@ export const handleTitleBlur = async (
     console.error('There was an error updating the title!', error);
   }
 };
+
+export const editTodo = async (
+    todoId: string,
+    newText: string,
+    todos: Todo[],
+    listId: string,
+    setTodos: React.Dispatch<React.SetStateAction<Todo[]>>
+  ) => {
+    const todo = todos.find(t => t.id === todoId);
+    if (todo) {
+      const updatedTodo = { ...todo, text: newText };
+      try {
+        const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/todos/${listId}/${todoId}`, updatedTodo);
+        setTodos((prevTodos) => {
+          const updatedTodos = prevTodos.map(t => (t.id === todoId ? response.data : t)).sort((a, b) => Number(a.completed) - Number(b.completed));
+          return updatedTodos;
+        });
+      } catch (error) {
+        console.error('There was an error updating the todo!', error);
+      }
+    }
+  };
+  
