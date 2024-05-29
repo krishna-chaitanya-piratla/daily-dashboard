@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const StyledSidebarContainer = styled.div`
+export const StyledSidebarContainer = styled.div<{ isOpen: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -10,9 +10,13 @@ export const StyledSidebarContainer = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: stretch;
+  transition: opacity 0.5s ease, visibility 0s linear 0s;
+  opacity: ${(props) => (props.isOpen ? '1' : '0')};
+  visibility: ${(props) => (props.isOpen ? 'visible' : 'hidden')};
+  ${(props) => !props.isOpen && 'transition: opacity 0.5s ease, visibility 0s linear 0.5s;'} 
 `;
 
-export const StyledSidebar = styled.div`
+export const StyledSidebar = styled.div<{ isOpen: boolean }>`
   background-color: inherit;
   border: 0.5px solid gray;
   border-left: none;
@@ -20,7 +24,9 @@ export const StyledSidebar = styled.div`
   height: 100%;
   padding: 20px;
   box-sizing: border-box;
-  position: relative; /* Ensure the close icon is positioned relative to the sidebar */
+  position: relative;
+  transform: translateX(${(props) => (props.isOpen ? '0' : '-100%')});
+  transition: transform 0.3s ease;
 `;
 
 export const StyledHamburgerIcon = styled.div`

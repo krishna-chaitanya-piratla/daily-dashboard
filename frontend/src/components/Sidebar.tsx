@@ -25,16 +25,14 @@ const Sidebar: React.FC = () => {
       <StyledHamburgerIcon onClick={openSidebar}>
         <MenuIcon />
       </StyledHamburgerIcon>
-      {isOpen && (
-        <StyledSidebarContainer onClick={handleOverlayClick}>
-          <StyledSidebar>
-            <StyledCloseIcon onClick={closeSidebar}>
-              <CloseIcon />
-            </StyledCloseIcon>
-            {/* Add your sidebar content here */}
-          </StyledSidebar>
-        </StyledSidebarContainer>
-      )}
+      <StyledSidebarContainer isOpen={isOpen} onClick={handleOverlayClick}>
+        <StyledSidebar isOpen={isOpen}>
+          <StyledCloseIcon onClick={closeSidebar}>
+            <CloseIcon />
+          </StyledCloseIcon>
+          {/* Add sidebar content here */}
+        </StyledSidebar>
+      </StyledSidebarContainer>
     </>
   );
 };
