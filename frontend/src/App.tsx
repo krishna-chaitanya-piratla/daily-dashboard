@@ -7,6 +7,7 @@ import { Helmet } from 'react-helmet';
 import BackgroundImage from './components/BackgroundImage';
 import axios from 'axios';
 import Sidebar from './components/Sidebar/Sidebar';
+import JokeWidget from './components/JokeWidget';
 
 const App: React.FC = () => {
   const [todoLists, setTodoLists] = useState<any[]>([]);
@@ -67,6 +68,7 @@ const App: React.FC = () => {
           </div>
         </AppContainer>
         <FocusCenter />
+        <JokeWidget />
       </BackgroundImage>
     </>
   );
