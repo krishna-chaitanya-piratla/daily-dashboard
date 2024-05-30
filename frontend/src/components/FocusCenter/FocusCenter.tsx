@@ -5,7 +5,7 @@ import { StyledFocusCenter } from '../../styled-components/FocusCenter/FocusCent
 const FocusCenter: React.FC = () => {
   return (
     <StyledFocusCenter>
-      <Time displaySeconds={false} displayAMPM={true} display24Hour={true} />
+      <Time displaySeconds={false} displayAMPM={true} display24Hour={false} />
     </StyledFocusCenter>
   );
 };

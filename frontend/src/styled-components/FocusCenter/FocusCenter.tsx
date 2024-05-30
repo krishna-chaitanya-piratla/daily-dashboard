@@ -9,5 +9,5 @@ export const StyledFocusCenter = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 10; /* Ensure it appears above other elements */
+  z-index: 1; /* Ensure it has a lower z-index */
 `;

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { StyledTime } from '../../styled-components/FocusCenter/Time';
+import { StyledTimeContainer, StyledTime, StyledMoreIcon } from '../../styled-components/FocusCenter/Time';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
 interface TimeProps {
   displaySeconds?: boolean;
@@ -40,7 +41,14 @@ const Time: React.FC<TimeProps> = ({
     return timeString;
   }
 
-  return <StyledTime>{time}</StyledTime>;
+  return (
+    <StyledTimeContainer>
+      <StyledTime>{time}</StyledTime>
+      <StyledMoreIcon className="more-icon">
+        <MoreHorizIcon />
+      </StyledMoreIcon>
+    </StyledTimeContainer>
+  );
 };
 
 export default Time;
