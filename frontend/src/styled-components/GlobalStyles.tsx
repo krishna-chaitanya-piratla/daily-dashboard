@@ -4,7 +4,7 @@ export const GlobalStyles = createGlobalStyle`
   body {
     background-color: black;
     color: white;
-    font-family: 'Lato', sans-serif;
+    font-family: 'Wotfard', sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
