@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { StyledDateTimeLocation, StyledTime, StyledDate, StyledLocation } from '../styled-components/DateTimeLocation';
-import Draggable from 'react-draggable';
 import axios from 'axios';
 
 const DateTimeLocation: React.FC = () => {
@@ -39,12 +38,10 @@ const DateTimeLocation: React.FC = () => {
   }, []);
 
   return (
-    <Draggable>
       <StyledDateTimeLocation>
         <StyledDate>{dateTime.date}</StyledDate>
         <StyledLocation>{location}</StyledLocation>
       </StyledDateTimeLocation>
-    </Draggable>
   );
 };
 

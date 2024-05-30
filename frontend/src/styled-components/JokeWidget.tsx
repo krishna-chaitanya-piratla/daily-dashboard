@@ -5,12 +5,12 @@ export const StyledJokeWidget = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgba(0, 0, 0, 0.2);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: var(--widget-background-color);
+    box-shadow: var(--widget-box-shadow);
     padding: 10px;
     border-radius: 10px;
     margin: 10px;
-    color: #ccc;
+    color: var(--widget-text-color-secondary);
     font-size: 1rem;
     width: fit-content;
     max-width: 33%;
@@ -30,5 +30,5 @@ export const StyledJokeText = styled.div`
 export const StyledRefreshIcon = styled.div`
   cursor: pointer;
   font-size: 1.5rem;
-  color: #ccc;
+  color: var(--widget-text-color);
 `;

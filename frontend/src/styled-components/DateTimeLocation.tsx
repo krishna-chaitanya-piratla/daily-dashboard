@@ -8,12 +8,12 @@ export const StyledDateTimeLocation = styled.div`
   padding: 20px;
   margin: 10px;
   display: inline-block;
-  background-color: rgba(0, 0, 0, 0.2);
-  color: inherit;
+  background-color: var(--widget-background-color);
+  color: var(--widget-text-color-secondary);
   box-sizing: border-box;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--widget-box-shadow);
 `;
 
 export const StyledTime = styled.p`
