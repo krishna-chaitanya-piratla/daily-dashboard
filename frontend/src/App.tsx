@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import DateTimeLocation from './components/DateTimeLocation';
 import TodoList from './components/TodoList/TodoList';
+import FocusCenter from './components/FocusCenter/FocusCenter';
 import { GlobalStyles, AppContainer, Header } from './styled-components/GlobalStyles';
 import { Helmet } from 'react-helmet';
 import BackgroundImage from './components/BackgroundImage';
@@ -65,6 +66,7 @@ const App: React.FC = () => {
             ))}
           </div>
         </AppContainer>
+        <FocusCenter />
       </BackgroundImage>
     </>
   );
