@@ -41,7 +41,6 @@ const DateTimeLocation: React.FC = () => {
   return (
     <Draggable>
       <StyledDateTimeLocation>
-        <StyledTime>{dateTime.time}</StyledTime>
         <StyledDate>{dateTime.date}</StyledDate>
         <StyledLocation>{location}</StyledLocation>
       </StyledDateTimeLocation>
