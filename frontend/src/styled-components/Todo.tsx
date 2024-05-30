@@ -165,7 +165,7 @@ export const StyledTodoListContainer = styled.div`
   overflow-y: auto;
   margin: 20px auto;
   text-align: center;
-  border: 0.5px solid var(--todolist-container-border-color);
+  border: 0.5px solid none;
   border-radius: 10px;
   padding: 20px;
   background-color: var(--todolist-container-background-color);
