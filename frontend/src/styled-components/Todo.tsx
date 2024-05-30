@@ -146,6 +146,13 @@ export const StyledItemDeleteIcon = styled.span`
   }
 `;
 
+export const StyledTodoListWrapper = styled.div`
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 10; /* Ensure it appears above other elements */
+`;
+
 export const StyledTodoListContainer = styled.div`
   --todolist-container-background-color: rgba(0, 0, 0, 0.2);
   --todolist-container-box-shadow-color: rgba(0, 0, 0, 0.1);

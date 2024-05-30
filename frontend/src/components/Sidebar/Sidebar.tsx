@@ -1,34 +1,31 @@
-import React, { useState } from 'react';
+import React from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import { StyledSidebarContainer, StyledSidebar, StyledHamburgerIcon, StyledCloseIcon } from '../../styled-components/Sidebar/Sidebar';
 import SidebarContents from './SidebarContents';
 
-const Sidebar: React.FC<{ addTodoList: () => void }> = ({ addTodoList }) => {
-  const [isOpen, setIsOpen] = useState(false);
+interface SidebarProps {
+  addTodoList: () => void;
+  isOpen: boolean;
+  onClose: () => void;
+  onOpen: () => void;
+}
 
-  const openSidebar = () => {
-    setIsOpen(true);
-  };
-
-  const closeSidebar = () => {
-    setIsOpen(false);
-  };
-
+const Sidebar: React.FC<SidebarProps> = ({ addTodoList, isOpen, onClose, onOpen }) => {
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (e.target === e.currentTarget) {
-      closeSidebar();
+      onClose();
     }
   };
 
   return (
     <>
-      <StyledHamburgerIcon onClick={openSidebar}>
+      <StyledHamburgerIcon onClick={onOpen}>
         <MenuIcon />
       </StyledHamburgerIcon>
       <StyledSidebarContainer isOpen={isOpen} onClick={handleOverlayClick}>
         <StyledSidebar isOpen={isOpen}>
-          <StyledCloseIcon onClick={closeSidebar}>
+          <StyledCloseIcon onClick={onClose}>
             <CloseIcon />
           </StyledCloseIcon>
           <SidebarContents addTodoList={addTodoList} />

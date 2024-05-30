@@ -13,20 +13,22 @@ export const StyledSidebarContainer = styled.div<{ isOpen: boolean }>`
   transition: opacity 0.5s ease, visibility 0s linear 0s;
   opacity: ${(props) => (props.isOpen ? '1' : '0')};
   visibility: ${(props) => (props.isOpen ? 'visible' : 'hidden')};
-  ${(props) => !props.isOpen && 'transition: opacity 0.5s ease, visibility 0s linear 0.5s;'} 
+  ${(props) => !props.isOpen && 'transition: opacity 0.5s ease, visibility 0s linear 0.5s;'}
+  z-index: 1000; /* Ensure the sidebar is above other elements */
 `;
 
 export const StyledSidebar = styled.div<{ isOpen: boolean }>`
   background-color: inherit;
   border: 0.5px solid gray;
   border-left: none;
-  width: 10%;
+  width: 20%;
   height: 100%;
   padding: 20px;
   box-sizing: border-box;
   position: relative;
   transform: translateX(${(props) => (props.isOpen ? '0' : '-100%')});
   transition: transform 0.3s ease;
+  z-index: 1001; /* Ensure the sidebar content is above the backdrop */
 `;
 
 export const StyledHamburgerIcon = styled.div`
@@ -36,7 +38,7 @@ export const StyledHamburgerIcon = styled.div`
   font-size: 24px;
   cursor: pointer;
   color: white;
-  z-index: 1000;
+  z-index: 1002; /* Ensure the hamburger icon is always on top */
 `;
 
 export const StyledCloseIcon = styled.div`

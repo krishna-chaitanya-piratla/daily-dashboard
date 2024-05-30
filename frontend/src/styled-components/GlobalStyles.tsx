@@ -26,4 +26,5 @@ export const AppContainer = styled.div`
   align-items: center;
   justify-content: center;
   background-size: cover; /* Ensure the background image covers the entire container */
+  position: relative;
 `;

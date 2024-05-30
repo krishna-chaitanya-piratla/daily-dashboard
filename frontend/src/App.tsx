@@ -9,6 +9,7 @@ import Sidebar from './components/Sidebar/Sidebar';
 
 const App: React.FC = () => {
   const [todoLists, setTodoLists] = useState<any[]>([]);
+  const [isSidebarOpen, setSidebarOpen] = useState<boolean>(false);
 
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_BACKEND_URL}/todos`)
@@ -34,6 +35,9 @@ const App: React.FC = () => {
     setTodoLists((prevLists) => prevLists.filter((list) => list.id !== listId));
   };
 
+  const closeSidebar = () => setSidebarOpen(false);
+  const openSidebar = () => setSidebarOpen(true);
+
   return (
     <>
       <Helmet>
@@ -44,7 +48,7 @@ const App: React.FC = () => {
       </Helmet>
       <GlobalStyles />
       <BackgroundImage query="space">
-      <Sidebar addTodoList={addTodoList}/>
+        <Sidebar addTodoList={addTodoList} isOpen={isSidebarOpen} onClose={closeSidebar} onOpen={openSidebar} />
         <AppContainer>
           <Header>
             <DateTimeLocation />
@@ -52,12 +56,12 @@ const App: React.FC = () => {
           <div>
             {todoLists.map((list) => (
               <TodoList
-              key={list.id}
-              listId={list.id}
-              title={list.title}
-              todos={list.todos}
-              removeTodoList={removeTodoList}
-            />
+                key={list.id}
+                listId={list.id}
+                title={list.title}
+                todos={list.todos}
+                removeTodoList={removeTodoList}
+              />
             ))}
           </div>
         </AppContainer>
