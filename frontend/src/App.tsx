@@ -8,6 +8,7 @@ import BackgroundImage from './components/BackgroundImage';
 import axios from 'axios';
 import Sidebar from './components/Sidebar/Sidebar';
 import JokeWidget from './components/JokeWidget';
+import LocationWeather from './components/LocationWeather/LocationWeather';
 
 const App: React.FC = () => {
   const [todoLists, setTodoLists] = useState<any[]>([]);
@@ -61,7 +62,8 @@ const App: React.FC = () => {
         {/* <Sidebar addTodoList={addTodoList} isOpen={isSidebarOpen} onClose={closeSidebar} onOpen={openSidebar} /> */}
         <AppContainer>
           <Header>
-            <DateTimeLocation />
+            {/* <DateTimeLocation /> */}
+            <LocationWeather />
           </Header>
           <div>
             {todoLists.map((list) => (
