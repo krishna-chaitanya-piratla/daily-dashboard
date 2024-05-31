@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const StyledLocationWeather = styled.div`
+  font-family: Lato;
   font-size: 14px;
   text-align: right;
   border: 1px solid none;
@@ -8,12 +9,8 @@ export const StyledLocationWeather = styled.div`
   padding: 20px;
   margin: 10px;
   display: inline-block;
-  background-color: var(--widget-background-color);
   color: var(--widget-text-color-secondary);
   box-sizing: border-box;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: var(--widget-box-shadow);
 `;
 
 export const StyledLocation = styled.p`

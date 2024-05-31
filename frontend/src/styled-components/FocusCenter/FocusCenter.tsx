@@ -11,4 +11,5 @@ export const StyledFocusCenter = styled.div`
   top: 0;
   left: 0;
   z-index: 1; /* Ensure it has a lower z-index */
+  margin-top: -5rem;
 `;
