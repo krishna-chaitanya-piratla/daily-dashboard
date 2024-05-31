@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { StyledWelcomeMessage } from '../../styled-components/FocusCenter/WelcomeMessage';
+import { StyledEditMessageIcon, StyledWelcomeMessage, StyledWelcomeMessageContainer, StyledWelcomeMessageWrapper } from '../../styled-components/FocusCenter/WelcomeMessage';
+import EditIcon from '@mui/icons-material/Edit';
 
 
 
@@ -34,9 +35,16 @@ const WelcomeMessage: React.FC<WelcomeMessageProps> = ({ userName = 'Stranger' }
 
 
     return (
-        <StyledWelcomeMessage>
-            {greeting}
-        </StyledWelcomeMessage>
+        <StyledWelcomeMessageContainer>
+            <StyledWelcomeMessageWrapper>
+                <StyledWelcomeMessage>
+                    {greeting}
+                </StyledWelcomeMessage>
+                <StyledEditMessageIcon className='edit-message-icon'>
+                    <EditIcon />
+                </StyledEditMessageIcon>
+            </StyledWelcomeMessageWrapper>
+        </StyledWelcomeMessageContainer>
     )
 }
 
