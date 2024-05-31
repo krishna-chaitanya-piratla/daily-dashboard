@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import DateTimeLocation from './components/DateTimeLocation';
 import TodoList from './components/TodoList/TodoList';
 import FocusCenter from './components/FocusCenter/FocusCenter';
 import { GlobalStyles, AppContainer, Header } from './styled-components/GlobalStyles';
@@ -62,7 +61,6 @@ const App: React.FC = () => {
         {/* <Sidebar addTodoList={addTodoList} isOpen={isSidebarOpen} onClose={closeSidebar} onOpen={openSidebar} /> */}
         <AppContainer>
           <Header>
-            {/* <DateTimeLocation /> */}
             <LocationWeather />
           </Header>
           <div>
