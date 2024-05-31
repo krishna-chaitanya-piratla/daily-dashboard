@@ -6,6 +6,8 @@ export const GlobalStyles = createGlobalStyle`
     --widget-text-color-primary: #fff;
     --widget-text-color-secondary: #ccc;
     --widget-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.25);
+    --todo-text-color-primary: #ccc;
+    --todo-text-color-secondary: gray;
   }
   body {
     background-color: black;

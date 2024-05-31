@@ -43,7 +43,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, completed, onToggle, onDelete
       isEditing={isEditing}
       isEditingTitle={isEditingTitle}
     >
-      <StyledToggleIconContainer onClick={isEditing || isEditingTitle ? undefined : onToggle}>
+      <StyledToggleIconContainer completed={completed} onClick={isEditing || isEditingTitle ? undefined : onToggle}>
         {completed ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
       </StyledToggleIconContainer>
       {isEditing ? (
@@ -63,6 +63,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, completed, onToggle, onDelete
         <>
           {todo}
           <StyledEditIconContainer
+            completed={completed}
             className="edit-icon"
             onClick={(e) => {
               e.stopPropagation();
@@ -74,6 +75,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, completed, onToggle, onDelete
             <EditIcon />
           </StyledEditIconContainer>
           <StyledItemDeleteIcon
+            completed={completed}
             className="delete-item-icon"
             onClick={(e) => {
               e.stopPropagation();

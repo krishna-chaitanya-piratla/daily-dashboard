@@ -10,6 +10,7 @@ export const StyledHeader = styled.div`
   align-items: center;
   padding: 10px;
   position: relative;
+  color: var(--todo-text-color-primary);
 
   h1 {
     margin: 0;
@@ -105,7 +106,7 @@ export const StyledTodoItem = styled.div<{ completed: boolean; isEditing?: boole
   padding: 10px 10px 10px 30px;
   border-bottom: 0.5px dashed rgba(0, 0, 0, 0.3);
   text-align: left;
-  color: inherit;
+  color: ${(props) => (props.completed ? 'var(--todo-text-color-secondary)' : 'var(--todo-text-color-primary)')};
   word-wrap: break-word;
   overflow-wrap: break-word; /* Ensures long words break properly */
   white-space: normal; /* Allows wrapping */
@@ -136,7 +137,7 @@ export const StyledTodoEditInput = styled.input`
   }
 `;
 
-export const StyledItemDeleteIcon = styled.span`
+export const StyledItemDeleteIcon = styled.span<{ completed: boolean }>`
   display: none;
   position: absolute;
   right: 10px;
@@ -144,22 +145,25 @@ export const StyledItemDeleteIcon = styled.span`
   transform: translateY(-50%);
   cursor: pointer;
   font-size: 1.5em;
+  color: ${(props) => (props.completed ? 'var(--todo-text-color-secondary)' : 'var(--todo-text-color-primary)')};
+
   &:hover {
-    color: red;
+    color: ${(props) => (props.completed ? 'var(--todo-text-color-secondary)' : 'var(--todo-text-color-primary)')};
   }
 `;
 
-export const StyledEditIconContainer = styled.div`
+export const StyledEditIconContainer = styled.div<{ completed: boolean }>`
   display: none;
-  color: gray;
   position: absolute;
   right: 40px;
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
   font-size: 1.5em;
+  color: ${(props) => (props.completed ? 'var(--todo-text-color-secondary)' : 'var(--todo-text-color-primary)')};
+
   &:hover {
-    color: white;
+    color: ${(props) => (props.completed ? 'var(--todo-text-color-secondary)' : 'var(--todo-text-color-primary)')};
   }
 `;
 
@@ -231,14 +235,14 @@ export const StyledDeleteIcon = styled.span`
   }
 `;
 
-export const StyledToggleIconContainer = styled.div`
+export const StyledToggleIconContainer = styled.div<{ completed: boolean }>`
   display: flex;
   align-items: center;
   cursor: pointer;
   margin-right: 10px;
-  color: var(--widget-text-color-secondary);
+  color: ${(props) => (props.completed ? 'var(--todo-text-color-secondary)' : 'var(--todo-text-color-primary)')};
 
   &:hover {
-    color: white;
+    color: ${(props) => (props.completed ? 'var(--todo-text-color-secondary)' : 'var(--todo-text-color-primary)')};
   }
 `;
