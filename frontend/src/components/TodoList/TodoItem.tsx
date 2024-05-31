@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { StyledTodoItem, StyledItemDeleteIcon, StyledTodoEditInput } from '../../styled-components/Todo';
+import { StyledTodoItem, StyledItemDeleteIcon, StyledTodoEditInput, StyledEditIconContainer } from '../../styled-components/Todo';
+import EditIcon from '@mui/icons-material/Edit';
 
 interface TodoItemProps {
   todo: string;
@@ -45,7 +46,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, completed, onToggle, onDelete
       onClick={isEditing || isEditingTitle ? undefined : onToggle}
       completed={completed}
       onDoubleClick={handleDoubleClick}
-      isEditing={isEditing} // Add this prop to style conditionally
+      isEditing={isEditing}
       isEditingTitle={isEditingTitle}
     >
       <StyledItemDeleteIcon
@@ -73,7 +74,20 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, completed, onToggle, onDelete
           }}
         />
       ) : (
-        todo
+        <>
+          {todo}
+          <StyledEditIconContainer
+            className="edit-icon"
+            onClick={(e) => {
+              e.stopPropagation();
+              if (!isEditingTitle) {
+                setIsEditing(true);
+              }
+            }}
+          >
+            <EditIcon />
+          </StyledEditIconContainer>
+        </>
       )}
     </StyledTodoItem>
   );

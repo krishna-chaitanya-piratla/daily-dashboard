@@ -57,7 +57,7 @@ const App: React.FC = () => {
         />
       </Helmet>
       <GlobalStyles />
-      <BackgroundImage query="nature">
+      <BackgroundImage query="editorial">
         {/* <Sidebar addTodoList={addTodoList} isOpen={isSidebarOpen} onClose={closeSidebar} onOpen={openSidebar} /> */}
         <AppContainer>
           <Header>

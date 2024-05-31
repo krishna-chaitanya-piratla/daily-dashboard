@@ -112,8 +112,9 @@ export const StyledTodoItem = styled.div<{ completed: boolean; isEditing?: boole
   background-color: inherit;
   pointer-events: ${(props) => (props.isEditingTitle ? 'none' : 'auto')}; /* Disable interaction */
 
-  &:hover .delete-item-icon {
-    display: inline;
+  &:hover .delete-item-icon,
+  &:hover .edit-icon {
+    display: inline-block;
   }
 `;
 
@@ -160,7 +161,7 @@ export const StyledTodoListContainer = styled.div`
   --scrollbar-thumb-color: #999;
   --scrollbar-thumb-hover-color: #999;
 
-  width: 20rem;
+  width: 25rem;
   max-height: 25rem;
   overflow-y: auto;
   margin: 20px auto;
@@ -211,5 +212,18 @@ export const StyledDeleteIcon = styled.span`
   display: none;
   &:hover {
     color: red;
+  }
+`;
+
+export const StyledEditIconContainer = styled.div`
+  display: none;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 1.5em;
+  &:hover {
+    color: gray;
   }
 `;
