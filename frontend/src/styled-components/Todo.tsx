@@ -161,7 +161,7 @@ export const StyledTodoListContainer = styled.div`
   --scrollbar-thumb-hover-color: #999;
 
   width: 20rem;
-  max-height: 27rem;
+  max-height: 25rem;
   overflow-y: auto;
   margin: 20px auto;
   text-align: center;

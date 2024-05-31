@@ -10,7 +10,7 @@ interface TimeProps {
 
 const Time: React.FC<TimeProps> = ({
   displaySeconds = false,
-  displayAMPM = true,
+  displayAMPM = false,
   display24Hour = false,
 }) => {
   const [time, setTime] = useState<string>(formatTime(new Date()));
