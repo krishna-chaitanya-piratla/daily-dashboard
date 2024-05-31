@@ -22,12 +22,6 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, completed, onToggle, onDelete
     }
   }, [isEditing]);
 
-  const handleDoubleClick = () => {
-    if (!isEditingTitle) {
-      setIsEditing(true);
-    }
-  };
-
   const handleBlur = () => {
     setIsEditing(false);
     if (editText.trim()) {
@@ -45,7 +39,6 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, completed, onToggle, onDelete
     <StyledTodoItem
       onClick={isEditing || isEditingTitle ? undefined : onToggle}
       completed={completed}
-      onDoubleClick={handleDoubleClick}
       isEditing={isEditing}
       isEditingTitle={isEditingTitle}
     >
