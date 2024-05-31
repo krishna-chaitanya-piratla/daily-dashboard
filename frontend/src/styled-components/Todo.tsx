@@ -100,6 +100,8 @@ export const StyledTodoInput = styled.input`
 `;
 
 export const StyledTodoItem = styled.div<{ completed: boolean; isEditing?: boolean; isEditingTitle?: boolean }>`
+  display: flex;
+  align-items: center;
   padding: 10px 10px 10px 30px;
   border-bottom: 0.5px dashed rgba(0, 0, 0, 0.3);
   text-align: left;
@@ -226,5 +228,17 @@ export const StyledDeleteIcon = styled.span`
   display: none;
   &:hover {
     color: red;
+  }
+`;
+
+export const StyledToggleIconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-right: 10px;
+  color: var(--widget-text-color-secondary);
+
+  &:hover {
+    color: white;
   }
 `;

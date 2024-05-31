@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { StyledTodoItem, StyledItemDeleteIcon, StyledTodoEditInput, StyledEditIconContainer } from '../../styled-components/Todo';
+import { StyledTodoItem, StyledItemDeleteIcon, StyledTodoEditInput, StyledEditIconContainer, StyledToggleIconContainer } from '../../styled-components/Todo';
 import EditIcon from '@mui/icons-material/Edit';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
 
 interface TodoItemProps {
   todo: string;
@@ -37,11 +39,13 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, completed, onToggle, onDelete
 
   return (
     <StyledTodoItem
-      onClick={isEditing || isEditingTitle ? undefined : onToggle}
       completed={completed}
       isEditing={isEditing}
       isEditingTitle={isEditingTitle}
     >
+      <StyledToggleIconContainer onClick={isEditing || isEditingTitle ? undefined : onToggle}>
+        {completed ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
+      </StyledToggleIconContainer>
       {isEditing ? (
         <StyledTodoEditInput
           ref={inputRef}
