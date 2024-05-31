@@ -49,17 +49,6 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, completed, onToggle, onDelete
       isEditing={isEditing}
       isEditingTitle={isEditingTitle}
     >
-      <StyledItemDeleteIcon
-        className="delete-item-icon"
-        onClick={(e) => {
-          e.stopPropagation();
-          if (!isEditingTitle) {
-            onDelete();
-          }
-        }}
-      >
-        &#x1F5D1; {/* Unicode for delete icon */}
-      </StyledItemDeleteIcon>
       {isEditing ? (
         <StyledTodoEditInput
           ref={inputRef}
@@ -87,6 +76,17 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, completed, onToggle, onDelete
           >
             <EditIcon />
           </StyledEditIconContainer>
+          <StyledItemDeleteIcon
+            className="delete-item-icon"
+            onClick={(e) => {
+              e.stopPropagation();
+              if (!isEditingTitle) {
+                onDelete();
+              }
+            }}
+          >
+            &#x1F5D1; {/* Unicode for delete icon */}
+          </StyledItemDeleteIcon>
         </>
       )}
     </StyledTodoItem>

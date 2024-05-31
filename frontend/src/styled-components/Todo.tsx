@@ -125,7 +125,7 @@ export const StyledTodoEditInput = styled.input`
   padding: 10px 10px 10px 30px;
   box-sizing: border-box;
   color: gray;
-
+  
   &:focus,
   &:focus-visible {
     outline: none;
@@ -136,14 +136,27 @@ export const StyledTodoEditInput = styled.input`
 export const StyledItemDeleteIcon = styled.span`
   display: none;
   position: absolute;
-  left: 10px;
+  right: 10px;
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
-  margin-left: -10px;
   font-size: 1.5em;
   &:hover {
     color: red;
+  }
+`;
+
+export const StyledEditIconContainer = styled.div`
+  display: none;
+  color: gray;
+  position: absolute;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 1.5em;
+  &:hover {
+    color: white;
   }
 `;
 
@@ -162,7 +175,7 @@ export const StyledTodoListContainer = styled.div`
   --scrollbar-thumb-hover-color: #999;
 
   width: 25rem;
-  max-height: 25rem;
+  max-height: 20rem;
   overflow-y: auto;
   margin: 20px auto;
   text-align: center;
@@ -212,18 +225,5 @@ export const StyledDeleteIcon = styled.span`
   display: none;
   &:hover {
     color: red;
-  }
-`;
-
-export const StyledEditIconContainer = styled.div`
-  display: none;
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  font-size: 1.5em;
-  &:hover {
-    color: gray;
   }
 `;
