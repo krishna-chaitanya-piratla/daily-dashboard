@@ -84,7 +84,7 @@ export const StyledTodoInput = styled.input`
   &:focus-visible {
     outline: none;
     box-shadow: 0 0 0 0.5px #999;
-    color: gray;
+    color: var(--widget-text-color-secondary);
   }
   &:hover {
     outline: none;
@@ -111,6 +111,7 @@ export const StyledTodoItem = styled.div<{ completed: boolean; isEditing?: boole
   text-decoration: ${(props) => (props.completed ? 'line-through' : 'none')};
   background-color: inherit;
   pointer-events: ${(props) => (props.isEditingTitle ? 'none' : 'auto')}; /* Disable interaction */
+  padding-right: 60px;
 
   &:hover .delete-item-icon,
   &:hover .edit-icon {
@@ -125,7 +126,7 @@ export const StyledTodoEditInput = styled.input`
   padding: 10px 10px 10px 30px;
   box-sizing: border-box;
   color: gray;
-  
+
   &:focus,
   &:focus-visible {
     outline: none;
@@ -174,7 +175,7 @@ export const StyledTodoListContainer = styled.div`
   --scrollbar-thumb-color: #999;
   --scrollbar-thumb-hover-color: #999;
 
-  width: 25rem;
+  width: 30rem;
   max-height: 20rem;
   overflow-y: auto;
   margin: 20px auto;
