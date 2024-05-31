@@ -3,7 +3,7 @@ import TodoList from './components/TodoList/TodoList';
 import FocusCenter from './components/FocusCenter/FocusCenter';
 import { GlobalStyles, AppContainer, Header } from './styled-components/GlobalStyles';
 import { Helmet } from 'react-helmet';
-import BackgroundImage from './components/BackgroundImage';
+import Background from './components/Background/Background';
 import axios from 'axios';
 import Sidebar from './components/Sidebar/Sidebar';
 import JokeWidget from './components/JokeWidget';
@@ -57,7 +57,7 @@ const App: React.FC = () => {
         />
       </Helmet>
       <GlobalStyles />
-      <BackgroundImage query="space">
+      <Background type="solid">
         {/* <Sidebar addTodoList={addTodoList} isOpen={isSidebarOpen} onClose={closeSidebar} onOpen={openSidebar} /> */}
         <AppContainer>
           <Header>
@@ -77,7 +77,7 @@ const App: React.FC = () => {
         </AppContainer>
         <FocusCenter />
         <JokeWidget />
-      </BackgroundImage>
+      </Background>
     </>
   );
 };

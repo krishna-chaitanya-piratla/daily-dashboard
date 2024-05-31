@@ -5,12 +5,12 @@ const unsplash = createApi({
   accessKey: process.env.REACT_APP_UNSPLASH_ACCESS_KEY!,
 });
 
-interface BackgroundImageProps {
+interface CustomBackgroundProps {
   query: string;
   children: React.ReactNode;
 }
 
-const BackgroundImage: React.FC<BackgroundImageProps> = ({ query, children }) => {
+const CustomBackground: React.FC<CustomBackgroundProps> = ({ query, children }) => {
   const [backgroundImage, setBackgroundImage] = useState<string>('');
 
   useEffect(() => {
@@ -38,4 +38,4 @@ const BackgroundImage: React.FC<BackgroundImageProps> = ({ query, children }) =>
   );
 };
 
-export default BackgroundImage;
+export default CustomBackground;
