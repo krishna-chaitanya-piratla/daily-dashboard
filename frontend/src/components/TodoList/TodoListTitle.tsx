@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { StyledHeader, StyledHeaderEditBox } from '../../styled-components/Todo';
+import { StyledHeader, StyledHeaderEditBox } from '../../styled-components/TodoList/TodoListTitle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import BlockIcon from '@mui/icons-material/Block';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -14,7 +14,7 @@ interface TodoListTitleProps {
   handleTitleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleTitleBlur: () => void;
   clearTodos: () => void;
-  deleteTodoList: () => void;
+  deleteTodoList?: () => void;
 }
 
 const TodoListTitle: React.FC<TodoListTitleProps> = ({

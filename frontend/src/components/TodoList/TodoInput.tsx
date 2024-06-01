@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyledTodoInput } from "../../styled-components/Todo";
+import { StyledTodoInput, StyledTodoInputContainer } from '../../styled-components/TodoList/TodoInput';
 
 interface TodoInputProps {
     type: 'text';

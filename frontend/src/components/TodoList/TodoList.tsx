@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import TodoItem from './TodoItem';
 import TodoListTitle from './TodoListTitle';
-import { StyledTodoListContainer, StyledTodoInputContainer, StyledTodoListWrapper } from '../../styled-components/Todo';
+import { StyledTodoListContainer, StyledTodoListWrapper } from '../../styled-components/TodoList/TodoList';
+import { StyledTodoInputContainer } from '../../styled-components/TodoList/TodoInput';
 import TodoInput from './TodoInput';
 import {
   handleKeyDown,
