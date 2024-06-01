@@ -28,9 +28,9 @@ export interface TodoListType {
 }
 
 interface TodoListProps {
-  todoLists: TodoListType[]; // Updated prop
+  todoLists: TodoListType[];
   removeTodoList: (listId: string) => void;
-  addTodoList: () => void; // Keep this prop for future use
+  addTodoList: () => void;
 }
 
 const TodoList: React.FC<TodoListProps> = ({ todoLists, removeTodoList, addTodoList }) => {
@@ -74,7 +74,9 @@ const TodoList: React.FC<TodoListProps> = ({ todoLists, removeTodoList, addTodoL
           handleTitleBlur={() => handleTitleBlur(title, todoLists[activeListIndex].id, setIsEditingTitle)}
           clearTodos={() => clearTodos(todoLists[activeListIndex].id, setTodos)}
           deleteTodoList={handleDeleteTodoList}
-          addTodoList={addTodoList} // Keep this prop for future use
+          addTodoList={addTodoList}
+          todoLists={todoLists} // Pass the todoLists array
+          setActiveListIndex={setActiveListIndex} // Pass the function to set the active list index
         />
         {!isMinimized && (
           <>
