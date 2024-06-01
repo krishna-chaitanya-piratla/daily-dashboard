@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import TodoList from './components/TodoList/TodoList';
+import TodoList, { TodoListType } from './components/TodoList/TodoList';
 import FocusCenter from './components/FocusCenter/FocusCenter';
 import { GlobalStyles, AppContainer, Header } from './styled-components/GlobalStyles';
 import { Helmet } from 'react-helmet';
@@ -10,7 +10,7 @@ import JokeWidget from './components/JokeWidget';
 import LocationWeather from './components/LocationWeather/LocationWeather';
 
 const App: React.FC = () => {
-  const [todoLists, setTodoLists] = useState<any[]>([]);
+  const [todoLists, setTodoLists] = useState<TodoListType[]>([]);
   const [isSidebarOpen, setSidebarOpen] = useState<boolean>(false);
 
   useEffect(() => {
@@ -64,16 +64,13 @@ const App: React.FC = () => {
             <LocationWeather />
           </Header>
           <div>
-            {todoLists.map((list) => (
+            {todoLists.length > 0 && (
               <TodoList
-                key={list.id}
-                listId={list.id}
-                title={list.title}
-                todos={list.todos}
+                todoLists={todoLists}
                 removeTodoList={removeTodoList}
-                addTodoList={addTodoList} // Pass this prop
+                addTodoList={addTodoList}
               />
-            ))}
+            )}
           </div>
         </AppContainer>
         <FocusCenter />

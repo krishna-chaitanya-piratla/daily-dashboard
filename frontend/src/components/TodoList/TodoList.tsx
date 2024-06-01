@@ -21,32 +21,40 @@ export interface Todo {
   completed: boolean;
 }
 
-interface TodoListProps {
-  listId: string;
+export interface TodoListType {
+  id: string;
   title: string;
   todos: Todo[];
-  removeTodoList: (listId: string) => void;
-  addTodoList: () => void; // Add this prop
 }
 
-const TodoList: React.FC<TodoListProps> = ({ listId, title: initialTitle, todos: initialTodos = [], removeTodoList, addTodoList }) => {
+interface TodoListProps {
+  todoLists: TodoListType[]; // Updated prop
+  removeTodoList: (listId: string) => void;
+  addTodoList: () => void; // Keep this prop for future use
+}
+
+const TodoList: React.FC<TodoListProps> = ({ todoLists, removeTodoList, addTodoList }) => {
+  const [activeListIndex, setActiveListIndex] = useState(0);
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodo, setNewTodo] = useState<string>('');
-  const [title, setTitle] = useState<string>(initialTitle);
+  const [title, setTitle] = useState<string>(todoLists[0]?.title || '');
   const [isEditingTitle, setIsEditingTitle] = useState<boolean>(false);
   const [isMinimized, setIsMinimized] = useState<boolean>(false);
 
   useEffect(() => {
-    setTodos(initialTodos.sort((a, b) => Number(a.completed) - Number(b.completed)));
-  }, [initialTodos]);
+    if (todoLists.length > 0) {
+      setTodos(todoLists[activeListIndex].todos.sort((a, b) => Number(a.completed) - Number(b.completed)));
+      setTitle(todoLists[activeListIndex].title);
+    }
+  }, [activeListIndex, todoLists]);
 
   const handleEditTodo = (todoId: string, newText: string) => {
-    editTodo(todoId, newText, todos, listId, setTodos);
+    editTodo(todoId, newText, todos, todoLists[activeListIndex].id, setTodos);
   };
 
   const handleDeleteTodoList = async () => {
-    await deleteTodoList(listId);
-    removeTodoList(listId);
+    await deleteTodoList(todoLists[activeListIndex].id);
+    removeTodoList(todoLists[activeListIndex].id);
   };
 
   const toggleMinimize = () => {
@@ -63,10 +71,10 @@ const TodoList: React.FC<TodoListProps> = ({ listId, title: initialTitle, todos:
           setIsEditingTitle={setIsEditingTitle}
           toggleMinimize={toggleMinimize}
           handleTitleChange={(e) => handleTitleChange(e, setTitle)}
-          handleTitleBlur={() => handleTitleBlur(title, listId, setIsEditingTitle)}
-          clearTodos={() => clearTodos(listId, setTodos)}
+          handleTitleBlur={() => handleTitleBlur(title, todoLists[activeListIndex].id, setIsEditingTitle)}
+          clearTodos={() => clearTodos(todoLists[activeListIndex].id, setTodos)}
           deleteTodoList={handleDeleteTodoList}
-          addTodoList={addTodoList} // Pass this prop
+          addTodoList={addTodoList} // Keep this prop for future use
         />
         {!isMinimized && (
           <>
@@ -76,8 +84,8 @@ const TodoList: React.FC<TodoListProps> = ({ listId, title: initialTitle, todos:
                   key={todo.id}
                   todo={todo.text}
                   completed={todo.completed}
-                  onToggle={() => toggleTodo(todo.id, todos, listId, setTodos)}
-                  onDelete={() => deleteTodo(todo.id, todos, listId, setTodos)}
+                  onToggle={() => toggleTodo(todo.id, todos, todoLists[activeListIndex].id, setTodos)}
+                  onDelete={() => deleteTodo(todo.id, todos, todoLists[activeListIndex].id, setTodos)}
                   onEdit={(newText) => handleEditTodo(todo.id, newText)}
                   isEditingTitle={isEditingTitle}
                 />
@@ -88,7 +96,7 @@ const TodoList: React.FC<TodoListProps> = ({ listId, title: initialTitle, todos:
                 type="text"
                 value={newTodo}
                 onChange={(e) => setNewTodo(e.target.value)}
-                onKeyDown={(event) => handleKeyDown(event, newTodo, listId, setTodos, setNewTodo)}
+                onKeyDown={(event) => handleKeyDown(event, newTodo, todoLists[activeListIndex].id, setTodos, setNewTodo)}
                 placeholder="Add a new to-do"
                 disabled={isEditingTitle}
               />
