@@ -26,9 +26,10 @@ interface TodoListProps {
   title: string;
   todos: Todo[];
   removeTodoList: (listId: string) => void;
+  addTodoList: () => void; // Add this prop
 }
 
-const TodoList: React.FC<TodoListProps> = ({ listId, title: initialTitle, todos: initialTodos = [], removeTodoList }) => {
+const TodoList: React.FC<TodoListProps> = ({ listId, title: initialTitle, todos: initialTodos = [], removeTodoList, addTodoList }) => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodo, setNewTodo] = useState<string>('');
   const [title, setTitle] = useState<string>(initialTitle);
@@ -65,6 +66,7 @@ const TodoList: React.FC<TodoListProps> = ({ listId, title: initialTitle, todos:
           handleTitleBlur={() => handleTitleBlur(title, listId, setIsEditingTitle)}
           clearTodos={() => clearTodos(listId, setTodos)}
           deleteTodoList={handleDeleteTodoList}
+          addTodoList={addTodoList} // Pass this prop
         />
         {!isMinimized && (
           <>

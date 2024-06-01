@@ -71,6 +71,7 @@ const App: React.FC = () => {
                 title={list.title}
                 todos={list.todos}
                 removeTodoList={removeTodoList}
+                addTodoList={addTodoList} // Pass this prop
               />
             ))}
           </div>

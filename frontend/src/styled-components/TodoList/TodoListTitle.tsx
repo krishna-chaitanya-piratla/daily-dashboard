@@ -18,9 +18,8 @@ export const StyledHeader = styled.div`
 
   .edit-icon,
   .clear-all-icon,
-  .delete-list-icon,
-  .minimize-icon { 
-    display: none;
+  .delete-list-icon, .minimize-icon, .todo-list-dropdown-icon { 
+    visibility: hidden;
     cursor: pointer;
     font-size: 1.2em;
   }
@@ -28,13 +27,23 @@ export const StyledHeader = styled.div`
   &:hover .edit-icon,
   &:hover .clear-all-icon,
   &:hover .delete-list-icon,
-  &:hover .minimize-icon {
-    display: inline-block;
+  &:hover .minimize-icon,
+  &:hover .todo-list-dropdown-icon  {
+    visibility: visible;
+  }
+
+  .edit-icon {
+    margin-left: auto;
+    margin-right: 5px; /* Adjust spacing as needed */
   }
 
   .minimize-icon {
-    margin-left: auto; /* Adjust spacing as needed */
     margin-right: 5px; /* Adjust spacing as needed */
+    visibility: hidden; /* Always visible */
+
+    &:hover .minimize-icon {
+        visibility: visible;
+    }
   }
 
   .clear-all-icon {
@@ -67,5 +76,14 @@ export const StyledHeaderEditBox = styled.input`
 
   &::placeholder {
     color: gray;
+  }
+`;
+
+export const StyledDropDownIcon = styled.div`
+  cursor: pointer;
+  margin-right: 5px; /* Adjust spacing as needed */
+  color: white;
+  &:hover {
+    color: #ccc;
   }
 `;

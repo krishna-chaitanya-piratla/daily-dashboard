@@ -1,9 +1,12 @@
 import React, { useRef, useEffect } from 'react';
-import { StyledHeader, StyledHeaderEditBox } from '../../styled-components/TodoList/TodoListTitle';
+import { StyledHeader, StyledHeaderEditBox, StyledDropDownIcon } from '../../styled-components/TodoList/TodoListTitle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import BlockIcon from '@mui/icons-material/Block';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
 interface TodoListTitleProps {
   title: string;
@@ -15,6 +18,7 @@ interface TodoListTitleProps {
   handleTitleBlur: () => void;
   clearTodos: () => void;
   deleteTodoList?: () => void;
+  addTodoList: () => void; // Add this prop
 }
 
 const TodoListTitle: React.FC<TodoListTitleProps> = ({
@@ -26,7 +30,8 @@ const TodoListTitle: React.FC<TodoListTitleProps> = ({
   handleTitleChange,
   handleTitleBlur,
   clearTodos,
-  deleteTodoList
+  deleteTodoList,
+  addTodoList, // Add this prop
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -39,6 +44,9 @@ const TodoListTitle: React.FC<TodoListTitleProps> = ({
 
   return (
     <StyledHeader className="handle">
+      <span className="minimize-icon" onClick={toggleMinimize}>
+        {isMinimized ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
+      </span>
       {isEditingTitle ? (
         <StyledHeaderEditBox
           ref={inputRef}
@@ -51,12 +59,12 @@ const TodoListTitle: React.FC<TodoListTitleProps> = ({
       ) : (
         <>
           <h1 onDoubleClick={() => setIsEditingTitle(true)}>{title}</h1>
-          <span className="edit-icon" onClick={() => setIsEditingTitle(true)}>&#x270E;</span> {/* Pencil icon */}
         </>
       )}
-      <span className="minimize-icon" onClick={toggleMinimize}>
-        {isMinimized ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-      </span>
+      <StyledDropDownIcon>
+        <ArrowDropDownIcon className='todo-list-dropdown-icon'/>
+      </StyledDropDownIcon>
+      <span className="edit-icon" onClick={() => setIsEditingTitle(true)}>&#x270E;</span> {/* Pencil icon */}
       <span className="clear-all-icon" onClick={clearTodos}><DeleteIcon /></span> {/* Clear all icon */}
       <span className="delete-list-icon" onClick={deleteTodoList}><BlockIcon /></span> {/* New delete list icon */}
     </StyledHeader>
