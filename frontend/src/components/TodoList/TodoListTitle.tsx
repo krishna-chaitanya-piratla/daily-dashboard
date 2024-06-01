@@ -7,6 +7,7 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import AddIcon from '@mui/icons-material/Add';
 
 interface TodoListTitleProps {
   title: string;
@@ -88,6 +89,9 @@ const TodoListTitle: React.FC<TodoListTitleProps> = ({
             {list.title}
           </MenuItem>
         ))}
+        <MenuItem onClick={() => { /* Placeholder for add new to-do list functionality */ }}>
+          <AddIcon /> Add new To-do list
+        </MenuItem>
       </Menu>
       <span className="edit-icon" onClick={() => setIsEditingTitle(true)}>&#x270E;</span> {/* Pencil icon */}
       <span className="clear-all-icon" onClick={clearTodos}><DeleteIcon /></span> {/* Clear all icon */}
