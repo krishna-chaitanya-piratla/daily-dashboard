@@ -16,19 +16,24 @@ export const StyledTodoListContainer = styled.div`
 
   width: 30rem;
   max-height: 20rem;
-  overflow-y: auto;
+  overflow: hidden; /* Prevent overflow for the entire container */
   margin: 20px auto;
   text-align: center;
   border: 0.5px solid none;
   border-radius: 10px;
-  padding: 20px;
   background-color: var(--todolist-container-background-color);
   color: inherit;
   box-sizing: border-box;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   box-shadow: 0 4px 6px var(--todolist-container-box-shadow-color);
-  position: relative;
+  display: flex;
+  flex-direction: column; /* Ensure children are arranged vertically */
+
+  .todo-items {
+    overflow-y: auto;
+    flex-grow: 1; /* Take up remaining space */
+  }
 
   /* Scrollbar styles */
   ::-webkit-scrollbar {
@@ -52,7 +57,7 @@ export const StyledTodoListContainer = styled.div`
 
   /* For Firefox */
   scrollbar-width: thin;
-  scrollbar-color: var(--scrollbar-thumb-color) var (--todolist-container-background-color);
+  scrollbar-color: var(--scrollbar-thumb-color) var(--todolist-container-background-color);
   
   /* For IE and older versions of Edge */
   -ms-overflow-style: -ms-autohiding-scrollbar;

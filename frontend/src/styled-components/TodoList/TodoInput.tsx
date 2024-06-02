@@ -7,6 +7,7 @@ export const StyledTodoInput = styled.input`
   border: none;
   border-radius: 10px;
   padding: 0 1rem;
+  margin: 0.5rem;
   &:focus,
   &:focus-visible {
     outline: none;

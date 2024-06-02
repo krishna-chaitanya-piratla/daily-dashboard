@@ -75,12 +75,12 @@ const TodoList: React.FC<TodoListProps> = ({ todoLists, removeTodoList, addTodoL
           clearTodos={() => clearTodos(todoLists[activeListIndex].id, setTodos)}
           deleteTodoList={handleDeleteTodoList}
           addTodoList={addTodoList}
-          todoLists={todoLists} // Pass the todoLists array
-          setActiveListIndex={setActiveListIndex} // Pass the function to set the active list index
+          todoLists={todoLists}
+          setActiveListIndex={setActiveListIndex}
         />
         {!isMinimized && (
           <>
-            <div>
+            <div className="todo-items">
               {todos.map((todo, index) => (
                 <TodoItem
                   key={todo.id}
