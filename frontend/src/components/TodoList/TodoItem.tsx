@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { StyledTodoItem, StyledItemDeleteIcon, StyledTodoEditInput, StyledEditIconContainer, StyledToggleIconContainer } from '../../styled-components/TodoList/TodoItem';
+import { StyledTodoItem, StyledItemDeleteIcon, StyledTodoEditInput, StyledEditIconContainer, StyledToggleIconContainer, StyledReorderIconContainer } from '../../styled-components/TodoList/TodoItem';
 import EditIcon from '@mui/icons-material/Edit';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import ReorderIcon from '@mui/icons-material/Reorder';
 
 interface TodoItemProps {
   todo: string;
@@ -37,12 +38,17 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, completed, onToggle, onDelete
     setEditText(e.target.value);
   };
 
+  console.log('Rendering TodoItem:', { todo, completed, isEditing });
+
   return (
     <StyledTodoItem
       completed={completed}
       isEditing={isEditing}
       isEditingTitle={isEditingTitle}
     >
+      <StyledReorderIconContainer className="reorder-icon" completed={completed}>
+        <ReorderIcon />
+      </StyledReorderIconContainer>
       <StyledToggleIconContainer completed={completed} onClick={isEditing || isEditingTitle ? undefined : onToggle}>
         {completed ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
       </StyledToggleIconContainer>

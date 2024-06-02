@@ -15,10 +15,12 @@ export const StyledTodoItem = styled.div<{ completed: boolean; isEditing?: boole
   background-color: inherit;
   pointer-events: ${(props) => (props.isEditingTitle ? 'none' : 'auto')}; /* Disable interaction */
   padding-right: 60px;
+  margin-left: -1.35rem;
 
   &:hover .delete-item-icon,
-  &:hover .edit-icon {
-    display: inline-block;
+  &:hover .edit-icon,
+  &:hover .reorder-icon {
+    visibility: visible;
   }
 `;
 
@@ -38,7 +40,7 @@ export const StyledTodoEditInput = styled.input`
 `;
 
 export const StyledItemDeleteIcon = styled.span<{ completed: boolean }>`
-  display: none;
+  visibility: hidden;
   position: absolute;
   right: 10px;
   top: 50%;
@@ -53,7 +55,7 @@ export const StyledItemDeleteIcon = styled.span<{ completed: boolean }>`
 `;
 
 export const StyledEditIconContainer = styled.div<{ completed: boolean }>`
-  display: none;
+  visibility: hidden;
   position: absolute;
   right: 40px;
   top: 50%;
@@ -68,6 +70,19 @@ export const StyledEditIconContainer = styled.div<{ completed: boolean }>`
 `;
 
 export const StyledToggleIconContainer = styled.div<{ completed: boolean }>`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-right: 10px;
+  color: ${(props) => (props.completed ? 'var(--todo-text-color-secondary)' : 'var(--todo-text-color-primary)')};
+
+  &:hover {
+    color: ${(props) => (props.completed ? 'var(--todo-text-color-secondary)' : 'var(--todo-text-color-primary)')};
+  }
+`;
+
+export const StyledReorderIconContainer = styled.div<{ completed: boolean }>`
+  visibility: hidden;
   display: flex;
   align-items: center;
   cursor: pointer;
