@@ -1,8 +1,6 @@
 import React, { useState, MouseEvent } from 'react';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import { StyledMenu, StyledMenuItem, StyledDropDownIcon } from '../../styled-components/TodoList/TodoListDropdownMenu';
 import AddIcon from '@mui/icons-material/Add';
-import { StyledDropDownIcon } from '../../styled-components/TodoList/TodoListDropdownMenu';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 interface TodoListDropdownMenuProps {
@@ -32,16 +30,16 @@ const TodoListDropdownMenu: React.FC<TodoListDropdownMenuProps> = ({ todoLists, 
       <StyledDropDownIcon onClick={handleClick}>
         <ArrowDropDownIcon className="todo-list-dropdown-icon" />
       </StyledDropDownIcon>
-      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
+      <StyledMenu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
         {todoLists.map((list, index) => (
-          <MenuItem key={list.id} onClick={() => handleMenuItemClick(index)}>
+          <StyledMenuItem key={list.id} onClick={() => handleMenuItemClick(index)}>
             {list.title}
-          </MenuItem>
+          </StyledMenuItem>
         ))}
-        <MenuItem onClick={addTodoList}>
+        <StyledMenuItem onClick={addTodoList}>
           <AddIcon /> Add new To-do list
-        </MenuItem>
-      </Menu>
+        </StyledMenuItem>
+      </StyledMenu>
     </>
   );
 };
