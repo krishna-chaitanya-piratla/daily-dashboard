@@ -12,7 +12,8 @@ import {
   handleTitleChange,
   handleTitleBlur,
   editTodo,
-  deleteTodoList
+  deleteTodoList,
+  reorderTodos
 } from '../../utils/todoFunctions';
 import { DndContext, closestCenter, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
@@ -71,14 +72,18 @@ const TodoList: React.FC<TodoListProps> = ({ todoLists, removeTodoList, addTodoL
     })
   );
 
-  const handleDragEnd = (event: any) => {
+  const handleDragEnd = async (event: any) => {
     const { active, over } = event;
     if (active.id !== over.id) {
-      setTodos((items) => {
-        const oldIndex = items.findIndex((item) => item.id === active.id);
-        const newIndex = items.findIndex((item) => item.id === over.id);
-        return arrayMove(items, oldIndex, newIndex);
-      });
+      const updatedTodos = arrayMove(
+        todos,
+        todos.findIndex((todo) => todo.id === active.id),
+        todos.findIndex((todo) => todo.id === over.id)
+      );
+      setTodos(updatedTodos);
+
+      // Save the updated order to the backend
+      await reorderTodos(todoLists[activeListIndex].id, updatedTodos.map((todo) => todo.id));
     }
   };
 

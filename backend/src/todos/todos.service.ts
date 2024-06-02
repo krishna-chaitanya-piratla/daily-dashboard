@@ -125,4 +125,12 @@ export class TodosService {
     }
     return null;
   }
+
+  async reorderTodos(listId: string, todoIds: string[]): Promise<void> {
+    const list = this.todoLists.find(list => list.id === listId);
+    if (list) {
+      list.todos = todoIds.map(id => list.todos.find(todo => todo.id === id));
+      this.saveTodoLists();
+    }
+  }
 }

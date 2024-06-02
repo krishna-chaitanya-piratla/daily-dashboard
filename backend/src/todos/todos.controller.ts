@@ -23,6 +23,11 @@ export class TodosController {
     return clearedList;
   }
 
+  @Put(':listId/reorder')
+  async reorderTodos(@Param('listId') listId: string, @Body() body: { todoIds: string[] }): Promise<void> {
+    await this.todoService.reorderTodos(listId, body.todoIds);
+  }
+
   @Put(':listId/title')
   updateTodoListTitle(@Param('listId') listId: string, @Body('title') title: string): TodoList {
     const updatedList = this.todoService.updateTodoListTitle(listId, title);

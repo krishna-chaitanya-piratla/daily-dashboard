@@ -136,3 +136,11 @@ export const editTodo = async (
       console.error('There was an error deleting the todo list!', error);
     }
   };
+
+  export const reorderTodos = async (listId: string, todoIds: string[]) => {
+    try {
+      await axios.put(`${process.env.REACT_APP_BACKEND_URL}/todos/${listId}/reorder`, { todoIds });
+    } catch (error) {
+      console.error('There was an error reordering the todos!', error);
+    }
+  };
