@@ -58,7 +58,7 @@ const App: React.FC = () => {
       </Helmet>
       <GlobalStyles />
       <Background type="solid">
-        {/* <Sidebar addTodoList={addTodoList} isOpen={isSidebarOpen} onClose={closeSidebar} onOpen={openSidebar} /> */}
+        <Sidebar addTodoList={addTodoList} isOpen={isSidebarOpen} onClose={closeSidebar} onOpen={openSidebar} />
         <AppContainer>
           <Header>
             <LocationWeather />
