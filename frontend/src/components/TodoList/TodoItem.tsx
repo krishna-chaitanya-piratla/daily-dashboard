@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { StyledTodoItem, StyledItemDeleteIcon, StyledTodoEditInput, StyledEditIconContainer, StyledToggleIconContainer, StyledReorderIconContainer } from '../../styled-components/TodoList/TodoItem';
 import EditIcon from '@mui/icons-material/Edit';
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBox';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import ReorderIcon from '@mui/icons-material/Reorder';
 import { useSortable } from '@dnd-kit/sortable';
