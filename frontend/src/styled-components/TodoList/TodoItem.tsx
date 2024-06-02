@@ -4,7 +4,7 @@ export const StyledTodoItem = styled.div<{ completed: boolean; isEditing?: boole
   display: flex;
   align-items: center;
   padding: 10px 10px 10px 30px;
-  border-bottom: 0.5px dashed rgba(0, 0, 0, 0.3);
+  border-bottom: 0.5px dashed var(--todo-item-border-color);
   text-align: left;
   color: ${(props) => (props.completed ? 'var(--todo-text-color-secondary)' : 'var(--todo-text-color-primary)')};
   word-wrap: break-word;
@@ -30,12 +30,12 @@ export const StyledTodoEditInput = styled.input`
   border: none;
   padding: 10px 10px 10px 30px;
   box-sizing: border-box;
-  color: gray;
+  color: var(--todo-edit-input-color);
 
   &:focus,
   &:focus-visible {
     outline: none;
-    background-color: rgba(0, 0, 0, 0.2); /* Slightly darker background when focused */
+    background-color: var(--todo-edit-input-focus-bg);
   }
 `;
 

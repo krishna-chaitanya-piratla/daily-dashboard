@@ -11,12 +11,12 @@ export const SidebarContentsContainer = styled.div`
 
 export const StyledEditNoteIcon = styled(EditNoteIcon)`
   font-size: 10rem; /* Adjust size as needed */
-  color: white; /* Adjust color as needed */
+  color: var(--widget-text-color-primary); /* Adjust color as needed */
 `;
 
 export const Separator = styled.div`
   width: 100%;
   height: 1px;
-  background-color: gray; /* Adjust color as needed */
+  background-color: var(--separator-color); /* Adjust color as needed */
   margin: 10px 0; /* Adjust spacing as needed */
 `;

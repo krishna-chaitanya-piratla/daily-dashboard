@@ -10,7 +10,7 @@ export const StyledHeader = styled.div`
 
   h1 {
     margin: 0;
-    font-size: 24px;
+    font-size: var(--todo-title-font-size);
     display: inline-block;
     cursor: pointer;
     margin-right: 5px; 
@@ -21,7 +21,7 @@ export const StyledHeader = styled.div`
   .delete-list-icon, .minimize-icon, .todo-list-dropdown-icon { 
     visibility: hidden;
     cursor: pointer;
-    font-size: 1.2em;
+    font-size: var(--icon-font-size);
   }
 
   &:hover .edit-icon,
@@ -66,7 +66,7 @@ export const StyledHeaderEditBox = styled.input`
   &:focus, &:focus-visible {
     outline: none;
     box-shadow: 0 0 0 0.5px #999;
-    color: gray;
+    color: var(--input-focus-text-color);
   }
 
   &:hover {
@@ -75,15 +75,15 @@ export const StyledHeaderEditBox = styled.input`
   }
 
   &::placeholder {
-    color: gray;
+    color: var(--input-placeholder-color);
   }
 `;
 
 export const StyledDropDownIcon = styled.div`
   cursor: pointer;
   margin-right: 5px; /* Adjust spacing as needed */
-  color: white;
+  color: var(--dropdown-icon-color);
   &:hover {
-    color: #ccc;
+    color: var(--dropdown-icon-hover-color);
   }
 `;

@@ -8,6 +8,23 @@ export const GlobalStyles = createGlobalStyle`
     --widget-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.25);
     --todo-text-color-primary: #ccc;
     --todo-text-color-secondary: gray;
+    --todo-title-font-size: 24px;
+    --icon-font-size: 1.2em;
+    --input-focus-text-color: gray;
+    --input-placeholder-color: gray;
+    --dropdown-icon-color: white;
+    --dropdown-icon-hover-color: #ccc;
+    --dropdown-menu-bg-color: rgba(0, 0, 0, 1);
+    --dropdown-menu-shadow-color: rgba(0, 0, 0, 1);
+    --dropdown-menu-text-color: inherit;
+    --dropdown-menu-item-hover-bg-color: rgba(255, 255, 255, 0.2);
+    --dropdown-menu-item-selected-bg-color: rgba(255, 255, 255, 0.3);
+    --dropdown-menu-item-selected-hover-bg-color: rgba(255, 255, 255, 0.4);
+    --todo-item-border-color: rgba(0, 0, 0, 0.3);
+    --todo-edit-input-color: gray;
+    --todo-edit-input-focus-bg: rgba(0, 0, 0, 0.2);
+    --input-focus-box-shadow-color: #999;
+    --input-hover-box-shadow-color: #999;
   }
   body {
     background-color: black;

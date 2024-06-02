@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const StyledLocationWeather = styled.div`
-  font-family: Lato;
+  font-family: var(--font-family-primary);
   font-size: 14px;
   text-align: right;
   border: 1px solid none;

@@ -11,15 +11,15 @@ export const StyledTodoInput = styled.input`
   &:focus,
   &:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 0.5px #999;
-    color: var(--widget-text-color-secondary);
+    box-shadow: 0 0 0 0.5px var(--input-focus-box-shadow-color);
+    color: var(--input-focus-text-color);
   }
   &:hover {
     outline: none;
-    box-shadow: 0 0 0 0.5px #999;
+    box-shadow: 0 0 0 0.5px var(--input-hover-box-shadow-color);
   }
   &::placeholder {
-    color: gray;
+    color: var(--input-placeholder-color);
   }
   &:disabled {
     cursor: not-allowed;

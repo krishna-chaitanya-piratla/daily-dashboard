@@ -20,19 +20,19 @@ export const StyledWelcomeMessageWrapper = styled.div`
 `;
 
 export const StyledWelcomeMessage = styled.div`
-    font-size: 4rem;
-    color: var(--widget-text-color-primary);
-    text-align: center;
-    margin-top: -2rem;
-    max-width: 100%;
+  font-size: 4rem;
+  color: var(--widget-text-color-primary);
+  text-align: center;
+  margin-top: -2rem;
+  max-width: 100%;
 `;
 
 export const StyledEditMessageIcon = styled.div`
-    display: none; /* Hide by default */
-    position: absolute; /* Position it absolutely */
-    right: 0; /* Adjust the position so it doesn't affect the time component */
-    font-size: 3rem;
-    color: white;
-    cursor: pointer;
-    margin-top: -2rem;
+  display: none; /* Hide by default */
+  position: absolute; /* Position it absolutely */
+  right: 0; /* Adjust the position so it doesn't affect the time component */
+  font-size: 3rem;
+  color: var(--widget-text-color-primary);
+  cursor: pointer;
+  margin-top: -2rem;
 `;

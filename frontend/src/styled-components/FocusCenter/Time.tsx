@@ -29,6 +29,6 @@ export const StyledMoreIcon = styled.div`
   position: absolute; /* Position it absolutely */
   right: 0; /* Adjust the position so it doesn't affect the time component */
   font-size: 3rem;
-  color: white;
+  color: var(--widget-text-color-primary);
   cursor: pointer;
 `;

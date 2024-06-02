@@ -19,7 +19,7 @@ export const StyledSidebarContainer = styled.div<{ isOpen: boolean }>`
 
 export const StyledSidebar = styled.div<{ isOpen: boolean }>`
   background-color: inherit;
-  border: 0.5px solid gray;
+  border: 0.5px solid var(--border-color);
   border-left: none;
   width: 10%;
   height: 100%;
@@ -37,14 +37,14 @@ export const StyledHamburgerIcon = styled.div`
   left: 10px;
   font-size: 24px;
   cursor: pointer;
-  color: white;
+  color: var(--widget-text-color-primary);
   z-index: 1002; /* Ensure the hamburger icon is always on top */
 `;
 
 export const StyledCloseIcon = styled.div`
   font-size: 24px;
   cursor: pointer;
-  color: white;
+  color: var(--widget-text-color-primary);
   position: absolute;
   top: 10px;
   right: 10px;

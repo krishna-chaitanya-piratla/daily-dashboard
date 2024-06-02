@@ -5,28 +5,28 @@ import MenuItem from '@mui/material/MenuItem';
 export const StyledDropDownIcon = styled.div`
   cursor: pointer;
   margin-right: 5px;
-  color: white;
+  color: var(--dropdown-icon-color);
   &:hover {
-    color: #ccc;
+    color: var(--dropdown-icon-hover-color);
   }
 `;
 
 export const StyledMenu = styled(Menu)`
   .MuiPaper-root {
-    background-color: rgba(0, 0, 0, 1);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 1);
-    color: inherit; // Change text color
+    background-color: var(--dropdown-menu-bg-color);
+    box-shadow: 0 4px 6px var(--dropdown-menu-shadow-color);
+    color: var(--dropdown-menu-text-color);
   }
 `;
 
 export const StyledMenuItem = styled(MenuItem)`
   &:hover {
-    background-color: rgba(255, 255, 255, 0.2); // Change hover background color
+    background-color: var(--dropdown-menu-item-hover-bg-color);
   }
   &.Mui-selected {
-    background-color: rgba(255, 255, 255, 0.3); // Change selected background color
+    background-color: var(--dropdown-menu-item-selected-bg-color);
   }
   &.Mui-selected:hover {
-    background-color: rgba(255, 255, 255, 0.4); // Change selected hover background color
+    background-color: var(--dropdown-menu-item-selected-hover-bg-color);
   }
 `;
