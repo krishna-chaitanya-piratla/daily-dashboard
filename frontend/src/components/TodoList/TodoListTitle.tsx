@@ -1,13 +1,10 @@
-import React, { useRef, useEffect, useState, MouseEvent } from 'react';
-import { StyledHeader, StyledHeaderEditBox, StyledDropDownIcon } from '../../styled-components/TodoList/TodoListTitle';
+import React, { useRef, useEffect } from 'react';
+import { StyledHeader, StyledHeaderEditBox } from '../../styled-components/TodoList/TodoListTitle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import BlockIcon from '@mui/icons-material/Block';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import AddIcon from '@mui/icons-material/Add';
+import TodoListDropdownMenu from './TodoListDropdownMenu';
 
 interface TodoListTitleProps {
   title: string;
@@ -20,8 +17,8 @@ interface TodoListTitleProps {
   clearTodos: () => void;
   deleteTodoList?: () => void;
   addTodoList: () => void;
-  todoLists: { id: string, title: string }[]; // Add this prop to receive the list of todo lists
-  setActiveListIndex: (index: number) => void; // Add this prop to set the active list
+  todoLists: { id: string, title: string }[];
+  setActiveListIndex: (index: number) => void;
 }
 
 const TodoListTitle: React.FC<TodoListTitleProps> = ({
@@ -39,27 +36,13 @@ const TodoListTitle: React.FC<TodoListTitleProps> = ({
   setActiveListIndex
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   useEffect(() => {
     if (isEditingTitle && inputRef.current) {
       inputRef.current.focus();
-      inputRef.current.select(); // Automatically select the text for convenience
+      inputRef.current.select();
     }
   }, [isEditingTitle]);
-
-  const handleClick = (event: MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleMenuItemClick = (index: number) => {
-    setActiveListIndex(index);
-    handleClose();
-  };
 
   return (
     <StyledHeader className="handle">
@@ -80,22 +63,14 @@ const TodoListTitle: React.FC<TodoListTitleProps> = ({
           <h1 onDoubleClick={() => setIsEditingTitle(true)}>{title}</h1>
         </>
       )}
-      <StyledDropDownIcon onClick={handleClick}>
-        <ArrowDropDownIcon className="todo-list-dropdown-icon" />
-      </StyledDropDownIcon>
-      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
-        {todoLists.map((list, index) => (
-          <MenuItem key={list.id} onClick={() => handleMenuItemClick(index)}>
-            {list.title}
-          </MenuItem>
-        ))}
-        <MenuItem onClick={() => { /* Placeholder for add new to-do list functionality */ }}>
-          <AddIcon /> Add new To-do list
-        </MenuItem>
-      </Menu>
-      <span className="edit-icon" onClick={() => setIsEditingTitle(true)}>&#x270E;</span> {/* Pencil icon */}
-      <span className="clear-all-icon" onClick={clearTodos}><DeleteIcon /></span> {/* Clear all icon */}
-      <span className="delete-list-icon" onClick={deleteTodoList}><BlockIcon /></span> {/* New delete list icon */}
+      <TodoListDropdownMenu
+        todoLists={todoLists}
+        setActiveListIndex={setActiveListIndex}
+        addTodoList={addTodoList}
+      />
+      <span className="edit-icon" onClick={() => setIsEditingTitle(true)}>&#x270E;</span>
+      <span className="clear-all-icon" onClick={clearTodos}><DeleteIcon /></span>
+      <span className="delete-list-icon" onClick={deleteTodoList}><BlockIcon /></span>
     </StyledHeader>
   );
 };
