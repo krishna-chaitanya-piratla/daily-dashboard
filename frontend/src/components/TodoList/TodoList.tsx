@@ -14,6 +14,8 @@ import {
   editTodo,
   deleteTodoList
 } from '../../utils/todoFunctions';
+import { DndContext, closestCenter, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
 export interface Todo {
   id: string;
@@ -61,6 +63,25 @@ const TodoList: React.FC<TodoListProps> = ({ todoLists, removeTodoList, addTodoL
     setIsMinimized(!isMinimized);
   };
 
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 10,
+      },
+    })
+  );
+
+  const handleDragEnd = (event: any) => {
+    const { active, over } = event;
+    if (active.id !== over.id) {
+      setTodos((items) => {
+        const oldIndex = items.findIndex((item) => item.id === active.id);
+        const newIndex = items.findIndex((item) => item.id === over.id);
+        return arrayMove(items, oldIndex, newIndex);
+      });
+    }
+  };
+
   return (
     <StyledTodoListWrapper>
       <StyledTodoListContainer>
@@ -80,19 +101,24 @@ const TodoList: React.FC<TodoListProps> = ({ todoLists, removeTodoList, addTodoL
         />
         {!isMinimized && (
           <>
-            <div className="todo-items">
-              {todos.map((todo, index) => (
-                <TodoItem
-                  key={todo.id}
-                  todo={todo.text}
-                  completed={todo.completed}
-                  onToggle={() => toggleTodo(todo.id, todos, todoLists[activeListIndex].id, setTodos)}
-                  onDelete={() => deleteTodo(todo.id, todos, todoLists[activeListIndex].id, setTodos)}
-                  onEdit={(newText) => handleEditTodo(todo.id, newText)}
-                  isEditingTitle={isEditingTitle}
-                />
-              ))}
-            </div>
+            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+              <SortableContext items={todos} strategy={verticalListSortingStrategy}>
+                <div className="todo-items">
+                  {todos.map((todo, index) => (
+                    <TodoItem
+                      key={todo.id}
+                      id={todo.id}
+                      todo={todo.text}
+                      completed={todo.completed}
+                      onToggle={() => toggleTodo(todo.id, todos, todoLists[activeListIndex].id, setTodos)}
+                      onDelete={() => deleteTodo(todo.id, todos, todoLists[activeListIndex].id, setTodos)}
+                      onEdit={(newText) => handleEditTodo(todo.id, newText)}
+                      isEditingTitle={isEditingTitle}
+                    />
+                  ))}
+                </div>
+              </SortableContext>
+            </DndContext>
             <StyledTodoInputContainer isEditingTitle={isEditingTitle}>
               <TodoInput
                 type="text"

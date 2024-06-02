@@ -1,11 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { StyledTodoItem, StyledItemDeleteIcon, StyledTodoEditInput, StyledEditIconContainer, StyledToggleIconContainer, StyledReorderIconContainer } from '../../styled-components/TodoList/TodoItem';
 import EditIcon from '@mui/icons-material/Edit';
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBox';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import ReorderIcon from '@mui/icons-material/Reorder';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 interface TodoItemProps {
+  id: string;
   todo: string;
   completed: boolean;
   onToggle: () => void;
@@ -14,10 +17,17 @@ interface TodoItemProps {
   isEditingTitle: boolean;
 }
 
-const TodoItem: React.FC<TodoItemProps> = ({ todo, completed, onToggle, onDelete, onEdit, isEditingTitle }) => {
+const TodoItem: React.FC<TodoItemProps> = ({ id, todo, completed, onToggle, onDelete, onEdit, isEditingTitle }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(todo);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
 
   useEffect(() => {
     if (isEditing && inputRef.current) {
@@ -42,6 +52,10 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, completed, onToggle, onDelete
 
   return (
     <StyledTodoItem
+      ref={setNodeRef}
+      {...attributes}
+      {...listeners}
+      style={style}
       completed={completed}
       isEditing={isEditing}
       isEditingTitle={isEditingTitle}
