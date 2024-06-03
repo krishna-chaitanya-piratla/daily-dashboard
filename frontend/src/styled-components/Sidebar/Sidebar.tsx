@@ -21,7 +21,7 @@ export const StyledSidebar = styled.div<{ isOpen: boolean }>`
   background-color: inherit;
   border: 0.5px solid var(--border-color);
   border-left: none;
-  width: 10%;
+  width: 25%;
   height: 100%;
   padding: 20px;
   box-sizing: border-box;

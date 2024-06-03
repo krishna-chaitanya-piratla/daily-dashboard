@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import EditNoteIcon from '@mui/icons-material/EditNote';
+import EditIcon from '@mui/icons-material/Edit';
 
 export const SidebarContentsContainer = styled.div`
   display: flex;
@@ -7,11 +7,9 @@ export const SidebarContentsContainer = styled.div`
   align-items: flex-start;
   padding: 20px;
   gap: 10px;
-`;
-
-export const StyledEditNoteIcon = styled(EditNoteIcon)`
-  font-size: 10rem; /* Adjust size as needed */
-  color: var(--widget-text-color-primary); /* Adjust color as needed */
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 `;
 
 export const Separator = styled.div`

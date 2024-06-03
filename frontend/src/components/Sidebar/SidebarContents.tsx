@@ -1,10 +1,13 @@
 import React from 'react';
-import { SidebarContentsContainer } from '../../styled-components/Sidebar/SidebarContents';
+import { Separator, SidebarContentsContainer } from '../../styled-components/Sidebar/SidebarContents';
+import UserName from './UserName';
 
 const SidebarContents: React.FC = () => {
   return (
     <SidebarContentsContainer>
-      {/* add new menu items here */}
+      <UserName />
+      <Separator />
+      {/* You can add more menu items here */}
     </SidebarContentsContainer>
   );
 };

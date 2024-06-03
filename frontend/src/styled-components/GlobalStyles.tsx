@@ -12,6 +12,7 @@ export const GlobalStyles = createGlobalStyle`
     --icon-font-size: 1.2em;
     --input-focus-text-color: gray;
     --input-placeholder-color: gray;
+    --separator-color: gray;
     --dropdown-icon-color: white;
     --dropdown-icon-hover-color: #ccc;
     --dropdown-menu-bg-color: rgba(0, 0, 0, 1);
