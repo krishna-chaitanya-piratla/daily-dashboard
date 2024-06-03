@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { SketchPicker } from 'react-color';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import axios from 'axios';
 import { BackgroundSettingsContainer, RadioButtonContainer, ColorBoxContainer, ColorBox, StyledUnsplashInput, SaveButton, RefreshButton, CustomColorBox, RowContainer, RowLabel, StyledSaveColorButton, AddIconWrapper, ColorSelectionDiv } from '../../styled-components/Sidebar/BackgroundSettings';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
@@ -10,13 +11,15 @@ interface BackgroundSettingsProps {
   setRefreshTrigger: React.Dispatch<React.SetStateAction<number>>;
   backgroundType: 'custom' | 'solid';
   backgroundValue: string;
+  customBackgroundColors: string[];
+  setCustomBackgroundColors: (colors: string[]) => void;
 }
 
 const presetColors = {
-    color2: '#2F2C5C',
-    color1: '#7C0902',
-    color3: '#3E4125',
-    color4: '#121010',
+  color2: '#2F2C5C',
+  color1: '#7C0902',
+  color3: '#3E4125',
+  color4: '#121010',
 };
 
 const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
@@ -24,7 +27,9 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
   setBackgroundValue,
   setRefreshTrigger,
   backgroundType,
-  backgroundValue
+  backgroundValue,
+  customBackgroundColors,
+  setCustomBackgroundColors
 }) => {
   const [selectedBackground, setSelectedBackground] = useState<string>(backgroundType);
   const [solidValue, setSolidValue] = useState<string>(backgroundType === 'solid' ? backgroundValue : '#000000');
@@ -32,7 +37,6 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
   const [isUnsplashValueChanged, setIsUnsplashValueChanged] = useState<boolean>(false);
   const [isColorPickerOpen, setIsColorPickerOpen] = useState<boolean>(false);
   const [customColor, setCustomColor] = useState<string>('');
-  const [customColors, setCustomColors] = useState<string[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const colorPickerRef = useRef<HTMLDivElement>(null);
 
@@ -57,7 +61,18 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
     setSolidValue(color);
     setBackgroundType('solid');
     setBackgroundValue(color);
-    console.log('Background value set to:', color);
+
+    // Call backend to save the background preference
+    axios.put(`${process.env.REACT_APP_BACKEND_URL}/userprofile/background`, {
+      type: 'solid',
+      value: color
+    })
+    .then(response => {
+      console.log('Background preference updated:', response.data);
+    })
+    .catch(error => {
+      console.error('Error updating background preference:', error);
+    });
   };
 
   const handleUnsplashInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,7 +87,18 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
       setBackgroundType('custom');
       setBackgroundValue(unsplashValue);
       setIsUnsplashValueChanged(false);
-      console.log('Background value set to:', unsplashValue);
+
+      // Call backend to save the background preference
+      axios.put(`${process.env.REACT_APP_BACKEND_URL}/userprofile/background`, {
+        type: 'custom',
+        value: unsplashValue
+      })
+      .then(response => {
+        console.log('Background preference updated:', response.data);
+      })
+      .catch(error => {
+        console.error('Error updating background preference:', error);
+      });
     } else if (event.key === 'Escape') {
       console.log('handleUnsplashInputKeyDown - Escape pressed');
       setUnsplashValue(backgroundValue);
@@ -85,7 +111,18 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
     setBackgroundType('custom');
     setBackgroundValue(unsplashValue);
     setIsUnsplashValueChanged(false);
-    console.log('Background value set to:', unsplashValue);
+
+    // Call backend to save the background preference
+    axios.put(`${process.env.REACT_APP_BACKEND_URL}/userprofile/background`, {
+      type: 'custom',
+      value: unsplashValue
+    })
+    .then(response => {
+      console.log('Background preference updated:', response.data);
+    })
+    .catch(error => {
+      console.error('Error updating background preference:', error);
+    });
   };
 
   const handleRefreshButtonClick = () => {
@@ -129,9 +166,20 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
   };
 
   const handleSaveCustomColor = () => {
-    setCustomColors((prevColors) => [...prevColors, customColor]);
+    const updatedCustomColors = [...customBackgroundColors, customColor];
+    setCustomBackgroundColors(updatedCustomColors);
     setIsColorPickerOpen(false);
-    console.log('Custom colors:', customColors);
+
+    // Call backend to save the custom background colors
+    axios.put(`${process.env.REACT_APP_BACKEND_URL}/userprofile/custombackgroundcolors`, {
+      customBackgroundColors: updatedCustomColors
+    })
+    .then(response => {
+      console.log('Custom background colors updated:', response.data);
+    })
+    .catch(error => {
+      console.error('Error updating custom background colors:', error);
+    });
   };
 
   const isCustomColorSelected = backgroundType === 'solid' && !Object.values(presetColors).includes(backgroundValue);
@@ -179,7 +227,7 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
           <RowContainer>
             <RowLabel>Custom</RowLabel>
             <ColorBoxContainer>
-              {customColors.map((color, index) => (
+              {customBackgroundColors.map((color, index) => (
                 <ColorBox 
                   key={index}
                   color={color}

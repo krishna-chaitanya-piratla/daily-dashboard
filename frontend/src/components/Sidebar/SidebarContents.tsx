@@ -12,6 +12,8 @@ interface SidebarContentsProps {
   backgroundType: 'custom' | 'solid';
   backgroundValue: string;
   setRefreshTrigger: React.Dispatch<React.SetStateAction<number>>;
+  customBackgroundColors: string[];
+  setCustomBackgroundColors: (colors: string[]) => void;
 }
 
 const SidebarContents: React.FC<SidebarContentsProps> = ({
@@ -23,6 +25,8 @@ const SidebarContents: React.FC<SidebarContentsProps> = ({
   backgroundType,
   backgroundValue,
   setRefreshTrigger,
+  customBackgroundColors,
+  setCustomBackgroundColors
 }) => {
   return (
     <SidebarContentsContainer>
@@ -33,6 +37,8 @@ const SidebarContents: React.FC<SidebarContentsProps> = ({
         backgroundType={backgroundType}
         backgroundValue={backgroundValue}
         setRefreshTrigger={setRefreshTrigger}
+        customBackgroundColors={customBackgroundColors}
+        setCustomBackgroundColors={setCustomBackgroundColors}
       />
       {/* Add more sidebar items here */}
     </SidebarContentsContainer>

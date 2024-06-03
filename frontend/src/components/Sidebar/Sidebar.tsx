@@ -16,6 +16,8 @@ interface SidebarProps {
   backgroundType: 'custom' | 'solid';
   backgroundValue: string;
   setRefreshTrigger: React.Dispatch<React.SetStateAction<number>>;
+  customBackgroundColors: string[];
+  setCustomBackgroundColors: (colors: string[]) => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -30,6 +32,8 @@ const Sidebar: React.FC<SidebarProps> = ({
   backgroundType,
   backgroundValue,
   setRefreshTrigger,
+  customBackgroundColors,
+  setCustomBackgroundColors
 }) => {
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (e.target === e.currentTarget) {
@@ -56,6 +60,8 @@ const Sidebar: React.FC<SidebarProps> = ({
             backgroundType={backgroundType}
             backgroundValue={backgroundValue}
             setRefreshTrigger={setRefreshTrigger}
+            customBackgroundColors={customBackgroundColors}
+            setCustomBackgroundColors={setCustomBackgroundColors}
           />
         </StyledSidebar>
       </StyledSidebarContainer>
