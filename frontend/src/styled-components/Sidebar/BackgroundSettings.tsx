@@ -33,7 +33,7 @@ export const ColorBox = styled.div<{ color: string }>`
 export const StyledUnsplashInput = styled.input`
   font-size: 1.15rem;
   font-family: SriRacha;
-  max-width: 35%;
+  max-width: 45%;
   height: 2.5rem;
   background: none;
   border: none;

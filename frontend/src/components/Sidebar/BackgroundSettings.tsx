@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { BackgroundSettingsContainer, RadioButtonContainer, ColorBoxContainer, ColorBox, StyledUnsplashInput, SaveButton } from '../../styled-components/Sidebar/BackgroundSettings';
 
 interface BackgroundSettingsProps {
@@ -18,6 +18,7 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
   const [solidValue, setSolidValue] = useState<string>(backgroundType === 'solid' ? backgroundValue : '#000000');
   const [unsplashValue, setUnsplashValue] = useState<string>(backgroundType === 'custom' ? backgroundValue : '');
   const [isUnsplashValueChanged, setIsUnsplashValueChanged] = useState<boolean>(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setSelectedBackground(backgroundType);
@@ -58,6 +59,9 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
       setBackgroundValue(unsplashValue);
       setIsUnsplashValueChanged(false);
       console.log('Background value set to:', unsplashValue);
+    } else if (event.key === 'Escape') {
+      setUnsplashValue(backgroundValue);
+      setIsUnsplashValueChanged(false);
     }
   };
 
@@ -67,6 +71,20 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
     setIsUnsplashValueChanged(false);
     console.log('Background value set to:', unsplashValue);
   };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (inputRef.current && !inputRef.current.contains(event.target as Node)) {
+      setUnsplashValue(backgroundValue);
+      setIsUnsplashValueChanged(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
     <BackgroundSettingsContainer>
@@ -103,14 +121,15 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
       ) : (
         <div style={{ display: 'flex', alignItems: 'center' }}>
             <p style={{fontFamily: 'SriRacha', fontSize:'15px'}}>Search for: </p>
-          <StyledUnsplashInput 
-            type="text" 
-            placeholder="Enter search query" 
-            value={unsplashValue} 
-            onChange={handleUnsplashInputChange} 
-            onKeyDown={handleUnsplashInputKeyDown}
-          />
-          {isUnsplashValueChanged && <SaveButton onClick={handleSaveButtonClick} />}
+            <StyledUnsplashInput 
+                ref={inputRef}
+                type="text" 
+                placeholder="Enter search query" 
+                value={unsplashValue} 
+                onChange={handleUnsplashInputChange} 
+                onKeyDown={handleUnsplashInputKeyDown}
+            />
+            {isUnsplashValueChanged && <SaveButton onClick={handleSaveButtonClick} />}
         </div>
       )}
     </BackgroundSettingsContainer>
