@@ -52,8 +52,13 @@ export const RowContainer = styled.div`
 `;
 
 export const RowLabel = styled.div`
-  font-weight: bold;
-  margin-right: 1rem;
+    font-family: SriRacha, cursive;
+    font-weight: bold;
+    margin-right: 1rem;
+`;
+
+export const ColorSelectionDiv = styled.div`
+    margin-top: 1rem;
 `;
 
 export const StyledUnsplashInput = styled.input`

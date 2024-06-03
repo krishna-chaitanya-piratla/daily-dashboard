@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { SketchPicker } from 'react-color';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import { BackgroundSettingsContainer, RadioButtonContainer, ColorBoxContainer, ColorBox, StyledUnsplashInput, SaveButton, RefreshButton, CustomColorBox, RowContainer, RowLabel, StyledSaveColorButton, AddIconWrapper } from '../../styled-components/Sidebar/BackgroundSettings';
+import { BackgroundSettingsContainer, RadioButtonContainer, ColorBoxContainer, ColorBox, StyledUnsplashInput, SaveButton, RefreshButton, CustomColorBox, RowContainer, RowLabel, StyledSaveColorButton, AddIconWrapper, ColorSelectionDiv } from '../../styled-components/Sidebar/BackgroundSettings';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
 interface BackgroundSettingsProps {
@@ -162,7 +162,7 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
         </label>
       </RadioButtonContainer>
       {selectedBackground === 'solid' ? (
-        <>
+        <ColorSelectionDiv>
           <RowContainer>
             <RowLabel>Presets</RowLabel>
             <ColorBoxContainer>
@@ -192,7 +192,7 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
               </AddIconWrapper>
             </ColorBoxContainer>
           </RowContainer>
-        </>
+        </ColorSelectionDiv>
       ) : (
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <StyledUnsplashInput 
