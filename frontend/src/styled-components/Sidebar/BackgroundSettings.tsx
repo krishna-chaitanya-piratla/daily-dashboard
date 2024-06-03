@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import SaveIcon from '@mui/icons-material/Save';
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 export const BackgroundSettingsContainer = styled.div`
   width: 100%;
@@ -33,7 +34,7 @@ export const ColorBox = styled.div<{ color: string }>`
 export const StyledUnsplashInput = styled.input`
   font-size: 1.15rem;
   font-family: SriRacha;
-  max-width: 45%;
+  width: 50%;
   height: 2.5rem;
   background: none;
   border: none;
@@ -59,6 +60,16 @@ export const StyledUnsplashInput = styled.input`
 `;
 
 export const SaveButton = styled(SaveIcon)`
+  font-size: 2rem;
+  color: var(--widget-text-color-primary);
+  cursor: pointer;
+  margin-left: 0.5rem;
+  &:hover {
+    color: var(--widget-text-color-secondary);
+  }
+`;
+
+export const RefreshButton = styled(RefreshIcon)`
   font-size: 2rem;
   color: var(--widget-text-color-primary);
   cursor: pointer;

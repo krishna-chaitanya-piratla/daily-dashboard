@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { BackgroundSettingsContainer, RadioButtonContainer, ColorBoxContainer, ColorBox, StyledUnsplashInput, SaveButton } from '../../styled-components/Sidebar/BackgroundSettings';
+import { BackgroundSettingsContainer, RadioButtonContainer, ColorBoxContainer, ColorBox, StyledUnsplashInput, SaveButton, RefreshButton } from '../../styled-components/Sidebar/BackgroundSettings';
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 interface BackgroundSettingsProps {
   setBackgroundType: (type: 'custom' | 'solid') => void;
   setBackgroundValue: (value: string) => void;
+  setRefreshTrigger: React.Dispatch<React.SetStateAction<number>>;
   backgroundType: 'custom' | 'solid';
   backgroundValue: string;
 }
@@ -11,6 +13,7 @@ interface BackgroundSettingsProps {
 const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
   setBackgroundType,
   setBackgroundValue,
+  setRefreshTrigger,
   backgroundType,
   backgroundValue
 }) => {
@@ -21,6 +24,7 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    console.log('useEffect - backgroundType or backgroundValue changed');
     setSelectedBackground(backgroundType);
     if (backgroundType === 'solid') {
       setSolidValue(backgroundValue);
@@ -38,10 +42,12 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
+    console.log('handleRadioChange', value);
     setSelectedBackground(value);
   };
 
   const handleSolidColorBoxClick = (color: string) => {
+    console.log('handleSolidColorBoxClick', color);
     setSolidValue(color);
     setBackgroundType('solid');
     setBackgroundValue(color);
@@ -49,39 +55,56 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
   };
 
   const handleUnsplashInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('handleUnsplashInputChange', event.target.value);
     setUnsplashValue(event.target.value);
     setIsUnsplashValueChanged(event.target.value !== backgroundValue);
   };
 
   const handleUnsplashInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
+      console.log('handleUnsplashInputKeyDown - Enter pressed');
       setBackgroundType('custom');
       setBackgroundValue(unsplashValue);
       setIsUnsplashValueChanged(false);
       console.log('Background value set to:', unsplashValue);
     } else if (event.key === 'Escape') {
+      console.log('handleUnsplashInputKeyDown - Escape pressed');
       setUnsplashValue(backgroundValue);
       setIsUnsplashValueChanged(false);
     }
   };
 
   const handleSaveButtonClick = () => {
+    console.log('handleSaveButtonClick');
     setBackgroundType('custom');
     setBackgroundValue(unsplashValue);
     setIsUnsplashValueChanged(false);
     console.log('Background value set to:', unsplashValue);
   };
 
+  const handleRefreshButtonClick = () => {
+    console.log('handleRefreshButtonClick');
+    setRefreshTrigger((prev: number) => {
+      const newValue = prev + 1;
+      console.log('setRefreshTrigger', newValue);
+      return newValue;
+    });
+    console.log('Background refreshed with value:', unsplashValue);
+  };
+
   const handleClickOutside = (event: MouseEvent) => {
     if (inputRef.current && !inputRef.current.contains(event.target as Node)) {
+      console.log('handleClickOutside');
       setUnsplashValue(backgroundValue);
       setIsUnsplashValueChanged(false);
     }
   };
 
   useEffect(() => {
+    console.log('useEffect - add event listener for mousedown');
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
+      console.log('useEffect - remove event listener for mousedown');
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
@@ -120,16 +143,19 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
         </ColorBoxContainer>
       ) : (
         <div style={{ display: 'flex', alignItems: 'center' }}>
-            <p style={{fontFamily: 'SriRacha', fontSize:'15px'}}>Search for: </p>
-            <StyledUnsplashInput 
-                ref={inputRef}
-                type="text" 
-                placeholder="Enter search query" 
-                value={unsplashValue} 
-                onChange={handleUnsplashInputChange} 
-                onKeyDown={handleUnsplashInputKeyDown}
-            />
-            {isUnsplashValueChanged && <SaveButton onClick={handleSaveButtonClick} />}
+          <StyledUnsplashInput 
+            ref={inputRef}
+            type="text" 
+            placeholder="Enter search query" 
+            value={unsplashValue} 
+            onChange={handleUnsplashInputChange} 
+            onKeyDown={handleUnsplashInputKeyDown}
+          />
+          {isUnsplashValueChanged ? (
+            <SaveButton onClick={handleSaveButtonClick} />
+          ) : unsplashValue && (
+            <RefreshButton as={RefreshIcon} onClick={handleRefreshButtonClick} />
+          )}
         </div>
       )}
     </BackgroundSettingsContainer>

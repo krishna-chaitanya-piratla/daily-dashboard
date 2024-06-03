@@ -15,6 +15,7 @@ const App: React.FC = () => {
   const [username, setUsername] = useState<string>('Stranger');
   const [backgroundType, setBackgroundType] = useState<'custom' | 'solid'>('solid');
   const [backgroundValue, setBackgroundValue] = useState<string>('#2f2c5c');
+  const [refreshTrigger, setRefreshTrigger] = useState<number>(0);
 
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_BACKEND_URL}/todos`)
@@ -43,6 +44,10 @@ const App: React.FC = () => {
   const closeSidebar = () => setSidebarOpen(false);
   const openSidebar = () => setSidebarOpen(true);
 
+  useEffect(() => {
+    console.log('App - refreshTrigger changed:', refreshTrigger);
+  }, [refreshTrigger]);
+
   return (
     <>
       <Helmet>
@@ -60,18 +65,19 @@ const App: React.FC = () => {
         />
       </Helmet>
       <GlobalStyles />
-      <Background type={backgroundType} value={backgroundValue}>
-        <Sidebar 
-          addTodoList={addTodoList} 
-          isOpen={isSidebarOpen} 
-          onClose={closeSidebar} 
-          onOpen={openSidebar} 
-          setUsername={setUsername} 
+      <Background type={backgroundType} value={backgroundValue} refreshTrigger={refreshTrigger}>
+        <Sidebar
+          addTodoList={addTodoList}
+          isOpen={isSidebarOpen}
+          onClose={closeSidebar}
+          onOpen={openSidebar}
+          setUsername={setUsername}
           username={username}
           setBackgroundType={setBackgroundType}
           setBackgroundValue={setBackgroundValue}
           backgroundType={backgroundType}
           backgroundValue={backgroundValue}
+          setRefreshTrigger={setRefreshTrigger}
         />
         <AppContainer>
           <Header>

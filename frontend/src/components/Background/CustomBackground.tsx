@@ -7,14 +7,15 @@ const unsplash = createApi({
 
 interface CustomBackgroundProps {
   query: string;
+  refreshTrigger: number;
   children: React.ReactNode;
 }
 
-const CustomBackground: React.FC<CustomBackgroundProps> = ({ query, children }) => {
+const CustomBackground: React.FC<CustomBackgroundProps> = ({ query, refreshTrigger, children }) => {
   const [backgroundImage, setBackgroundImage] = useState<string>('');
 
   useEffect(() => {
-    console.log('CustomBackground useEffect called with query:', query);
+    console.log('CustomBackground useEffect called with query:', query, 'refreshTrigger:', refreshTrigger);
 
     const fetchRandomPhoto = async () => {
       try {
@@ -32,7 +33,7 @@ const CustomBackground: React.FC<CustomBackgroundProps> = ({ query, children }) 
     };
 
     fetchRandomPhoto();
-  }, [query]);
+  }, [query, refreshTrigger]);
 
   return (
     <div style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover', height: '100vh' }}>

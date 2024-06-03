@@ -9,12 +9,13 @@ interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
   onOpen: () => void;
+  setUsername: React.Dispatch<React.SetStateAction<string>>;
   username: string;
-  setUsername: (username: string) => void;
   setBackgroundType: (type: 'custom' | 'solid') => void;
   setBackgroundValue: (value: string) => void;
   backgroundType: 'custom' | 'solid';
   backgroundValue: string;
+  setRefreshTrigger: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -22,12 +23,13 @@ const Sidebar: React.FC<SidebarProps> = ({
   isOpen,
   onClose,
   onOpen,
-  username,
   setUsername,
+  username,
   setBackgroundType,
   setBackgroundValue,
   backgroundType,
-  backgroundValue
+  backgroundValue,
+  setRefreshTrigger,
 }) => {
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (e.target === e.currentTarget) {
@@ -45,14 +47,15 @@ const Sidebar: React.FC<SidebarProps> = ({
           <StyledCloseIcon onClick={onClose}>
             <CloseIcon />
           </StyledCloseIcon>
-          <SidebarContents 
-            addTodoList={addTodoList} 
-            username={username} 
-            setUsername={setUsername} 
-            setBackgroundType={setBackgroundType} 
-            setBackgroundValue={setBackgroundValue} 
+          <SidebarContents
+            addTodoList={addTodoList}
+            setUsername={setUsername}
+            username={username}
+            setBackgroundType={setBackgroundType}
+            setBackgroundValue={setBackgroundValue}
             backgroundType={backgroundType}
             backgroundValue={backgroundValue}
+            setRefreshTrigger={setRefreshTrigger}
           />
         </StyledSidebar>
       </StyledSidebarContainer>
