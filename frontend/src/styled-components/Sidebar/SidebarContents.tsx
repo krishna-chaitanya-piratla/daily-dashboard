@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import EditIcon from '@mui/icons-material/Edit';
 
 export const SidebarContentsContainer = styled.div`
   display: flex;

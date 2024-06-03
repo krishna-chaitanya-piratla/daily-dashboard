@@ -1,6 +1,7 @@
 import React from 'react';
 import { SidebarContentsContainer, Separator } from '../../styled-components/Sidebar/SidebarContents';
 import UserName from './UserName';
+import BackgroundSettings from './BackgroundSettings';
 
 interface SidebarContentsProps {
   addTodoList: () => void;
@@ -12,6 +13,8 @@ const SidebarContents: React.FC<SidebarContentsProps> = ({ addTodoList, username
   return (
     <SidebarContentsContainer>
       <UserName username={username} setUsername={setUsername} />
+      <Separator />
+      <BackgroundSettings />
       <Separator />
       {/* You can add more menu items here */}
     </SidebarContentsContainer>
