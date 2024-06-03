@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import EditIcon from '@mui/icons-material/Edit';
 import CheckIcon from '@mui/icons-material/Check';
+import ClearIcon from '@mui/icons-material/Clear';
 
 export const InputContainer = styled.div`
   display: flex;
@@ -37,6 +38,14 @@ export const StyledCheckIcon = styled(CheckIcon)`
   font-size: 0.75rem; 
   color: var(--widget-text-color-primary);
   margin-left: 1.5rem; /* Gap between text and icon */
+  flex-shrink: 0;
+  cursor: pointer;
+`;
+
+export const StyledClearIcon = styled(ClearIcon)`
+  font-size: 0.75rem; 
+  color: var(--widget-text-color-primary);
+  margin-left: 0.75rem; /* Gap between check icon and clear icon */
   flex-shrink: 0;
   cursor: pointer;
 `;
