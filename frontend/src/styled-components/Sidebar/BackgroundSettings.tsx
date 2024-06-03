@@ -26,6 +26,7 @@ export const ColorBox = styled.div<{ color: string }>`
   width: 1rem;
   height: 1rem;
   background-color: ${(props) => props.color};
+  cursor: pointer;
 `;
 
 export const TextInput = styled.input`

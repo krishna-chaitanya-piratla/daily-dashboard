@@ -11,6 +11,13 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({ setBackgroundTy
   const [inputValue, setInputValue] = useState<string>('');
   const [tempBackgroundType, setTempBackgroundType] = useState<string>('solid');
 
+  const presetColors = {
+    color1: '#7C0902',
+    color2: '#2F2C5C',
+    color3: '#3E4125',
+    color4: '#121010',
+  };
+
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     setTempBackgroundType(value);
@@ -31,6 +38,12 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({ setBackgroundTy
       setBackgroundValue(inputValue);
       console.log('Background value set to:', inputValue);
     }
+  };
+
+  const handleColorBoxClick = (color: string) => {
+    setBackgroundType('solid');
+    setBackgroundValue(color);
+    console.log('Background value set to:', color);
   };
 
   return (
@@ -60,9 +73,10 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({ setBackgroundTy
       </RadioButtonContainer>
       {tempBackgroundType === 'solid' ? (
         <ColorBoxContainer>
-          <ColorBox color="red" />
-          <ColorBox color="blue" />
-          <ColorBox color="green" />
+          <ColorBox color={presetColors.color1} onClick={() => handleColorBoxClick(presetColors.color1)} />
+          <ColorBox color={presetColors.color2} onClick={() => handleColorBoxClick(presetColors.color2)} />
+          <ColorBox color={presetColors.color3} onClick={() => handleColorBoxClick(presetColors.color3)} />
+          <ColorBox color={presetColors.color4} onClick={() => handleColorBoxClick(presetColors.color4)} />
         </ColorBoxContainer>
       ) : (
         <TextInput 
