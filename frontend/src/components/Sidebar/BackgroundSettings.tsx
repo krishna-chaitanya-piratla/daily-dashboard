@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BackgroundSettingsContainer, RadioButtonContainer, ColorBoxContainer, ColorBox, TextInput } from '../../styled-components/Sidebar/BackgroundSettings';
+import { BackgroundSettingsContainer, RadioButtonContainer, ColorBoxContainer, ColorBox, StyledUnsplashInput, SaveButton } from '../../styled-components/Sidebar/BackgroundSettings';
 
 interface BackgroundSettingsProps {
   setBackgroundType: (type: 'custom' | 'solid') => void;
@@ -17,6 +17,7 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
   const [selectedBackground, setSelectedBackground] = useState<string>(backgroundType);
   const [solidValue, setSolidValue] = useState<string>(backgroundType === 'solid' ? backgroundValue : '#000000');
   const [unsplashValue, setUnsplashValue] = useState<string>(backgroundType === 'custom' ? backgroundValue : '');
+  const [isUnsplashValueChanged, setIsUnsplashValueChanged] = useState<boolean>(false);
 
   useEffect(() => {
     setSelectedBackground(backgroundType);
@@ -48,14 +49,23 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
 
   const handleUnsplashInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUnsplashValue(event.target.value);
+    setIsUnsplashValueChanged(event.target.value !== backgroundValue);
   };
 
   const handleUnsplashInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       setBackgroundType('custom');
       setBackgroundValue(unsplashValue);
+      setIsUnsplashValueChanged(false);
       console.log('Background value set to:', unsplashValue);
     }
+  };
+
+  const handleSaveButtonClick = () => {
+    setBackgroundType('custom');
+    setBackgroundValue(unsplashValue);
+    setIsUnsplashValueChanged(false);
+    console.log('Background value set to:', unsplashValue);
   };
 
   return (
@@ -91,13 +101,17 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
           <ColorBox color={presetColors.color4} onClick={() => handleSolidColorBoxClick(presetColors.color4)} />
         </ColorBoxContainer>
       ) : (
-        <TextInput 
-          type="text" 
-          placeholder="Enter search query" 
-          value={unsplashValue} 
-          onChange={handleUnsplashInputChange} 
-          onKeyDown={handleUnsplashInputKeyDown}
-        />
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+            <p style={{fontFamily: 'SriRacha', fontSize:'15px'}}>Search for: </p>
+          <StyledUnsplashInput 
+            type="text" 
+            placeholder="Enter search query" 
+            value={unsplashValue} 
+            onChange={handleUnsplashInputChange} 
+            onKeyDown={handleUnsplashInputKeyDown}
+          />
+          {isUnsplashValueChanged && <SaveButton onClick={handleSaveButtonClick} />}
+        </div>
       )}
     </BackgroundSettingsContainer>
   );

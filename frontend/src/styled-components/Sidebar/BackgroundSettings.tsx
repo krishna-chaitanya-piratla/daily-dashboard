@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import SaveIcon from '@mui/icons-material/Save';
 
 export const BackgroundSettingsContainer = styled.div`
   width: 100%;
@@ -29,9 +30,40 @@ export const ColorBox = styled.div<{ color: string }>`
   cursor: pointer;
 `;
 
-export const TextInput = styled.input`
-  width: 100%;
-  padding: 0.5rem;
-  margin-top: 0.5rem;
-  box-sizing: border-box;
+export const StyledUnsplashInput = styled.input`
+  font-size: 1.15rem;
+  font-family: SriRacha;
+  max-width: 35%;
+  height: 2.5rem;
+  background: none;
+  border: none;
+  border-radius: 10px;
+  padding: 0 0.25rem;
+  margin: 0.5rem 0;
+  margin-left: 1rem;
+  color: inherit;
+  &:focus,
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 0.5px var(--input-focus-box-shadow-color);
+    color: var(--input-focus-text-color);
+  }
+ 
+  &::placeholder {
+    color: var(--input-placeholder-color);
+  }
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+`;
+
+export const SaveButton = styled(SaveIcon)`
+  font-size: 2rem;
+  color: var(--widget-text-color-primary);
+  cursor: pointer;
+  margin-left: 0.5rem;
+  &:hover {
+    color: var(--widget-text-color-secondary);
+  }
 `;

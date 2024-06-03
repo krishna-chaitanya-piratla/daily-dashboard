@@ -26,6 +26,8 @@ export const GlobalStyles = createGlobalStyle`
     --todo-edit-input-focus-bg: rgba(0, 0, 0, 0.2);
     --input-focus-box-shadow-color: #999;
     --input-hover-box-shadow-color: #999;
+    --scrollbar-thumb-color: #999;
+    --scrollbar-thumb-hover-color: #999;
   }
   body {
     background-color: black;
