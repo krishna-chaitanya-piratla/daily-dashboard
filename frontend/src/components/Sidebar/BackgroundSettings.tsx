@@ -11,6 +11,13 @@ interface BackgroundSettingsProps {
   backgroundValue: string;
 }
 
+const presetColors = {
+  color1: '#7C0902',
+  color2: '#2F2C5C',
+  color3: '#3E4125',
+  color4: '#121010',
+};
+
 const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
   setBackgroundType,
   setBackgroundValue,
@@ -23,7 +30,7 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
   const [unsplashValue, setUnsplashValue] = useState<string>(backgroundType === 'custom' ? backgroundValue : '');
   const [isUnsplashValueChanged, setIsUnsplashValueChanged] = useState<boolean>(false);
   const [isColorPickerOpen, setIsColorPickerOpen] = useState<boolean>(false);
-  const [customColor, setCustomColor] = useState<string>('#000000');
+  const [customColor, setCustomColor] = useState<string>(backgroundType === 'solid' && !Object.values(presetColors).includes(backgroundValue) ? backgroundValue : '#000000');
   const inputRef = useRef<HTMLInputElement>(null);
   const colorPickerRef = useRef<HTMLDivElement>(null);
 
@@ -32,18 +39,13 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
     setSelectedBackground(backgroundType);
     if (backgroundType === 'solid') {
       setSolidValue(backgroundValue);
-      setCustomColor(backgroundValue);
+      if (!Object.values(presetColors).includes(backgroundValue)) {
+        setCustomColor(backgroundValue);
+      }
     } else if (backgroundType === 'custom') {
       setUnsplashValue(backgroundValue);
     }
   }, [backgroundType, backgroundValue]);
-
-  const presetColors = {
-    color1: '#7C0902',
-    color2: '#2F2C5C',
-    color3: '#3E4125',
-    color4: '#121010',
-  };
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
@@ -101,7 +103,7 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
     if (
       colorPickerRef.current &&
       !colorPickerRef.current.contains(event.target as Node) &&
-      !colorPickerRef.current.contains(event.target as Node)
+      (!inputRef.current || !inputRef.current.contains(event.target as Node))
     ) {
       console.log('handleClickOutside');
       setIsColorPickerOpen(false);
@@ -129,6 +131,8 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
     setBackgroundValue(selectedColor);
     console.log('Custom color selected:', selectedColor);
   };
+
+  const isCustomColorSelected = backgroundType === 'solid' && !Object.values(presetColors).includes(backgroundValue);
 
   return (
     <BackgroundSettingsContainer>
@@ -179,7 +183,7 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
           />
           <CustomColorBox 
             color={customColor}
-            isSelected={solidValue === customColor}
+            isSelected={isCustomColorSelected}
             onClick={handleCustomColorBoxClick}
           />
         </ColorBoxContainer>
