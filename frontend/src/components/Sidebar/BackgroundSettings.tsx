@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { BackgroundSettingsContainer, RadioButtonContainer, ColorBoxContainer, ColorBox, StyledUnsplashInput, SaveButton, RefreshButton } from '../../styled-components/Sidebar/BackgroundSettings';
+import { SketchPicker } from 'react-color';
+import { BackgroundSettingsContainer, RadioButtonContainer, ColorBoxContainer, ColorBox, StyledUnsplashInput, SaveButton, RefreshButton, CustomColorBox } from '../../styled-components/Sidebar/BackgroundSettings';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
 interface BackgroundSettingsProps {
@@ -21,13 +22,17 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
   const [solidValue, setSolidValue] = useState<string>(backgroundType === 'solid' ? backgroundValue : '#000000');
   const [unsplashValue, setUnsplashValue] = useState<string>(backgroundType === 'custom' ? backgroundValue : '');
   const [isUnsplashValueChanged, setIsUnsplashValueChanged] = useState<boolean>(false);
+  const [isColorPickerOpen, setIsColorPickerOpen] = useState<boolean>(false);
+  const [customColor, setCustomColor] = useState<string>('#000000');
   const inputRef = useRef<HTMLInputElement>(null);
+  const colorPickerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     console.log('useEffect - backgroundType or backgroundValue changed');
     setSelectedBackground(backgroundType);
     if (backgroundType === 'solid') {
       setSolidValue(backgroundValue);
+      setCustomColor(backgroundValue);
     } else if (backgroundType === 'custom') {
       setUnsplashValue(backgroundValue);
     }
@@ -93,10 +98,13 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
   };
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (inputRef.current && !inputRef.current.contains(event.target as Node)) {
+    if (
+      colorPickerRef.current &&
+      !colorPickerRef.current.contains(event.target as Node) &&
+      !colorPickerRef.current.contains(event.target as Node)
+    ) {
       console.log('handleClickOutside');
-      setUnsplashValue(backgroundValue);
-      setIsUnsplashValueChanged(false);
+      setIsColorPickerOpen(false);
     }
   };
 
@@ -108,6 +116,19 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  const handleCustomColorBoxClick = () => {
+    setIsColorPickerOpen(!isColorPickerOpen);
+  };
+
+  const handleColorChangeComplete = (color: any) => {
+    const selectedColor = color.hex;
+    setCustomColor(selectedColor);
+    setSolidValue(selectedColor);
+    setBackgroundType('solid');
+    setBackgroundValue(selectedColor);
+    console.log('Custom color selected:', selectedColor);
+  };
 
   return (
     <BackgroundSettingsContainer>
@@ -156,6 +177,11 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
             isSelected={solidValue === presetColors.color4} 
             onClick={() => handleSolidColorBoxClick(presetColors.color4)} 
           />
+          <CustomColorBox 
+            color={customColor}
+            isSelected={solidValue === customColor}
+            onClick={handleCustomColorBoxClick}
+          />
         </ColorBoxContainer>
       ) : (
         <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -172,6 +198,14 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
           ) : unsplashValue && (
             <RefreshButton as={RefreshIcon} onClick={handleRefreshButtonClick} />
           )}
+        </div>
+      )}
+      {isColorPickerOpen && (
+        <div ref={colorPickerRef}>
+          <SketchPicker
+            color={customColor}
+            onChangeComplete={handleColorChangeComplete}
+          />
         </div>
       )}
     </BackgroundSettingsContainer>

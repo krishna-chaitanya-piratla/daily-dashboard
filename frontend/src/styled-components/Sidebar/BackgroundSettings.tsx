@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import SaveIcon from '@mui/icons-material/Save';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
+
 export const BackgroundSettingsContainer = styled.div`
   width: 100%;
 `;
@@ -31,6 +32,18 @@ export const ColorBox = styled.div<{ color: string; isSelected: boolean }>`
   cursor: pointer;
   border: ${(props) => (props.isSelected ? '2px solid white' : 'none')};
   box-shadow: ${(props) => (props.isSelected ? '0 0 5px white' : 'none')};
+`;
+
+export const CustomColorBox = styled.div<{ color: string; isSelected: boolean }>`
+  width: 1rem;
+  height: 1rem;
+  background-color: ${(props) => props.color || 'transparent'};
+  border: ${(props) => (props.isSelected ? '2px solid white' : '1px solid white')};
+  box-shadow: ${(props) => (props.isSelected ? '0 0 5px white' : 'none')};
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const StyledUnsplashInput = styled.input`
