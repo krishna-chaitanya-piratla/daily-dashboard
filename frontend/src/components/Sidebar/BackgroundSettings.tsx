@@ -9,12 +9,14 @@ interface BackgroundSettingsProps {
 const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({ setBackgroundType, setBackgroundValue }) => {
   const [selectedBackground, setSelectedBackground] = useState<string>('solid');
   const [inputValue, setInputValue] = useState<string>('');
+  const [tempBackgroundType, setTempBackgroundType] = useState<string>('solid');
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
+    setTempBackgroundType(value);
     setSelectedBackground(value);
-    setBackgroundType(value as 'custom' | 'solid');
     if (value === 'solid') {
+      setBackgroundType('solid');
       setBackgroundValue('#000000');
     }
   };
@@ -56,7 +58,7 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({ setBackgroundTy
           Unsplash
         </label>
       </RadioButtonContainer>
-      {selectedBackground === 'solid' ? (
+      {tempBackgroundType === 'solid' ? (
         <ColorBoxContainer>
           <ColorBox color="red" />
           <ColorBox color="blue" />
