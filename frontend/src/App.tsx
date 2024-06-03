@@ -70,6 +70,8 @@ const App: React.FC = () => {
           username={username}
           setBackgroundType={setBackgroundType}
           setBackgroundValue={setBackgroundValue}
+          backgroundType={backgroundType}
+          backgroundValue={backgroundValue}
         />
         <AppContainer>
           <Header>

@@ -8,12 +8,6 @@ export const StyledTodoListWrapper = styled.div`
 `;
 
 export const StyledTodoListContainer = styled.div`
-  --todolist-container-background-color: rgba(0, 0, 0, 0.2);
-  --todolist-container-box-shadow-color: rgba(0, 0, 0, 0.1);
-  --todolist-container-border-color: #999;
-  --scrollbar-thumb-color: #999;
-  --scrollbar-thumb-hover-color: #999;
-
   width: 30rem;
   max-height: 20rem;
   overflow: hidden; /* Prevent overflow for the entire container */
@@ -21,12 +15,12 @@ export const StyledTodoListContainer = styled.div`
   text-align: center;
   border: 0.5px solid none;
   border-radius: 10px;
-  background-color: var(--todolist-container-background-color);
+  background-color: var(--widget-background-color);
   color: inherit;
   box-sizing: border-box;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 4px 6px var(--todolist-container-box-shadow-color);
+  box-shadow: var(--widget-box-shadow);
   display: flex;
   flex-direction: column; /* Ensure children are arranged vertically */
 
@@ -41,14 +35,14 @@ export const StyledTodoListContainer = styled.div`
   }
 
   ::-webkit-scrollbar-track {
-    background: var(--todolist-container-background-color); 
+    background: var(--widget-background-color); 
     border-radius: 10px;
   }
   
   ::-webkit-scrollbar-thumb {
     background: var(--scrollbar-thumb-color); 
     border-radius: 10px;
-    border: 1px solid var(--todolist-container-background-color);
+    border: 1px solid var(--widget-background-color);
   }
 
   ::-webkit-scrollbar-thumb:hover {
@@ -57,7 +51,7 @@ export const StyledTodoListContainer = styled.div`
 
   /* For Firefox */
   scrollbar-width: thin;
-  scrollbar-color: var(--scrollbar-thumb-color) var(--todolist-container-background-color);
+  scrollbar-color: var(--scrollbar-thumb-color) var(--widget-background-color);
   
   /* For IE and older versions of Edge */
   -ms-overflow-style: -ms-autohiding-scrollbar;

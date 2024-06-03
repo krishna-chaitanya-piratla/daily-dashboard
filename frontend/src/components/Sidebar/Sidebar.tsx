@@ -13,9 +13,22 @@ interface SidebarProps {
   setUsername: (username: string) => void;
   setBackgroundType: (type: 'custom' | 'solid') => void;
   setBackgroundValue: (value: string) => void;
+  backgroundType: 'custom' | 'solid';
+  backgroundValue: string;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ addTodoList, isOpen, onClose, onOpen, username, setUsername, setBackgroundType, setBackgroundValue }) => {
+const Sidebar: React.FC<SidebarProps> = ({
+  addTodoList,
+  isOpen,
+  onClose,
+  onOpen,
+  username,
+  setUsername,
+  setBackgroundType,
+  setBackgroundValue,
+  backgroundType,
+  backgroundValue
+}) => {
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (e.target === e.currentTarget) {
       onClose();
@@ -38,6 +51,8 @@ const Sidebar: React.FC<SidebarProps> = ({ addTodoList, isOpen, onClose, onOpen,
             setUsername={setUsername} 
             setBackgroundType={setBackgroundType} 
             setBackgroundValue={setBackgroundValue} 
+            backgroundType={backgroundType}
+            backgroundValue={backgroundValue}
           />
         </StyledSidebar>
       </StyledSidebarContainer>

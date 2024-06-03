@@ -1,15 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BackgroundSettingsContainer, RadioButtonContainer, ColorBoxContainer, ColorBox, TextInput } from '../../styled-components/Sidebar/BackgroundSettings';
 
 interface BackgroundSettingsProps {
   setBackgroundType: (type: 'custom' | 'solid') => void;
   setBackgroundValue: (value: string) => void;
+  backgroundType: 'custom' | 'solid';
+  backgroundValue: string;
 }
 
-const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({ setBackgroundType, setBackgroundValue }) => {
-  const [selectedBackground, setSelectedBackground] = useState<string>('solid');
-  const [inputValue, setInputValue] = useState<string>('');
-  const [tempBackgroundType, setTempBackgroundType] = useState<string>('solid');
+const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
+  setBackgroundType,
+  setBackgroundValue,
+  backgroundType,
+  backgroundValue
+}) => {
+  const [selectedBackground, setSelectedBackground] = useState<string>(backgroundType);
+  const [solidValue, setSolidValue] = useState<string>(backgroundType === 'solid' ? backgroundValue : '#000000');
+  const [unsplashValue, setUnsplashValue] = useState<string>(backgroundType === 'custom' ? backgroundValue : '');
+
+  useEffect(() => {
+    setSelectedBackground(backgroundType);
+    if (backgroundType === 'solid') {
+      setSolidValue(backgroundValue);
+    } else if (backgroundType === 'custom') {
+      setUnsplashValue(backgroundValue);
+    }
+  }, [backgroundType, backgroundValue]);
 
   const presetColors = {
     color1: '#7C0902',
@@ -20,30 +36,26 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({ setBackgroundTy
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
-    setTempBackgroundType(value);
     setSelectedBackground(value);
-    if (value === 'solid') {
-      setBackgroundType('solid');
-      setBackgroundValue('#000000');
-    }
   };
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(event.target.value);
-  };
-
-  const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      setBackgroundType('custom');
-      setBackgroundValue(inputValue);
-      console.log('Background value set to:', inputValue);
-    }
-  };
-
-  const handleColorBoxClick = (color: string) => {
+  const handleSolidColorBoxClick = (color: string) => {
+    setSolidValue(color);
     setBackgroundType('solid');
     setBackgroundValue(color);
     console.log('Background value set to:', color);
+  };
+
+  const handleUnsplashInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUnsplashValue(event.target.value);
+  };
+
+  const handleUnsplashInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      setBackgroundType('custom');
+      setBackgroundValue(unsplashValue);
+      console.log('Background value set to:', unsplashValue);
+    }
   };
 
   return (
@@ -71,20 +83,20 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({ setBackgroundTy
           Unsplash
         </label>
       </RadioButtonContainer>
-      {tempBackgroundType === 'solid' ? (
+      {selectedBackground === 'solid' ? (
         <ColorBoxContainer>
-          <ColorBox color={presetColors.color1} onClick={() => handleColorBoxClick(presetColors.color1)} />
-          <ColorBox color={presetColors.color2} onClick={() => handleColorBoxClick(presetColors.color2)} />
-          <ColorBox color={presetColors.color3} onClick={() => handleColorBoxClick(presetColors.color3)} />
-          <ColorBox color={presetColors.color4} onClick={() => handleColorBoxClick(presetColors.color4)} />
+          <ColorBox color={presetColors.color1} onClick={() => handleSolidColorBoxClick(presetColors.color1)} />
+          <ColorBox color={presetColors.color2} onClick={() => handleSolidColorBoxClick(presetColors.color2)} />
+          <ColorBox color={presetColors.color3} onClick={() => handleSolidColorBoxClick(presetColors.color3)} />
+          <ColorBox color={presetColors.color4} onClick={() => handleSolidColorBoxClick(presetColors.color4)} />
         </ColorBoxContainer>
       ) : (
         <TextInput 
           type="text" 
           placeholder="Enter search query" 
-          value={inputValue} 
-          onChange={handleInputChange} 
-          onKeyDown={handleInputKeyDown}
+          value={unsplashValue} 
+          onChange={handleUnsplashInputChange} 
+          onKeyDown={handleUnsplashInputKeyDown}
         />
       )}
     </BackgroundSettingsContainer>

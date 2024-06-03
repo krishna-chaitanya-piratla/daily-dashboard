@@ -9,14 +9,29 @@ interface SidebarContentsProps {
   setUsername: (username: string) => void;
   setBackgroundType: (type: 'custom' | 'solid') => void;
   setBackgroundValue: (value: string) => void;
+  backgroundType: 'custom' | 'solid';
+  backgroundValue: string;
 }
 
-const SidebarContents: React.FC<SidebarContentsProps> = ({ addTodoList, username, setUsername, setBackgroundType, setBackgroundValue }) => {
+const SidebarContents: React.FC<SidebarContentsProps> = ({
+  addTodoList,
+  username,
+  setUsername,
+  setBackgroundType,
+  setBackgroundValue,
+  backgroundType,
+  backgroundValue
+}) => {
   return (
     <SidebarContentsContainer>
       <UserName username={username} setUsername={setUsername} />
       <Separator />
-      <BackgroundSettings setBackgroundType={setBackgroundType} setBackgroundValue={setBackgroundValue} />
+      <BackgroundSettings
+        setBackgroundType={setBackgroundType}
+        setBackgroundValue={setBackgroundValue}
+        backgroundType={backgroundType}
+        backgroundValue={backgroundValue}
+      />
       <Separator />
       {/* You can add more menu items here */}
     </SidebarContentsContainer>
