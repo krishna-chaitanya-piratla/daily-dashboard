@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
 import { InputContainer, StyledUserName, StyledUsernameEditIcon, HiddenTextSpan, StyledCheckIcon, StyledClearIcon } from '../../styled-components/Sidebar/UserName';
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -66,6 +67,13 @@ const UserName: React.FC<UserNameProps> = ({ username, setUsername }) => {
 
   const handleSaveClick = () => {
     setUsername(tempUsername);
+    axios.put(`${process.env.REACT_APP_BACKEND_URL}/userprofile/username`, { userName: tempUsername })
+      .then(response => {
+        console.log('Username updated successfully:', response.data);
+      })
+      .catch(error => {
+        console.error('There was an error updating the username:', error);
+      });
     setIsEditing(false);
   };
 
@@ -77,6 +85,13 @@ const UserName: React.FC<UserNameProps> = ({ username, setUsername }) => {
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       setUsername(tempUsername);
+      axios.put(`${process.env.REACT_APP_BACKEND_URL}/userprofile/username`, { userName: tempUsername })
+        .then(response => {
+          console.log('Username updated successfully:', response.data);
+        })
+        .catch(error => {
+          console.error('There was an error updating the username:', error);
+        });
       setIsEditing(false);
     }
   };
@@ -92,9 +107,9 @@ const UserName: React.FC<UserNameProps> = ({ username, setUsername }) => {
         type="text"
         value={tempUsername}
         onChange={handleUsernameChange}
-        onKeyPress={handleKeyPress}
+        onKeyDown={handleKeyPress}
         onDoubleClick={handleDoubleClick}
-        placeholder="Stranger"
+        placeholder={username ? username : "Enter Name..."}
         width={inputWidth}
         isEditing={isEditing}
         readOnly={!isEditing}

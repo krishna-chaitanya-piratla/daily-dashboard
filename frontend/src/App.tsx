@@ -12,7 +12,7 @@ import LocationWeather from './components/LocationWeather/LocationWeather';
 const App: React.FC = () => {
   const [todoLists, setTodoLists] = useState<TodoListType[]>([]);
   const [isSidebarOpen, setSidebarOpen] = useState<boolean>(false);
-  const [username, setUsername] = useState<string>('Stranger');
+  const [username, setUsernameState] = useState<string>('');
   const [backgroundType, setBackgroundType] = useState<'custom' | 'solid'>('solid');
   const [backgroundValue, setBackgroundValue] = useState<string>('#2f2c5c');
   const [refreshTrigger, setRefreshTrigger] = useState<number>(0);
@@ -24,6 +24,17 @@ const App: React.FC = () => {
       })
       .catch(error => {
         console.error('There was an error fetching the todo lists!', error);
+      });
+
+    axios.get(`${process.env.REACT_APP_BACKEND_URL}/userprofile`)
+      .then(response => {
+        const { userName, backgroundPreference } = response.data;
+        setUsernameState(userName || '');
+        setBackgroundType(backgroundPreference.type);
+        setBackgroundValue(backgroundPreference.value);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the user profile!', error);
       });
   }, []);
 
@@ -39,6 +50,31 @@ const App: React.FC = () => {
 
   const removeTodoList = (listId: string) => {
     setTodoLists((prevLists) => prevLists.filter((list) => list.id !== listId));
+  };
+
+  const updateUserProfile = (key: string, value: any) => {
+    axios.put(`${process.env.REACT_APP_BACKEND_URL}/userprofile/${key}`, { [key]: value })
+      .then(response => {
+        console.log(`User profile ${key} updated successfully`, response.data);
+      })
+      .catch(error => {
+        console.error(`There was an error updating the user profile ${key}!`, error);
+      });
+  };
+
+  const setUsername = (newUsername: React.SetStateAction<string>) => {
+    setUsernameState(newUsername);
+    updateUserProfile('username', newUsername);
+  };
+
+  const handleSetBackgroundType = (type: 'custom' | 'solid') => {
+    setBackgroundType(type);
+    updateUserProfile('background', { type, value: backgroundValue });
+  };
+
+  const handleSetBackgroundValue = (value: string) => {
+    setBackgroundValue(value);
+    updateUserProfile('background', { type: backgroundType, value });
   };
 
   const closeSidebar = () => setSidebarOpen(false);
@@ -73,8 +109,8 @@ const App: React.FC = () => {
           onOpen={openSidebar}
           setUsername={setUsername}
           username={username}
-          setBackgroundType={setBackgroundType}
-          setBackgroundValue={setBackgroundValue}
+          setBackgroundType={handleSetBackgroundType}
+          setBackgroundValue={handleSetBackgroundValue}
           backgroundType={backgroundType}
           backgroundValue={backgroundValue}
           setRefreshTrigger={setRefreshTrigger}

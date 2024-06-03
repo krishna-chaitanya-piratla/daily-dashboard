@@ -10,17 +10,18 @@ interface WelcomeMessageProps {
 
 const WelcomeMessage: React.FC<WelcomeMessageProps> = ({ userName = 'Stranger' }) => {
     const [greeting, setGreeting] = useState<string>('');
+    const welcomeName = userName === '' ? 'Stranger' : userName;
 
     useEffect(() => {
         const getCurrentGreeting = () => {
             const currentHour = new Date().getHours();
 
             if (currentHour >= 22 || currentHour < 4) {
-                return `Time to Sleep, ${userName}`;
+                return `Time to Sleep, ${welcomeName}`;
             } else if (currentHour >= 4 && currentHour < 12) {
-                return `Good Morning, ${userName}`;
+                return `Good Morning, ${welcomeName}`;
             } else {
-                return `Good Evening, ${userName}`;
+                return `Good Evening, ${welcomeName}`;
             }
         };
         
@@ -31,7 +32,7 @@ const WelcomeMessage: React.FC<WelcomeMessageProps> = ({ userName = 'Stranger' }
         }, 60000); 
 
         return () => clearInterval(intervalId);
-    }, [userName]);
+    }, [welcomeName]);
 
 
     return (
