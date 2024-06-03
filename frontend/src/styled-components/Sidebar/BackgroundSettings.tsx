@@ -24,17 +24,19 @@ export const ColorBoxContainer = styled.div`
   margin-top: 0.5rem;
 `;
 
-export const ColorBox = styled.div<{ color: string }>`
+export const ColorBox = styled.div<{ color: string; isSelected: boolean }>`
   width: 1rem;
   height: 1rem;
   background-color: ${(props) => props.color};
   cursor: pointer;
+  border: ${(props) => (props.isSelected ? '2px solid white' : 'none')};
+  box-shadow: ${(props) => (props.isSelected ? '0 0 5px white' : 'none')};
 `;
 
 export const StyledUnsplashInput = styled.input`
   font-size: 1.15rem;
   font-family: SriRacha;
-  width: 50%;
+  max-width: 35%;
   height: 2.5rem;
   background: none;
   border: none;
