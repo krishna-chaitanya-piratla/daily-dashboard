@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { SketchPicker } from 'react-color';
-import { BackgroundSettingsContainer, RadioButtonContainer, ColorBoxContainer, ColorBox, StyledUnsplashInput, SaveButton, RefreshButton, CustomColorBox } from '../../styled-components/Sidebar/BackgroundSettings';
+import { BackgroundSettingsContainer, RadioButtonContainer, ColorBoxContainer, ColorBox, StyledUnsplashInput, SaveButton, RefreshButton, CustomColorBox, RowContainer, RowLabel } from '../../styled-components/Sidebar/BackgroundSettings';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
 interface BackgroundSettingsProps {
@@ -160,33 +160,31 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
         </label>
       </RadioButtonContainer>
       {selectedBackground === 'solid' ? (
-        <ColorBoxContainer>
-          <ColorBox 
-            color={presetColors.color1} 
-            isSelected={solidValue === presetColors.color1} 
-            onClick={() => handleSolidColorBoxClick(presetColors.color1)} 
-          />
-          <ColorBox 
-            color={presetColors.color2} 
-            isSelected={solidValue === presetColors.color2} 
-            onClick={() => handleSolidColorBoxClick(presetColors.color2)} 
-          />
-          <ColorBox 
-            color={presetColors.color3} 
-            isSelected={solidValue === presetColors.color3} 
-            onClick={() => handleSolidColorBoxClick(presetColors.color3)} 
-          />
-          <ColorBox 
-            color={presetColors.color4} 
-            isSelected={solidValue === presetColors.color4} 
-            onClick={() => handleSolidColorBoxClick(presetColors.color4)} 
-          />
-          <CustomColorBox 
-            color={customColor}
-            isSelected={isCustomColorSelected}
-            onClick={handleCustomColorBoxClick}
-          />
-        </ColorBoxContainer>
+        <>
+          <RowContainer>
+            <RowLabel>Presets</RowLabel>
+            <ColorBoxContainer>
+              {Object.values(presetColors).map((color, index) => (
+                <ColorBox 
+                  key={index}
+                  color={color}
+                  isSelected={solidValue === color}
+                  onClick={() => handleSolidColorBoxClick(color)}
+                />
+              ))}
+            </ColorBoxContainer>
+          </RowContainer>
+          <RowContainer>
+            <RowLabel>Custom</RowLabel>
+            <ColorBoxContainer>
+              <CustomColorBox 
+                color={customColor}
+                isSelected={isCustomColorSelected}
+                onClick={handleCustomColorBoxClick}
+              />
+            </ColorBoxContainer>
+          </RowContainer>
+        </>
       ) : (
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <StyledUnsplashInput 

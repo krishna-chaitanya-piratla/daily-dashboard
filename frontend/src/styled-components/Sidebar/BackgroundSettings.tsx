@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import SaveIcon from '@mui/icons-material/Save';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
-
 export const BackgroundSettingsContainer = styled.div`
   width: 100%;
 `;
@@ -30,7 +29,7 @@ export const ColorBox = styled.div<{ color: string; isSelected: boolean }>`
   height: 1rem;
   background-color: ${(props) => props.color};
   cursor: pointer;
-  border: ${(props) => (props.isSelected ? '2px solid white' : 'none')};
+  border: ${(props) => (props.isSelected ? '2px solid white' : '1px solid gray')};
   box-shadow: ${(props) => (props.isSelected ? '0 0 5px white' : 'none')};
 `;
 
@@ -46,10 +45,22 @@ export const CustomColorBox = styled.div<{ color: string; isSelected: boolean }>
   align-items: center;
 `;
 
+export const RowContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+`;
+
+export const RowLabel = styled.div`
+  font-weight: bold;
+  margin-right: 1rem;
+`;
+
 export const StyledUnsplashInput = styled.input`
   font-size: 1.15rem;
   font-family: SriRacha;
-  max-width: 35%;
+  max-width: 55%;
   height: 2.5rem;
   background: none;
   border: none;
