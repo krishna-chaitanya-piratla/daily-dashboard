@@ -4,12 +4,13 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { TodosModule } from './todos/todos.module';
 import { IplocationModule } from './iplocation/iplocation.module';
+import { UserprofileModule } from './userprofile/userprofile.module';
 
 
 @Module({
   imports: [ConfigModule.forRoot({
     isGlobal: true,
-  }), TodosModule, IplocationModule,],
+  }), TodosModule, IplocationModule, UserprofileModule,],
   controllers: [AppController],
   providers: [AppService],
 })

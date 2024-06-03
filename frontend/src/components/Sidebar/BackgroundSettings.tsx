@@ -13,10 +13,10 @@ interface BackgroundSettingsProps {
 }
 
 const presetColors = {
-  color1: '#7C0902',
-  color2: '#2F2C5C',
-  color3: '#3E4125',
-  color4: '#121010',
+    color2: '#2F2C5C',
+    color1: '#7C0902',
+    color3: '#3E4125',
+    color4: '#121010',
 };
 
 const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
