@@ -28,7 +28,7 @@ const Sidebar: React.FC<SidebarProps> = ({ addTodoList, isOpen, onClose, onOpen 
           <StyledCloseIcon onClick={onClose}>
             <CloseIcon />
           </StyledCloseIcon>
-          <SidebarContents addTodoList={addTodoList} />
+          <SidebarContents />
         </StyledSidebar>
       </StyledSidebarContainer>
     </>
