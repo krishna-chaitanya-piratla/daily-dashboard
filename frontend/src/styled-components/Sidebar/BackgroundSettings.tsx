@@ -49,7 +49,6 @@ export const RowContainer = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 1rem;
-  margin-top: 1rem;
 `;
 
 export const RowLabel = styled.div`
@@ -102,5 +101,34 @@ export const RefreshButton = styled(RefreshIcon)`
   margin-left: 0.5rem;
   &:hover {
     color: var(--widget-text-color-secondary);
+  }
+`;
+
+export const StyledSaveColorButton = styled.button`
+  font-size: 1rem;
+  color: var(--widget-text-color-primary);
+  background-color: var(--button-bg-color);
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  &:hover {
+    background-color: var(--button-hover-bg-color);
+  }
+`;
+
+export const AddIconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid gray;
+  border-radius: 5px;
+  margin-left: 0.5rem;
+  &:hover {
+    border-color: white;
   }
 `;

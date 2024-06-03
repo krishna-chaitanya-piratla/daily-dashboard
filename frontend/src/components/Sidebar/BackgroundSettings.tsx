@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { SketchPicker } from 'react-color';
-import { BackgroundSettingsContainer, RadioButtonContainer, ColorBoxContainer, ColorBox, StyledUnsplashInput, SaveButton, RefreshButton, CustomColorBox, RowContainer, RowLabel } from '../../styled-components/Sidebar/BackgroundSettings';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import { BackgroundSettingsContainer, RadioButtonContainer, ColorBoxContainer, ColorBox, StyledUnsplashInput, SaveButton, RefreshButton, CustomColorBox, RowContainer, RowLabel, StyledSaveColorButton, AddIconWrapper } from '../../styled-components/Sidebar/BackgroundSettings';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
 interface BackgroundSettingsProps {
@@ -30,7 +31,8 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
   const [unsplashValue, setUnsplashValue] = useState<string>(backgroundType === 'custom' ? backgroundValue : '');
   const [isUnsplashValueChanged, setIsUnsplashValueChanged] = useState<boolean>(false);
   const [isColorPickerOpen, setIsColorPickerOpen] = useState<boolean>(false);
-  const [customColor, setCustomColor] = useState<string>(backgroundType === 'solid' && !Object.values(presetColors).includes(backgroundValue) ? backgroundValue : '#000000');
+  const [customColor, setCustomColor] = useState<string>('');
+  const [customColors, setCustomColors] = useState<string[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const colorPickerRef = useRef<HTMLDivElement>(null);
 
@@ -39,9 +41,6 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
     setSelectedBackground(backgroundType);
     if (backgroundType === 'solid') {
       setSolidValue(backgroundValue);
-      if (!Object.values(presetColors).includes(backgroundValue)) {
-        setCustomColor(backgroundValue);
-      }
     } else if (backgroundType === 'custom') {
       setUnsplashValue(backgroundValue);
     }
@@ -126,10 +125,13 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
   const handleColorChangeComplete = (color: any) => {
     const selectedColor = color.hex;
     setCustomColor(selectedColor);
-    setSolidValue(selectedColor);
-    setBackgroundType('solid');
-    setBackgroundValue(selectedColor);
     console.log('Custom color selected:', selectedColor);
+  };
+
+  const handleSaveCustomColor = () => {
+    setCustomColors((prevColors) => [...prevColors, customColor]);
+    setIsColorPickerOpen(false);
+    console.log('Custom colors:', customColors);
   };
 
   const isCustomColorSelected = backgroundType === 'solid' && !Object.values(presetColors).includes(backgroundValue);
@@ -177,11 +179,17 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
           <RowContainer>
             <RowLabel>Custom</RowLabel>
             <ColorBoxContainer>
-              <CustomColorBox 
-                color={customColor}
-                isSelected={isCustomColorSelected}
-                onClick={handleCustomColorBoxClick}
-              />
+              {customColors.map((color, index) => (
+                <ColorBox 
+                  key={index}
+                  color={color}
+                  isSelected={solidValue === color}
+                  onClick={() => handleSolidColorBoxClick(color)}
+                />
+              ))}
+              <AddIconWrapper>
+                <AddCircleOutlineIcon onClick={handleCustomColorBoxClick} />
+              </AddIconWrapper>
             </ColorBoxContainer>
           </RowContainer>
         </>
@@ -208,6 +216,7 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
             color={customColor}
             onChangeComplete={handleColorChangeComplete}
           />
+          <StyledSaveColorButton onClick={handleSaveCustomColor}>Save Color</StyledSaveColorButton>
         </div>
       )}
     </BackgroundSettingsContainer>
