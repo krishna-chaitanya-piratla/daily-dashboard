@@ -3,20 +3,29 @@ import EditIcon from '@mui/icons-material/Edit';
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
 
+interface StyledUserNameProps {
+  isEditing: boolean;
+  width: number;
+}
+
 export const InputContainer = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
   overflow: hidden;
+
+  &:hover .edit-icon {
+    visibility: visible;
+  }
 `;
 
-export const StyledUserName = styled.input`
+export const StyledUserName = styled.input<StyledUserNameProps>`
   background: none;
   border: none;
-  color: var(--widget-text-color-primary);
+  color: ${(props) => (props.isEditing ? 'var(--widget-text-color-primary)' : 'var(--widget-text-color-secondary)')};
   font-size: 2rem;
   outline: none;
-  width: fit-content;
+  width: ${(props) => `${props.width}px`};
   min-width: 150px;
   white-space: nowrap;
   overflow: hidden;
@@ -28,10 +37,11 @@ export const StyledUserName = styled.input`
 
 export const StyledUsernameEditIcon = styled(EditIcon)`
   font-size: 0.75rem; 
-  color: var(--widget-text-color-primary);
+  color: var(--widget-text-color-secondary);
   margin-left: 1.5rem; /* Gap between text and icon */
   flex-shrink: 0;
   cursor: pointer;
+  visibility: hidden; /* Initially hidden */
 `;
 
 export const StyledCheckIcon = styled(CheckIcon)`

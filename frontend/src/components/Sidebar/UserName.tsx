@@ -63,7 +63,8 @@ const UserName: React.FC = () => {
         onKeyPress={handleKeyPress}
         onDoubleClick={handleDoubleClick}
         placeholder="Stranger"
-        style={{ width: `${inputWidth}px` }}
+        width={inputWidth}
+        isEditing={isEditing}
         readOnly={!isEditing}
         ref={inputRef}
       />
@@ -73,7 +74,7 @@ const UserName: React.FC = () => {
           <StyledClearIcon as={ClearIcon} onClick={handleClearClick} />
         </>
       ) : (
-        <StyledUsernameEditIcon onClick={handleEditClick} />
+        <StyledUsernameEditIcon className='edit-icon' onClick={handleEditClick} />
       )}
       <HiddenTextSpan ref={textSpanRef}>{tempUsername || 'Stranger'}</HiddenTextSpan>
     </InputContainer>
