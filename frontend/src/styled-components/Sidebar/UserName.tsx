@@ -16,7 +16,7 @@ export const StyledUserName = styled.input`
   color: var(--widget-text-color-primary);
   font-size: 2rem;
   outline: none;
-  width: auto;
+  width: fit-content;
   min-width: 150px;
   white-space: nowrap;
   overflow: hidden;
