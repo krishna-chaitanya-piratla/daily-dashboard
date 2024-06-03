@@ -1,11 +1,17 @@
 import React from 'react';
-import { Separator, SidebarContentsContainer } from '../../styled-components/Sidebar/SidebarContents';
+import { SidebarContentsContainer, Separator } from '../../styled-components/Sidebar/SidebarContents';
 import UserName from './UserName';
 
-const SidebarContents: React.FC = () => {
+interface SidebarContentsProps {
+  addTodoList: () => void;
+  username: string;
+  setUsername: (username: string) => void;
+}
+
+const SidebarContents: React.FC<SidebarContentsProps> = ({ addTodoList, username, setUsername }) => {
   return (
     <SidebarContentsContainer>
-      <UserName />
+      <UserName username={username} setUsername={setUsername} />
       <Separator />
       {/* You can add more menu items here */}
     </SidebarContentsContainer>

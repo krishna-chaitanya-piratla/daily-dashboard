@@ -12,6 +12,7 @@ import LocationWeather from './components/LocationWeather/LocationWeather';
 const App: React.FC = () => {
   const [todoLists, setTodoLists] = useState<TodoListType[]>([]);
   const [isSidebarOpen, setSidebarOpen] = useState<boolean>(false);
+  const [username, setUsername] = useState<string>('Stranger');
 
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_BACKEND_URL}/todos`)
@@ -58,7 +59,7 @@ const App: React.FC = () => {
       </Helmet>
       <GlobalStyles />
       <Background type="solid">
-        <Sidebar addTodoList={addTodoList} isOpen={isSidebarOpen} onClose={closeSidebar} onOpen={openSidebar} />
+        <Sidebar addTodoList={addTodoList} isOpen={isSidebarOpen} onClose={closeSidebar} onOpen={openSidebar} setUsername={setUsername} username={username} />
         <AppContainer>
           <Header>
             <LocationWeather />
@@ -73,7 +74,7 @@ const App: React.FC = () => {
             )}
           </div>
         </AppContainer>
-        <FocusCenter />
+        <FocusCenter username={username} />
         <JokeWidget />
       </Background>
     </>

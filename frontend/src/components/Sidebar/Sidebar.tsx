@@ -9,9 +9,11 @@ interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
   onOpen: () => void;
+  username: string;
+  setUsername: (username: string) => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ addTodoList, isOpen, onClose, onOpen }) => {
+const Sidebar: React.FC<SidebarProps> = ({ addTodoList, isOpen, onClose, onOpen, username, setUsername }) => {
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (e.target === e.currentTarget) {
       onClose();
@@ -28,7 +30,7 @@ const Sidebar: React.FC<SidebarProps> = ({ addTodoList, isOpen, onClose, onOpen 
           <StyledCloseIcon onClick={onClose}>
             <CloseIcon />
           </StyledCloseIcon>
-          <SidebarContents />
+          <SidebarContents addTodoList={addTodoList} username={username} setUsername={setUsername} />
         </StyledSidebar>
       </StyledSidebarContainer>
     </>

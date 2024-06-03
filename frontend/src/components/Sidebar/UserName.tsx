@@ -3,8 +3,12 @@ import { InputContainer, StyledUserName, StyledUsernameEditIcon, HiddenTextSpan,
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
 
-const UserName: React.FC = () => {
-  const [username, setUsername] = useState<string>('Stranger');
+interface UserNameProps {
+  username: string;
+  setUsername: (username: string) => void;
+}
+
+const UserName: React.FC<UserNameProps> = ({ username, setUsername }) => {
   const [tempUsername, setTempUsername] = useState<string>(username);
   const [inputWidth, setInputWidth] = useState<number>(0);
   const [isEditing, setIsEditing] = useState<boolean>(false);

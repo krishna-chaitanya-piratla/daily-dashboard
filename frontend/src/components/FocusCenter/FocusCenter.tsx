@@ -3,11 +3,15 @@ import Time from './Time';
 import { StyledFocusCenter } from '../../styled-components/FocusCenter/FocusCenter';
 import WelcomeMessage from './WelcomeMessage';
 
-const FocusCenter: React.FC = () => {
+interface FocusCenterProps {
+  username: string;
+}
+
+const FocusCenter: React.FC<FocusCenterProps> = ({ username }) => {
   return (
     <StyledFocusCenter>
       <Time displaySeconds={false} displayAMPM={false} display24Hour={false} />
-      <WelcomeMessage />
+      <WelcomeMessage userName={username} />
     </StyledFocusCenter>
   );
 };
