@@ -9,11 +9,16 @@ interface BackgroundProps {
 }
 
 const Background: React.FC<BackgroundProps> = ({ type = 'solid', value = '#2f2c5c', children }) => {
-  if (type === 'custom') {
-    return <CustomBackground query={value}>{children}</CustomBackground>;
-  }
-
-  return <SolidBackground colorCode={value}>{children}</SolidBackground>;
+  console.log('Background component called with type:', type, 'value:', value);
+  return (
+    <>
+      {type === 'custom' ? (
+        <CustomBackground query={value}>{children}</CustomBackground>
+      ) : (
+        <SolidBackground colorCode={value}>{children}</SolidBackground>
+      )}
+    </>
+  );
 };
 
 export default Background;

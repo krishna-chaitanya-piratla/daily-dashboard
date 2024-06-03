@@ -1,11 +1,34 @@
 import React, { useState } from 'react';
 import { BackgroundSettingsContainer, RadioButtonContainer, ColorBoxContainer, ColorBox, TextInput } from '../../styled-components/Sidebar/BackgroundSettings';
 
-const BackgroundSettings: React.FC = () => {
+interface BackgroundSettingsProps {
+  setBackgroundType: (type: 'custom' | 'solid') => void;
+  setBackgroundValue: (value: string) => void;
+}
+
+const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({ setBackgroundType, setBackgroundValue }) => {
   const [selectedBackground, setSelectedBackground] = useState<string>('solid');
+  const [inputValue, setInputValue] = useState<string>('');
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedBackground(event.target.value);
+    const { value } = event.target;
+    setSelectedBackground(value);
+    setBackgroundType(value as 'custom' | 'solid');
+    if (value === 'solid') {
+      setBackgroundValue('#000000');
+    }
+  };
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(event.target.value);
+  };
+
+  const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      setBackgroundType('custom');
+      setBackgroundValue(inputValue);
+      console.log('Background value set to:', inputValue);
+    }
   };
 
   return (
@@ -26,8 +49,8 @@ const BackgroundSettings: React.FC = () => {
           <input
             type="radio"
             name="background"
-            value="unsplash"
-            checked={selectedBackground === 'unsplash'}
+            value="custom"
+            checked={selectedBackground === 'custom'}
             onChange={handleRadioChange}
           />
           Unsplash
@@ -40,7 +63,13 @@ const BackgroundSettings: React.FC = () => {
           <ColorBox color="green" />
         </ColorBoxContainer>
       ) : (
-        <TextInput type="text" placeholder="Enter search query" />
+        <TextInput 
+          type="text" 
+          placeholder="Enter search query" 
+          value={inputValue} 
+          onChange={handleInputChange} 
+          onKeyDown={handleInputKeyDown}
+        />
       )}
     </BackgroundSettingsContainer>
   );

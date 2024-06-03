@@ -48,8 +48,6 @@ const TodoItem: React.FC<TodoItemProps> = ({ id, todo, completed, onToggle, onDe
     setEditText(e.target.value);
   };
 
-  console.log('Rendering TodoItem:', { todo, completed, isEditing });
-
   return (
     <StyledTodoItem
       ref={setNodeRef}

@@ -13,6 +13,8 @@ const App: React.FC = () => {
   const [todoLists, setTodoLists] = useState<TodoListType[]>([]);
   const [isSidebarOpen, setSidebarOpen] = useState<boolean>(false);
   const [username, setUsername] = useState<string>('Stranger');
+  const [backgroundType, setBackgroundType] = useState<'custom' | 'solid'>('solid');
+  const [backgroundValue, setBackgroundValue] = useState<string>('#2f2c5c');
 
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_BACKEND_URL}/todos`)
@@ -58,8 +60,17 @@ const App: React.FC = () => {
         />
       </Helmet>
       <GlobalStyles />
-      <Background type="solid">
-        <Sidebar addTodoList={addTodoList} isOpen={isSidebarOpen} onClose={closeSidebar} onOpen={openSidebar} setUsername={setUsername} username={username} />
+      <Background type={backgroundType} value={backgroundValue}>
+        <Sidebar 
+          addTodoList={addTodoList} 
+          isOpen={isSidebarOpen} 
+          onClose={closeSidebar} 
+          onOpen={openSidebar} 
+          setUsername={setUsername} 
+          username={username}
+          setBackgroundType={setBackgroundType}
+          setBackgroundValue={setBackgroundValue}
+        />
         <AppContainer>
           <Header>
             <LocationWeather />
