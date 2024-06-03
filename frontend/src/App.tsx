@@ -4,10 +4,18 @@ import FocusCenter from './components/FocusCenter/FocusCenter';
 import { GlobalStyles, AppContainer, Header } from './styled-components/GlobalStyles';
 import { Helmet } from 'react-helmet';
 import Background from './components/Background/Background';
-import axios from 'axios';
 import Sidebar from './components/Sidebar/Sidebar';
 import JokeWidget from './components/JokeWidget';
 import LocationWeather from './components/LocationWeather/LocationWeather';
+import {
+  fetchTodoLists,
+  fetchUserProfile,
+  addTodoList,
+  removeTodoList,
+  closeSidebar,
+  openSidebar,
+  logRefreshTriggerChange
+} from './utils/appFunctions';
 
 const App: React.FC = () => {
   const [todoLists, setTodoLists] = useState<TodoListType[]>([]);
@@ -19,48 +27,15 @@ const App: React.FC = () => {
   const [refreshTrigger, setRefreshTrigger] = useState<number>(0);
 
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_BACKEND_URL}/todos`)
-      .then(response => {
-        setTodoLists(response.data);
-      })
-      .catch(error => {
-        console.error('There was an error fetching the todo lists!', error);
-      });
+    fetchTodoLists(setTodoLists);
   }, []);
 
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_BACKEND_URL}/userprofile`)
-      .then(response => {
-        const { userName, backgroundPreference, customBackgroundColors } = response.data;
-        setUsername(userName || '');
-        setBackgroundType(backgroundPreference.type);
-        setBackgroundValue(backgroundPreference.value);
-        setCustomBackgroundColors(customBackgroundColors);
-      })
-      .catch(error => {
-        console.error('There was an error fetching the user profile!', error);
-      });
+    fetchUserProfile(setUsername, setBackgroundType, setBackgroundValue, setCustomBackgroundColors);
   }, []);
 
-  const addTodoList = () => {
-    axios.post(`${process.env.REACT_APP_BACKEND_URL}/todos`)
-      .then(response => {
-        setTodoLists([...todoLists, response.data]);
-      })
-      .catch(error => {
-        console.error('There was an error adding the todo list!', error);
-      });
-  };
-
-  const removeTodoList = (listId: string) => {
-    setTodoLists((prevLists) => prevLists.filter((list) => list.id !== listId));
-  };
-
-  const closeSidebar = () => setSidebarOpen(false);
-  const openSidebar = () => setSidebarOpen(true);
-
   useEffect(() => {
-    console.log('App - refreshTrigger changed:', refreshTrigger);
+    logRefreshTriggerChange(refreshTrigger);
   }, [refreshTrigger]);
 
   return (
@@ -82,10 +57,10 @@ const App: React.FC = () => {
       <GlobalStyles />
       <Background type={backgroundType} value={backgroundValue} refreshTrigger={refreshTrigger}>
         <Sidebar
-          addTodoList={addTodoList}
+          addTodoList={() => addTodoList(todoLists, setTodoLists)}
           isOpen={isSidebarOpen}
-          onClose={closeSidebar}
-          onOpen={openSidebar}
+          onClose={() => closeSidebar(setSidebarOpen)}
+          onOpen={() => openSidebar(setSidebarOpen)}
           setUsername={setUsername}
           username={username}
           setBackgroundType={setBackgroundType}
@@ -104,8 +79,8 @@ const App: React.FC = () => {
             {todoLists.length > 0 && (
               <TodoList
                 todoLists={todoLists}
-                removeTodoList={removeTodoList}
-                addTodoList={addTodoList}
+                removeTodoList={(listId) => removeTodoList(listId, setTodoLists)}
+                addTodoList={() => addTodoList(todoLists, setTodoLists)}
               />
             )}
           </div>
