@@ -5,6 +5,7 @@ import BlockIcon from '@mui/icons-material/Block';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import TodoListDropdownMenu from './TodoListDropdownMenu';
+import { TodoListType } from './TodoList';
 
 interface TodoListTitleProps {
   title: string;
@@ -19,6 +20,7 @@ interface TodoListTitleProps {
   addTodoList: () => void;
   todoLists: { id: string, title: string }[];
   setActiveListIndex: (index: number) => void;
+  setTodoLists: React.Dispatch<React.SetStateAction<TodoListType[]>>;
 }
 
 const TodoListTitle: React.FC<TodoListTitleProps> = ({
@@ -33,7 +35,8 @@ const TodoListTitle: React.FC<TodoListTitleProps> = ({
   deleteTodoList,
   addTodoList,
   todoLists,
-  setActiveListIndex
+  setActiveListIndex,
+  setTodoLists
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 

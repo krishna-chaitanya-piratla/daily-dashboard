@@ -34,9 +34,10 @@ interface TodoListProps {
   todoLists: TodoListType[];
   removeTodoList: (listId: string) => void;
   addTodoList: () => void;
+  setTodoLists: React.Dispatch<React.SetStateAction<TodoListType[]>>;
 }
 
-const TodoList: React.FC<TodoListProps> = ({ todoLists, removeTodoList, addTodoList }) => {
+const TodoList: React.FC<TodoListProps> = ({ todoLists, removeTodoList, addTodoList, setTodoLists }) => {
   const [activeListIndex, setActiveListIndex] = useState(0);
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodo, setNewTodo] = useState<string>('');
@@ -97,12 +98,13 @@ const TodoList: React.FC<TodoListProps> = ({ todoLists, removeTodoList, addTodoL
           setIsEditingTitle={setIsEditingTitle}
           toggleMinimize={toggleMinimize}
           handleTitleChange={(e) => handleTitleChange(e, setTitle)}
-          handleTitleBlur={() => handleTitleBlur(title, todoLists[activeListIndex].id, setIsEditingTitle)}
+          handleTitleBlur={() => handleTitleBlur(title, todoLists[activeListIndex].id, setIsEditingTitle, todoLists, setTodoLists)}
           clearTodos={() => clearTodos(todoLists[activeListIndex].id, setTodos)}
           deleteTodoList={handleDeleteTodoList}
           addTodoList={addTodoList}
           todoLists={todoLists}
           setActiveListIndex={setActiveListIndex}
+          setTodoLists={setTodoLists}
         />
         {!isMinimized && (
           <>

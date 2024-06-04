@@ -81,6 +81,7 @@ const App: React.FC = () => {
                 todoLists={todoLists}
                 removeTodoList={(listId) => removeTodoList(listId, setTodoLists)}
                 addTodoList={() => addTodoList(todoLists, setTodoLists)}
+                setTodoLists={setTodoLists}
               />
             )}
           </div>

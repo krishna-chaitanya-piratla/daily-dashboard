@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Todo } from '../components/TodoList/TodoList'; // Adjust the import path as necessary
+import { Todo, TodoListType } from '../components/TodoList/TodoList'; // Adjust the import path as necessary
 
 export const addTodo = async (
   newTodo: string,
@@ -73,16 +73,16 @@ export const deleteTodo = async (
 };
 
 export const clearTodos = async (
-    listId: string,
-    setTodos: React.Dispatch<React.SetStateAction<Todo[]>>
-  ) => {
-    try {
-      await axios.put(`${process.env.REACT_APP_BACKEND_URL}/todos/${listId}/clear`);
-      setTodos([]);
-    } catch (error) {
-      console.error('There was an error clearing the todos!', error);
-    }
-  };
+  listId: string,
+  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>
+) => {
+  try {
+    await axios.put(`${process.env.REACT_APP_BACKEND_URL}/todos/${listId}/clear`);
+    setTodos([]);
+  } catch (error) {
+    console.error('There was an error clearing the todos!', error);
+  }
+};
 
 export const handleTitleChange = (
   e: React.ChangeEvent<HTMLInputElement>,
@@ -94,53 +94,62 @@ export const handleTitleChange = (
 export const handleTitleBlur = async (
   title: string,
   listId: string,
-  setIsEditingTitle: React.Dispatch<React.SetStateAction<boolean>>
+  setIsEditingTitle: React.Dispatch<React.SetStateAction<boolean>>,
+  todoLists: TodoListType[],
+  setTodoLists: React.Dispatch<React.SetStateAction<TodoListType[]>>
 ) => {
   setIsEditingTitle(false);
   try {
     await axios.put(`${process.env.REACT_APP_BACKEND_URL}/todos/${listId}/title`, { title });
+    
+    // Update the title in the todoLists state
+    setTodoLists(prevTodoLists =>
+      prevTodoLists.map(list =>
+        list.id === listId ? { ...list, title } : list
+      )
+    );
   } catch (error) {
     console.error('There was an error updating the title!', error);
   }
 };
 
 export const editTodo = async (
-    todoId: string,
-    newText: string,
-    todos: Todo[],
-    listId: string,
-    setTodos: React.Dispatch<React.SetStateAction<Todo[]>>
-  ) => {
-    const todo = todos.find(t => t.id === todoId);
-    if (todo) {
-      const updatedTodo = { ...todo, text: newText };
-      try {
-        const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/todos/${listId}/${todoId}`, updatedTodo);
-        setTodos((prevTodos) => {
-          const updatedTodos = prevTodos.map(t => (t.id === todoId ? response.data : t)).sort((a, b) => Number(a.completed) - Number(b.completed));
-          return updatedTodos;
-        });
-      } catch (error) {
-        console.error('There was an error updating the todo!', error);
-      }
-    }
-  };
-  
-  export const deleteTodoList = async (
-    listId: string
-  ) => {
+  todoId: string,
+  newText: string,
+  todos: Todo[],
+  listId: string,
+  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>
+) => {
+  const todo = todos.find(t => t.id === todoId);
+  if (todo) {
+    const updatedTodo = { ...todo, text: newText };
     try {
-      await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/todos/${listId}`);
-      // You can also add any additional cleanup logic here if necessary
+      const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/todos/${listId}/${todoId}`, updatedTodo);
+      setTodos((prevTodos) => {
+        const updatedTodos = prevTodos.map(t => (t.id === todoId ? response.data : t)).sort((a, b) => Number(a.completed) - Number(b.completed));
+        return updatedTodos;
+      });
     } catch (error) {
-      console.error('There was an error deleting the todo list!', error);
+      console.error('There was an error updating the todo!', error);
     }
-  };
+  }
+};
 
-  export const reorderTodos = async (listId: string, todoIds: string[]) => {
-    try {
-      await axios.put(`${process.env.REACT_APP_BACKEND_URL}/todos/${listId}/reorder`, { todoIds });
-    } catch (error) {
-      console.error('There was an error reordering the todos!', error);
-    }
-  };
+export const deleteTodoList = async (
+  listId: string
+) => {
+  try {
+    await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/todos/${listId}`);
+    // You can also add any additional cleanup logic here if necessary
+  } catch (error) {
+    console.error('There was an error deleting the todo list!', error);
+  }
+};
+
+export const reorderTodos = async (listId: string, todoIds: string[]) => {
+  try {
+    await axios.put(`${process.env.REACT_APP_BACKEND_URL}/todos/${listId}/reorder`, { todoIds });
+  } catch (error) {
+    console.error('There was an error reordering the todos!', error);
+  }
+};
