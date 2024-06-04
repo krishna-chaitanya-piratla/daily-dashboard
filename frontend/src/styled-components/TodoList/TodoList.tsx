@@ -9,7 +9,7 @@ export const StyledTodoListWrapper = styled.div`
 
 export const StyledTodoListContainer = styled.div`
   width: 30rem;
-  max-height: 20rem;
+  max-height: 35rem;
   overflow: hidden; /* Prevent overflow for the entire container */
   margin: 20px auto;
   text-align: center;

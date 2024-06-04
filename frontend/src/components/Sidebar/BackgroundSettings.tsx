@@ -4,6 +4,20 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import axios from 'axios';
 import { BackgroundSettingsContainer, RadioButtonContainer, ColorBoxContainer, ColorBox, StyledUnsplashInput, SaveButton, RefreshButton, CustomColorBox, RowContainer, RowLabel, StyledSaveColorButton, AddIconWrapper, ColorSelectionDiv } from '../../styled-components/Sidebar/BackgroundSettings';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import {
+  presetColors,
+  handleRadioChange,
+  handleSolidColorBoxClick,
+  handleUnsplashInputChange,
+  handleUnsplashInputKeyDown,
+  handleSaveButtonClick,
+  handleRefreshButtonClick,
+  handleClickOutside,
+  handleCustomColorBoxClick,
+  handleColorChangeComplete,
+  handleSaveCustomColor,
+  isCustomColorSelected
+} from '../../utils/sidebarFunctions';
 
 interface BackgroundSettingsProps {
   setBackgroundType: (type: 'custom' | 'solid') => void;
@@ -14,13 +28,6 @@ interface BackgroundSettingsProps {
   customBackgroundColors: string[];
   setCustomBackgroundColors: (colors: string[]) => void;
 }
-
-const presetColors = {
-  color2: '#2F2C5C',
-  color1: '#7C0902',
-  color3: '#3E4125',
-  color4: '#121010',
-};
 
 const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
   setBackgroundType,
@@ -50,139 +57,12 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
     }
   }, [backgroundType, backgroundValue]);
 
-  const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    console.log('handleRadioChange', value);
-    setSelectedBackground(value);
-  };
-
-  const handleSolidColorBoxClick = (color: string) => {
-    console.log('handleSolidColorBoxClick', color);
-    setSolidValue(color);
-    setBackgroundType('solid');
-    setBackgroundValue(color);
-
-    // Call backend to save the background preference
-    axios.put(`${process.env.REACT_APP_BACKEND_URL}/userprofile/background`, {
-      type: 'solid',
-      value: color
-    })
-    .then(response => {
-      console.log('Background preference updated:', response.data);
-    })
-    .catch(error => {
-      console.error('Error updating background preference:', error);
-    });
-  };
-
-  const handleUnsplashInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('handleUnsplashInputChange', event.target.value);
-    setUnsplashValue(event.target.value);
-    setIsUnsplashValueChanged(event.target.value !== backgroundValue);
-  };
-
-  const handleUnsplashInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      console.log('handleUnsplashInputKeyDown - Enter pressed');
-      setBackgroundType('custom');
-      setBackgroundValue(unsplashValue);
-      setIsUnsplashValueChanged(false);
-
-      // Call backend to save the background preference
-      axios.put(`${process.env.REACT_APP_BACKEND_URL}/userprofile/background`, {
-        type: 'custom',
-        value: unsplashValue
-      })
-      .then(response => {
-        console.log('Background preference updated:', response.data);
-      })
-      .catch(error => {
-        console.error('Error updating background preference:', error);
-      });
-    } else if (event.key === 'Escape') {
-      console.log('handleUnsplashInputKeyDown - Escape pressed');
-      setUnsplashValue(backgroundValue);
-      setIsUnsplashValueChanged(false);
-    }
-  };
-
-  const handleSaveButtonClick = () => {
-    console.log('handleSaveButtonClick');
-    setBackgroundType('custom');
-    setBackgroundValue(unsplashValue);
-    setIsUnsplashValueChanged(false);
-
-    // Call backend to save the background preference
-    axios.put(`${process.env.REACT_APP_BACKEND_URL}/userprofile/background`, {
-      type: 'custom',
-      value: unsplashValue
-    })
-    .then(response => {
-      console.log('Background preference updated:', response.data);
-    })
-    .catch(error => {
-      console.error('Error updating background preference:', error);
-    });
-  };
-
-  const handleRefreshButtonClick = () => {
-    console.log('handleRefreshButtonClick');
-    setRefreshTrigger((prev: number) => {
-      const newValue = prev + 1;
-      console.log('setRefreshTrigger', newValue);
-      return newValue;
-    });
-    console.log('Background refreshed with value:', unsplashValue);
-  };
-
-  const handleClickOutside = (event: MouseEvent) => {
-    if (
-      colorPickerRef.current &&
-      !colorPickerRef.current.contains(event.target as Node) &&
-      (!inputRef.current || !inputRef.current.contains(event.target as Node))
-    ) {
-      console.log('handleClickOutside');
-      setIsColorPickerOpen(false);
-    }
-  };
-
   useEffect(() => {
-    console.log('useEffect - add event listener for mousedown');
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('mousedown', (event) => handleClickOutside(event, colorPickerRef, inputRef, setIsColorPickerOpen));
     return () => {
-      console.log('useEffect - remove event listener for mousedown');
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('mousedown', (event) => handleClickOutside(event, colorPickerRef, inputRef, setIsColorPickerOpen));
     };
   }, []);
-
-  const handleCustomColorBoxClick = () => {
-    setIsColorPickerOpen(!isColorPickerOpen);
-  };
-
-  const handleColorChangeComplete = (color: any) => {
-    const selectedColor = color.hex;
-    setCustomColor(selectedColor);
-    console.log('Custom color selected:', selectedColor);
-  };
-
-  const handleSaveCustomColor = () => {
-    const updatedCustomColors = [...customBackgroundColors, customColor];
-    setCustomBackgroundColors(updatedCustomColors);
-    setIsColorPickerOpen(false);
-
-    // Call backend to save the custom background colors
-    axios.put(`${process.env.REACT_APP_BACKEND_URL}/userprofile/custombackgroundcolors`, {
-      customBackgroundColors: updatedCustomColors
-    })
-    .then(response => {
-      console.log('Custom background colors updated:', response.data);
-    })
-    .catch(error => {
-      console.error('Error updating custom background colors:', error);
-    });
-  };
-
-  const isCustomColorSelected = backgroundType === 'solid' && !Object.values(presetColors).includes(backgroundValue);
 
   return (
     <BackgroundSettingsContainer>
@@ -194,7 +74,7 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
             name="background"
             value="solid"
             checked={selectedBackground === 'solid'}
-            onChange={handleRadioChange}
+            onChange={(event) => handleRadioChange(event, setSelectedBackground)}
           />
           Solid
         </label>
@@ -204,7 +84,7 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
             name="background"
             value="custom"
             checked={selectedBackground === 'custom'}
-            onChange={handleRadioChange}
+            onChange={(event) => handleRadioChange(event, setSelectedBackground)}
           />
           Unsplash
         </label>
@@ -219,7 +99,7 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
                   key={index}
                   color={color}
                   isSelected={solidValue === color}
-                  onClick={() => handleSolidColorBoxClick(color)}
+                  onClick={() => handleSolidColorBoxClick(color, setSolidValue, setBackgroundType, setBackgroundValue)}
                 />
               ))}
             </ColorBoxContainer>
@@ -232,11 +112,11 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
                   key={index}
                   color={color}
                   isSelected={solidValue === color}
-                  onClick={() => handleSolidColorBoxClick(color)}
+                  onClick={() => handleSolidColorBoxClick(color, setSolidValue, setBackgroundType, setBackgroundValue)}
                 />
               ))}
               <AddIconWrapper>
-                <AddCircleOutlineIcon onClick={handleCustomColorBoxClick} />
+                <AddCircleOutlineIcon onClick={() => handleCustomColorBoxClick(isColorPickerOpen, setIsColorPickerOpen)} />
               </AddIconWrapper>
             </ColorBoxContainer>
           </RowContainer>
@@ -248,13 +128,13 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
             type="text" 
             placeholder="Enter search query" 
             value={unsplashValue} 
-            onChange={handleUnsplashInputChange} 
-            onKeyDown={handleUnsplashInputKeyDown}
+            onChange={(event) => handleUnsplashInputChange(event, setUnsplashValue, setIsUnsplashValueChanged, backgroundValue)} 
+            onKeyDown={(event) => handleUnsplashInputKeyDown(event, unsplashValue, backgroundValue, setUnsplashValue, setIsUnsplashValueChanged, setBackgroundType, setBackgroundValue)}
           />
           {isUnsplashValueChanged ? (
-            <SaveButton onClick={handleSaveButtonClick} />
+            <SaveButton onClick={() => handleSaveButtonClick(unsplashValue, setBackgroundType, setBackgroundValue, setIsUnsplashValueChanged)} />
           ) : unsplashValue && (
-            <RefreshButton as={RefreshIcon} onClick={handleRefreshButtonClick} />
+            <RefreshButton as={RefreshIcon} onClick={() => handleRefreshButtonClick(unsplashValue, setRefreshTrigger)} />
           )}
         </div>
       )}
@@ -262,9 +142,9 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
         <div ref={colorPickerRef}>
           <SketchPicker
             color={customColor}
-            onChangeComplete={handleColorChangeComplete}
+            onChangeComplete={(color) => handleColorChangeComplete(color, setCustomColor)}
           />
-          <StyledSaveColorButton onClick={handleSaveCustomColor}>Save Color</StyledSaveColorButton>
+          <StyledSaveColorButton onClick={() => handleSaveCustomColor(customColor, customBackgroundColors, setCustomBackgroundColors, setIsColorPickerOpen)}>Save Color</StyledSaveColorButton>
         </div>
       )}
     </BackgroundSettingsContainer>

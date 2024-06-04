@@ -20,7 +20,7 @@ import {
 const App: React.FC = () => {
   const [todoLists, setTodoLists] = useState<TodoListType[]>([]);
   const [isSidebarOpen, setSidebarOpen] = useState<boolean>(false);
-  const [username, setUsername] = useState<string>('Stranger');
+  const [username, setUsername] = useState<string>('');
   const [backgroundType, setBackgroundType] = useState<'custom' | 'solid'>('solid');
   const [backgroundValue, setBackgroundValue] = useState<string>('#2f2c5c');
   const [customBackgroundColors, setCustomBackgroundColors] = useState<string[]>([]);

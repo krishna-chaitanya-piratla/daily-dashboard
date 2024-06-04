@@ -3,6 +3,14 @@ import axios from 'axios';
 import { InputContainer, StyledUserName, StyledUsernameEditIcon, HiddenTextSpan, StyledCheckIcon, StyledClearIcon } from '../../styled-components/Sidebar/UserName';
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
+import {
+  handleUsernameChange,
+  handleEditClick,
+  handleSaveClick,
+  handleClearClick,
+  handleKeyPress,
+  handleDoubleClick
+} from '../../utils/sidebarFunctions';
 
 interface UserNameProps {
   username: string;
@@ -32,13 +40,13 @@ const UserName: React.FC<UserNameProps> = ({ username, setUsername }) => {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-        handleClearClick();
+        handleClearClick(username, setTempUsername, setIsEditing);
       }
     };
 
     const handleEscapePress = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        handleClearClick();
+        handleClearClick(username, setTempUsername, setIsEditing);
       }
     };
 
@@ -56,59 +64,14 @@ const UserName: React.FC<UserNameProps> = ({ username, setUsername }) => {
     };
   }, [isEditing]);
 
-  const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTempUsername(event.target.value);
-  };
-
-  const handleEditClick = () => {
-    setTempUsername(username);
-    setIsEditing(true);
-  };
-
-  const handleSaveClick = () => {
-    setUsername(tempUsername);
-    axios.put(`${process.env.REACT_APP_BACKEND_URL}/userprofile/username`, { userName: tempUsername })
-      .then(response => {
-        console.log('Username updated successfully:', response.data);
-      })
-      .catch(error => {
-        console.error('There was an error updating the username:', error);
-      });
-    setIsEditing(false);
-  };
-
-  const handleClearClick = () => {
-    setTempUsername(username);
-    setIsEditing(false);
-  };
-
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      setUsername(tempUsername);
-      axios.put(`${process.env.REACT_APP_BACKEND_URL}/userprofile/username`, { userName: tempUsername })
-        .then(response => {
-          console.log('Username updated successfully:', response.data);
-        })
-        .catch(error => {
-          console.error('There was an error updating the username:', error);
-        });
-      setIsEditing(false);
-    }
-  };
-
-  const handleDoubleClick = () => {
-    setTempUsername(username);
-    setIsEditing(true);
-  };
-
   return (
     <InputContainer ref={containerRef}>
       <StyledUserName
         type="text"
         value={tempUsername}
-        onChange={handleUsernameChange}
-        onKeyDown={handleKeyPress}
-        onDoubleClick={handleDoubleClick}
+        onChange={(event) => handleUsernameChange(event, setTempUsername)}
+        onKeyDown={(event) => handleKeyPress(event, tempUsername, setUsername, setIsEditing)}
+        onDoubleClick={() => handleDoubleClick(username, setTempUsername, setIsEditing)}
         placeholder={username ? username : "Enter Name..."}
         width={inputWidth}
         isEditing={isEditing}
@@ -117,11 +80,11 @@ const UserName: React.FC<UserNameProps> = ({ username, setUsername }) => {
       />
       {isEditing ? (
         <>
-          <StyledCheckIcon as={CheckIcon} onClick={handleSaveClick} />
-          <StyledClearIcon as={ClearIcon} onClick={handleClearClick} />
+          <StyledCheckIcon as={CheckIcon} onClick={() => handleSaveClick(tempUsername, setUsername, setIsEditing)} />
+          <StyledClearIcon as={ClearIcon} onClick={() => handleClearClick(username, setTempUsername, setIsEditing)} />
         </>
       ) : (
-        <StyledUsernameEditIcon className="edit-icon" onClick={handleEditClick} />
+        <StyledUsernameEditIcon className="edit-icon" onClick={() => handleEditClick(username, setTempUsername, setIsEditing)} />
       )}
       <HiddenTextSpan ref={textSpanRef}>{tempUsername || 'Stranger'}</HiddenTextSpan>
     </InputContainer>
