@@ -17,9 +17,9 @@ interface TodoListTitleProps {
   handleTitleBlur: () => void;
   clearTodos: () => void;
   deleteTodoList?: () => void;
-  addTodoList: () => void;
+  addTodoList: (todoLists: TodoListType[], setTodoLists: React.Dispatch<React.SetStateAction<TodoListType[]>>, setActiveListIndex: React.Dispatch<React.SetStateAction<number>>) => void;
   todoLists: TodoListType[];
-  setActiveListIndex: (index: number) => void;
+  setActiveListIndex: React.Dispatch<React.SetStateAction<number>>;
   setTodoLists: React.Dispatch<React.SetStateAction<TodoListType[]>>;
 }
 
@@ -70,6 +70,7 @@ const TodoListTitle: React.FC<TodoListTitleProps> = ({
         todoLists={todoLists}
         setActiveListIndex={setActiveListIndex}
         addTodoList={addTodoList}
+        setTodoLists={setTodoLists}
       />
       <span className="edit-icon" onClick={() => setIsEditingTitle(true)}>&#x270E;</span>
       <span className="clear-all-icon" onClick={clearTodos}><DeleteIcon /></span>

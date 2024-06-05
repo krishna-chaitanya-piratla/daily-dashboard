@@ -25,6 +25,7 @@ const App: React.FC = () => {
   const [backgroundValue, setBackgroundValue] = useState<string>('#2f2c5c');
   const [customBackgroundColors, setCustomBackgroundColors] = useState<string[]>([]);
   const [refreshTrigger, setRefreshTrigger] = useState<number>(0);
+  const [activeListIndex, setActiveListIndex] = useState<number>(0);
 
   useEffect(() => {
     console.log("Fetching todo lists...");
@@ -64,7 +65,7 @@ const App: React.FC = () => {
       <GlobalStyles />
       <Background type={backgroundType} value={backgroundValue} refreshTrigger={refreshTrigger}>
         <Sidebar
-          addTodoList={() => addTodoList(todoLists, setTodoLists)}
+          addTodoList={() => addTodoList(todoLists, setTodoLists, setActiveListIndex)}
           isOpen={isSidebarOpen}
           onClose={() => closeSidebar(setSidebarOpen)}
           onOpen={() => openSidebar(setSidebarOpen)}
@@ -86,8 +87,10 @@ const App: React.FC = () => {
             <TodoList
               todoLists={todoLists}
               removeTodoList={(listId) => removeTodoList(listId, setTodoLists)}
-              addTodoList={() => addTodoList(todoLists, setTodoLists)}
+              addTodoList={() => addTodoList(todoLists, setTodoLists, setActiveListIndex)}
               setTodoLists={setTodoLists}
+              activeListIndex={activeListIndex}
+              setActiveListIndex={setActiveListIndex}
             />
           </div>
         </AppContainer>

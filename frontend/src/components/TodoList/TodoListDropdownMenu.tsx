@@ -2,14 +2,17 @@ import React, { useState, MouseEvent } from 'react';
 import { StyledMenu, StyledMenuItem, StyledDropDownIcon } from '../../styled-components/TodoList/TodoListDropdownMenu';
 import AddIcon from '@mui/icons-material/Add';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { addTodoList } from '../../utils/appFunctions';
+import { TodoListType } from './TodoList';
 
 interface TodoListDropdownMenuProps {
-  todoLists: { id: string, title: string }[];
-  setActiveListIndex: (index: number) => void;
-  addTodoList: () => void;
+  todoLists: TodoListType[];
+  setActiveListIndex: React.Dispatch<React.SetStateAction<number>>;
+  addTodoList: (todoLists: TodoListType[], setTodoLists: React.Dispatch<React.SetStateAction<TodoListType[]>>, setActiveListIndex: React.Dispatch<React.SetStateAction<number>>) => void;
+  setTodoLists: React.Dispatch<React.SetStateAction<TodoListType[]>>;
 }
 
-const TodoListDropdownMenu: React.FC<TodoListDropdownMenuProps> = ({ todoLists, setActiveListIndex, addTodoList }) => {
+const TodoListDropdownMenu: React.FC<TodoListDropdownMenuProps> = ({ todoLists, setActiveListIndex, addTodoList, setTodoLists }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleClick = (event: MouseEvent<HTMLElement>) => {
@@ -21,6 +24,7 @@ const TodoListDropdownMenu: React.FC<TodoListDropdownMenuProps> = ({ todoLists, 
   };
 
   const handleMenuItemClick = (index: number) => {
+    console.log(`Switching to list at index: ${index}`);
     setActiveListIndex(index);
     handleClose();
   };
@@ -36,7 +40,7 @@ const TodoListDropdownMenu: React.FC<TodoListDropdownMenuProps> = ({ todoLists, 
             {list.title}
           </StyledMenuItem>
         ))}
-        <StyledMenuItem onClick={addTodoList}>
+        <StyledMenuItem onClick={() => addTodoList(todoLists, setTodoLists, setActiveListIndex)}>
           <AddIcon /> Add new To-do list
         </StyledMenuItem>
       </StyledMenu>

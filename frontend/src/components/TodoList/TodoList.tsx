@@ -17,6 +17,7 @@ import {
 } from '../../utils/todoFunctions';
 import { DndContext, closestCenter, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { addTodoList } from '../../utils/appFunctions';
 
 export interface Todo {
   id: string;
@@ -33,15 +34,16 @@ export interface TodoListType {
 interface TodoListProps {
   todoLists: TodoListType[];
   removeTodoList: (listId: string) => void;
-  addTodoList: () => void;
+  addTodoList: (todoLists: TodoListType[], setTodoLists: React.Dispatch<React.SetStateAction<TodoListType[]>>, setActiveListIndex: React.Dispatch<React.SetStateAction<number>>) => void;
   setTodoLists: React.Dispatch<React.SetStateAction<TodoListType[]>>;
+  activeListIndex: number;
+  setActiveListIndex: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const TodoList: React.FC<TodoListProps> = ({ todoLists, removeTodoList, addTodoList, setTodoLists }) => {
-  const [activeListIndex, setActiveListIndex] = useState(0);
+const TodoList: React.FC<TodoListProps> = ({ todoLists, removeTodoList, addTodoList, setTodoLists, activeListIndex, setActiveListIndex }) => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodo, setNewTodo] = useState<string>('');
-  const [title, setTitle] = useState<string>(todoLists[0]?.title || '');
+  const [title, setTitle] = useState<string>(todoLists[activeListIndex]?.title || '');
   const [isEditingTitle, setIsEditingTitle] = useState<boolean>(false);
   const [isMinimized, setIsMinimized] = useState<boolean>(false);
 
@@ -53,6 +55,7 @@ const TodoList: React.FC<TodoListProps> = ({ todoLists, removeTodoList, addTodoL
       setTodos([]);
       setTitle('');
     }
+    console.log(`Active list index changed: ${activeListIndex}`);
   }, [activeListIndex, todoLists]);
 
   const handleEditTodo = (todoId: string, newText: string) => {
@@ -110,7 +113,7 @@ const TodoList: React.FC<TodoListProps> = ({ todoLists, removeTodoList, addTodoL
           handleTitleBlur={() => handleTitleBlur(title, todoLists[activeListIndex]?.id || '', setIsEditingTitle, todoLists, setTodoLists)}
           clearTodos={() => clearTodos(todoLists[activeListIndex]?.id || '', setTodos, setTodoLists, todoLists)}
           deleteTodoList={todoLists.length > 0 ? handleDeleteTodoList : undefined}
-          addTodoList={addTodoList}
+          addTodoList={() => addTodoList(todoLists, setTodoLists, setActiveListIndex)}
           todoLists={todoLists}
           setActiveListIndex={setActiveListIndex}
           setTodoLists={setTodoLists}

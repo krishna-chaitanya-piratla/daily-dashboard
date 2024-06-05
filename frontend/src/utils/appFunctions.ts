@@ -32,12 +32,15 @@ export const fetchUserProfile = async (
 
 export const addTodoList = async (
   todoLists: TodoListType[],
-  setTodoLists: React.Dispatch<React.SetStateAction<TodoListType[]>>
+  setTodoLists: React.Dispatch<React.SetStateAction<TodoListType[]>>,
+  setActiveListIndex: React.Dispatch<React.SetStateAction<number>>
 ) => {
   try {
     const newList = { title: 'New Todo List', todos: [] };
     const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/todos`, newList);
-    setTodoLists([...todoLists, response.data]);
+    const newTodoLists = [...todoLists, response.data];
+    setTodoLists(newTodoLists);
+    setActiveListIndex(newTodoLists.length - 1); // Set the active list index to the new list
   } catch (error) {
     console.error('There was an error adding the todo list!', error);
   }
