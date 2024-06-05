@@ -1,9 +1,11 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { StyledHeader, StyledHeaderEditBox } from '../../styled-components/TodoList/TodoListTitle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import BlockIcon from '@mui/icons-material/Block';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import EditIcon from '@mui/icons-material/Edit';
+import CheckIcon from '@mui/icons-material/Check';
 import TodoListDropdownMenu from './TodoListDropdownMenu';
 import { TodoListType } from './TodoList';
 
@@ -39,6 +41,7 @@ const TodoListTitle: React.FC<TodoListTitleProps> = ({
   setTodoLists
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
+  const [currentTitle, setCurrentTitle] = useState(title);
 
   useEffect(() => {
     if (isEditingTitle && inputRef.current) {
@@ -46,6 +49,37 @@ const TodoListTitle: React.FC<TodoListTitleProps> = ({
       inputRef.current.select();
     }
   }, [isEditingTitle]);
+
+  useEffect(() => {
+    setCurrentTitle(title);
+  }, [title]);
+
+  const handleCheckClick = () => {
+    if (currentTitle.trim() === '') {
+      setCurrentTitle(title);
+    } else {
+      handleTitleBlur();
+    }
+    setIsEditingTitle(false);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleCheckClick();
+    } else if (e.key === 'Escape') {
+      setCurrentTitle(title);
+      setIsEditingTitle(false);
+    }
+  };
+
+  const handleBlur = () => {
+    setCurrentTitle(title);
+    setIsEditingTitle(false);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCurrentTitle(e.target.value);
+  };
 
   return (
     <StyledHeader className="handle">
@@ -56,9 +90,10 @@ const TodoListTitle: React.FC<TodoListTitleProps> = ({
         <StyledHeaderEditBox
           ref={inputRef}
           type="text"
-          value={title}
-          onChange={handleTitleChange}
-          onBlur={handleTitleBlur}
+          value={currentTitle}
+          onChange={handleInputChange}
+          onBlur={handleBlur}
+          onKeyDown={handleKeyDown}
           autoFocus
         />
       ) : (
@@ -72,7 +107,15 @@ const TodoListTitle: React.FC<TodoListTitleProps> = ({
         addTodoList={addTodoList}
         setTodoLists={setTodoLists}
       />
-      <span className="edit-icon" onClick={() => setIsEditingTitle(true)}>&#x270E;</span>
+      {isEditingTitle ? (
+        <span className="edit-icon" onClick={handleCheckClick}>
+          <CheckIcon />
+        </span>
+      ) : (
+        <span className="edit-icon" onClick={() => setIsEditingTitle(true)}>
+          <EditIcon />
+        </span>
+      )}
       <span className="clear-all-icon" onClick={clearTodos}><DeleteIcon /></span>
       {deleteTodoList && (
         <span className="delete-list-icon" onClick={deleteTodoList}><BlockIcon /></span>
