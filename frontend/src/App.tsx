@@ -27,16 +27,23 @@ const App: React.FC = () => {
   const [refreshTrigger, setRefreshTrigger] = useState<number>(0);
 
   useEffect(() => {
+    console.log("Fetching todo lists...");
     fetchTodoLists(setTodoLists);
   }, []);
 
   useEffect(() => {
+    console.log("Fetching user profile...");
     fetchUserProfile(setUsername, setBackgroundType, setBackgroundValue, setCustomBackgroundColors);
   }, []);
 
   useEffect(() => {
+    console.log("Refresh trigger changed:", refreshTrigger);
     logRefreshTriggerChange(refreshTrigger);
   }, [refreshTrigger]);
+
+  useEffect(() => {
+    console.log("Todo lists updated:", todoLists);
+  }, [todoLists]);
 
   return (
     <>
@@ -76,14 +83,12 @@ const App: React.FC = () => {
             <LocationWeather />
           </Header>
           <div>
-            {todoLists.length > 0 && (
-              <TodoList
-                todoLists={todoLists}
-                removeTodoList={(listId) => removeTodoList(listId, setTodoLists)}
-                addTodoList={() => addTodoList(todoLists, setTodoLists)}
-                setTodoLists={setTodoLists}
-              />
-            )}
+            <TodoList
+              todoLists={todoLists}
+              removeTodoList={(listId) => removeTodoList(listId, setTodoLists)}
+              addTodoList={() => addTodoList(todoLists, setTodoLists)}
+              setTodoLists={setTodoLists}
+            />
           </div>
         </AppContainer>
         <FocusCenter username={username} />

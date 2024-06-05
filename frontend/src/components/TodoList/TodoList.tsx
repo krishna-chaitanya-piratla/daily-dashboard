@@ -47,18 +47,27 @@ const TodoList: React.FC<TodoListProps> = ({ todoLists, removeTodoList, addTodoL
 
   useEffect(() => {
     if (todoLists.length > 0) {
-      setTodos(todoLists[activeListIndex].todos.sort((a, b) => Number(a.completed) - Number(b.completed)));
-      setTitle(todoLists[activeListIndex].title);
+      setTodos(todoLists[activeListIndex]?.todos.sort((a, b) => Number(a.completed) - Number(b.completed)));
+      setTitle(todoLists[activeListIndex]?.title);
+    } else {
+      setTodos([]);
+      setTitle('');
     }
   }, [activeListIndex, todoLists]);
 
   const handleEditTodo = (todoId: string, newText: string) => {
-    editTodo(todoId, newText, todos, todoLists[activeListIndex].id, setTodos);
+    editTodo(todoId, newText, todos, todoLists[activeListIndex]?.id || '', setTodos);
   };
 
   const handleDeleteTodoList = async () => {
+    const nextIndex = (activeListIndex + 1) % todoLists.length;
     await deleteTodoList(todoLists[activeListIndex].id);
     removeTodoList(todoLists[activeListIndex].id);
+    if (todoLists.length > 1) {
+      setActiveListIndex(nextIndex);
+    } else {
+      setActiveListIndex(0);
+    }
   };
 
   const toggleMinimize = () => {
@@ -84,7 +93,7 @@ const TodoList: React.FC<TodoListProps> = ({ todoLists, removeTodoList, addTodoL
       setTodos(updatedTodos);
 
       // Save the updated order to the backend
-      await reorderTodos(todoLists[activeListIndex].id, updatedTodos.map((todo) => todo.id));
+      await reorderTodos(todoLists[activeListIndex]?.id || '', updatedTodos.map((todo) => todo.id));
     }
   };
 
@@ -92,51 +101,57 @@ const TodoList: React.FC<TodoListProps> = ({ todoLists, removeTodoList, addTodoL
     <StyledTodoListWrapper>
       <StyledTodoListContainer>
         <TodoListTitle
-          title={title}
+          title={title || "Todos"}
           isEditingTitle={isEditingTitle}
           isMinimized={isMinimized}
           setIsEditingTitle={setIsEditingTitle}
           toggleMinimize={toggleMinimize}
           handleTitleChange={(e) => handleTitleChange(e, setTitle)}
-          handleTitleBlur={() => handleTitleBlur(title, todoLists[activeListIndex].id, setIsEditingTitle, todoLists, setTodoLists)}
-          clearTodos={() => clearTodos(todoLists[activeListIndex].id, setTodos)}
-          deleteTodoList={handleDeleteTodoList}
+          handleTitleBlur={() => handleTitleBlur(title, todoLists[activeListIndex]?.id || '', setIsEditingTitle, todoLists, setTodoLists)}
+          clearTodos={() => clearTodos(todoLists[activeListIndex]?.id || '', setTodos)}
+          deleteTodoList={todoLists.length > 0 ? handleDeleteTodoList : undefined}
           addTodoList={addTodoList}
           todoLists={todoLists}
           setActiveListIndex={setActiveListIndex}
           setTodoLists={setTodoLists}
         />
-        {!isMinimized && (
-          <>
-            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-              <SortableContext items={todos} strategy={verticalListSortingStrategy}>
-                <div className="todo-items">
-                  {todos.map((todo, index) => (
-                    <TodoItem
-                      key={todo.id}
-                      id={todo.id}
-                      todo={todo.text}
-                      completed={todo.completed}
-                      onToggle={() => toggleTodo(todo.id, todos, todoLists[activeListIndex].id, setTodos)}
-                      onDelete={() => deleteTodo(todo.id, todos, todoLists[activeListIndex].id, setTodos)}
-                      onEdit={(newText) => handleEditTodo(todo.id, newText)}
-                      isEditingTitle={isEditingTitle}
-                    />
-                  ))}
-                </div>
-              </SortableContext>
-            </DndContext>
-            <StyledTodoInputContainer isEditingTitle={isEditingTitle}>
-              <TodoInput
-                type="text"
-                value={newTodo}
-                onChange={(e) => setNewTodo(e.target.value)}
-                onKeyDown={(event) => handleKeyDown(event, newTodo, todoLists[activeListIndex].id, setTodos, setNewTodo)}
-                placeholder="Add a new to-do"
-                disabled={isEditingTitle}
-              />
-            </StyledTodoInputContainer>
-          </>
+        {todoLists.length === 0 ? (
+          <div>
+            <p>No todos available. Please add a new todo list.</p>
+          </div>
+        ) : (
+          !isMinimized && (
+            <>
+              <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                <SortableContext items={todos} strategy={verticalListSortingStrategy}>
+                  <div className="todo-items">
+                    {todos.map((todo, index) => (
+                      <TodoItem
+                        key={todo.id}
+                        id={todo.id}
+                        todo={todo.text}
+                        completed={todo.completed}
+                        onToggle={() => toggleTodo(todo.id, todos, todoLists[activeListIndex]?.id || '', setTodos)}
+                        onDelete={() => deleteTodo(todo.id, todos, todoLists[activeListIndex]?.id || '', setTodos)}
+                        onEdit={(newText) => handleEditTodo(todo.id, newText)}
+                        isEditingTitle={isEditingTitle}
+                      />
+                    ))}
+                  </div>
+                </SortableContext>
+              </DndContext>
+              <StyledTodoInputContainer isEditingTitle={isEditingTitle}>
+                <TodoInput
+                  type="text"
+                  value={newTodo}
+                  onChange={(e) => setNewTodo(e.target.value)}
+                  onKeyDown={(event) => handleKeyDown(event, newTodo, todoLists[activeListIndex]?.id || '', setTodos, setNewTodo)}
+                  placeholder="Add a new to-do"
+                  disabled={isEditingTitle}
+                />
+              </StyledTodoInputContainer>
+            </>
+          )
         )}
       </StyledTodoListContainer>
     </StyledTodoListWrapper>
