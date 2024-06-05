@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { StyledHeader, StyledHeaderEditBox } from '../../styled-components/TodoList/TodoListTitle';
+import ClearIcon from '@mui/icons-material/Clear';
 import DeleteIcon from '@mui/icons-material/Delete';
 import BlockIcon from '@mui/icons-material/Block';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
@@ -108,17 +109,22 @@ const TodoListTitle: React.FC<TodoListTitleProps> = ({
         setTodoLists={setTodoLists}
       />
       {isEditingTitle ? (
-        <span className="edit-icon" onClick={handleCheckClick}>
-          <CheckIcon />
-        </span>
+        <>
+          <span className="edit-icon" onClick={handleCheckClick}>
+            <CheckIcon />
+          </span>
+          <span className="clear-all-icon" onClick={() => setIsEditingTitle(false)}><ClearIcon /></span>
+        </>
       ) : (
-        <span className="edit-icon" onClick={() => setIsEditingTitle(true)}>
-          <EditIcon />
-        </span>
-      )}
-      <span className="clear-all-icon" onClick={clearTodos}><DeleteIcon /></span>
-      {deleteTodoList && (
-        <span className="delete-list-icon" onClick={deleteTodoList}><BlockIcon /></span>
+        <>
+          <span className="edit-icon" onClick={() => setIsEditingTitle(true)}>
+            <EditIcon />
+          </span>
+          <span className="clear-all-icon" onClick={clearTodos}><DeleteIcon /></span>
+          {deleteTodoList && (
+            <span className="delete-list-icon" onClick={deleteTodoList}><BlockIcon /></span>
+          )}
+        </>
       )}
     </StyledHeader>
   );
