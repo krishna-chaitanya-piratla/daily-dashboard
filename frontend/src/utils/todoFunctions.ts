@@ -5,7 +5,9 @@ export const addTodo = async (
   newTodo: string,
   listId: string,
   setTodos: React.Dispatch<React.SetStateAction<Todo[]>>,
-  setNewTodo: React.Dispatch<React.SetStateAction<string>>
+  setNewTodo: React.Dispatch<React.SetStateAction<string>>,
+  setTodoLists: React.Dispatch<React.SetStateAction<TodoListType[]>>,
+  todoLists: TodoListType[]
 ) => {
   if (newTodo.trim()) {
     const todo = { text: newTodo, completed: false };
@@ -16,6 +18,13 @@ export const addTodo = async (
         return updatedTodos;
       });
       setNewTodo('');
+      
+      // Update the todoLists state
+      setTodoLists(prevTodoLists =>
+        prevTodoLists.map(list =>
+          list.id === listId ? { ...list, todos: [...list.todos, response.data] } : list
+        )
+      );
     } catch (error) {
       console.error('There was an error adding the todo!', error);
     }
@@ -27,10 +36,12 @@ export const handleKeyDown = (
   newTodo: string,
   listId: string,
   setTodos: React.Dispatch<React.SetStateAction<Todo[]>>,
-  setNewTodo: React.Dispatch<React.SetStateAction<string>>
+  setNewTodo: React.Dispatch<React.SetStateAction<string>>,
+  setTodoLists: React.Dispatch<React.SetStateAction<TodoListType[]>>,
+  todoLists: TodoListType[]
 ) => {
   if (event.key === 'Enter') {
-    addTodo(newTodo, listId, setTodos, setNewTodo);
+    addTodo(newTodo, listId, setTodos, setNewTodo, setTodoLists, todoLists);
   }
 };
 
@@ -38,7 +49,9 @@ export const toggleTodo = async (
   todoId: string,
   todos: Todo[],
   listId: string,
-  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>
+  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>,
+  setTodoLists: React.Dispatch<React.SetStateAction<TodoListType[]>>,
+  todoLists: TodoListType[]
 ) => {
   const todo = todos.find(t => t.id === todoId);
   if (todo) {
@@ -49,6 +62,13 @@ export const toggleTodo = async (
         const updatedTodos = prevTodos.map(t => (t.id === todoId ? response.data : t)).sort((a, b) => Number(a.completed) - Number(b.completed));
         return updatedTodos;
       });
+
+      // Update the todoLists state
+      setTodoLists(prevTodoLists =>
+        prevTodoLists.map(list =>
+          list.id === listId ? { ...list, todos: list.todos.map(t => t.id === todoId ? response.data : t) } : list
+        )
+      );
     } catch (error) {
       console.error('There was an error updating the todo!', error);
     }
@@ -59,7 +79,9 @@ export const deleteTodo = async (
   todoId: string,
   todos: Todo[],
   listId: string,
-  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>
+  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>,
+  setTodoLists: React.Dispatch<React.SetStateAction<TodoListType[]>>,
+  todoLists: TodoListType[]
 ) => {
   try {
     await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/todos/${listId}/${todoId}`);
@@ -67,6 +89,13 @@ export const deleteTodo = async (
       const updatedTodos = prevTodos.filter(t => t.id !== todoId);
       return updatedTodos;
     });
+
+    // Update the todoLists state
+    setTodoLists(prevTodoLists =>
+      prevTodoLists.map(list =>
+        list.id === listId ? { ...list, todos: list.todos.filter(t => t.id !== todoId) } : list
+      )
+    );
   } catch (error) {
     console.error('There was an error deleting the todo!', error);
   }
@@ -74,11 +103,20 @@ export const deleteTodo = async (
 
 export const clearTodos = async (
   listId: string,
-  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>
+  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>,
+  setTodoLists: React.Dispatch<React.SetStateAction<TodoListType[]>>,
+  todoLists: TodoListType[]
 ) => {
   try {
     await axios.put(`${process.env.REACT_APP_BACKEND_URL}/todos/${listId}/clear`);
     setTodos([]);
+
+    // Update the todoLists state
+    setTodoLists(prevTodoLists =>
+      prevTodoLists.map(list =>
+        list.id === listId ? { ...list, todos: [] } : list
+      )
+    );
   } catch (error) {
     console.error('There was an error clearing the todos!', error);
   }
@@ -118,7 +156,9 @@ export const editTodo = async (
   newText: string,
   todos: Todo[],
   listId: string,
-  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>
+  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>,
+  setTodoLists: React.Dispatch<React.SetStateAction<TodoListType[]>>,
+  todoLists: TodoListType[]
 ) => {
   const todo = todos.find(t => t.id === todoId);
   if (todo) {
@@ -129,6 +169,13 @@ export const editTodo = async (
         const updatedTodos = prevTodos.map(t => (t.id === todoId ? response.data : t)).sort((a, b) => Number(a.completed) - Number(b.completed));
         return updatedTodos;
       });
+
+      // Update the todoLists state
+      setTodoLists(prevTodoLists =>
+        prevTodoLists.map(list =>
+          list.id === listId ? { ...list, todos: list.todos.map(t => t.id === todoId ? response.data : t) } : list
+        )
+      );
     } catch (error) {
       console.error('There was an error updating the todo!', error);
     }
@@ -146,9 +193,22 @@ export const deleteTodoList = async (
   }
 };
 
-export const reorderTodos = async (listId: string, todoIds: string[]) => {
+export const reorderTodos = async (
+  listId: string,
+  todoIds: string[],
+  setTodoLists: React.Dispatch<React.SetStateAction<TodoListType[]>>,
+  todoLists: TodoListType[]
+) => {
   try {
     await axios.put(`${process.env.REACT_APP_BACKEND_URL}/todos/${listId}/reorder`, { todoIds });
+
+    // Update the todoLists state
+    const updatedTodos = todoIds.map(id => todoLists.find(list => list.id === listId)?.todos.find(todo => todo.id === id)!);
+    setTodoLists(prevTodoLists =>
+      prevTodoLists.map(list =>
+        list.id === listId ? { ...list, todos: updatedTodos } : list
+      )
+    );
   } catch (error) {
     console.error('There was an error reordering the todos!', error);
   }
