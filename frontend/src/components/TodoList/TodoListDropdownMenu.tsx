@@ -2,7 +2,6 @@ import React, { useState, MouseEvent } from 'react';
 import { StyledMenu, StyledMenuItem, StyledDropDownIcon } from '../../styled-components/TodoList/TodoListDropdownMenu';
 import AddIcon from '@mui/icons-material/Add';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { addTodoList } from '../../utils/appFunctions';
 import { TodoListType } from './TodoList';
 
 interface TodoListDropdownMenuProps {
@@ -24,8 +23,12 @@ const TodoListDropdownMenu: React.FC<TodoListDropdownMenuProps> = ({ todoLists, 
   };
 
   const handleMenuItemClick = (index: number) => {
-    console.log(`Switching to list at index: ${index}`);
     setActiveListIndex(index);
+    handleClose();
+  };
+
+  const handleAddTodoList = () => {
+    addTodoList(todoLists, setTodoLists, setActiveListIndex);
     handleClose();
   };
 
@@ -40,7 +43,7 @@ const TodoListDropdownMenu: React.FC<TodoListDropdownMenuProps> = ({ todoLists, 
             {list.title}
           </StyledMenuItem>
         ))}
-        <StyledMenuItem onClick={() => addTodoList(todoLists, setTodoLists, setActiveListIndex)}>
+        <StyledMenuItem onClick={handleAddTodoList}>
           <AddIcon /> Add new To-do list
         </StyledMenuItem>
       </StyledMenu>
