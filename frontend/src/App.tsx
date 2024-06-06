@@ -16,6 +16,7 @@ import {
   openSidebar,
   logRefreshTriggerChange
 } from './utils/appFunctions';
+import CircularProgress from '@mui/material/CircularProgress'; // Import CircularProgress
 
 const App: React.FC = () => {
   const [todoLists, setTodoLists] = useState<TodoListType[]>([]);
@@ -26,16 +27,17 @@ const App: React.FC = () => {
   const [customBackgroundColors, setCustomBackgroundColors] = useState<string[]>([]);
   const [refreshTrigger, setRefreshTrigger] = useState<number>(0);
   const [activeListIndex, setActiveListIndex] = useState<number>(0); // Added this line
+  const [loading, setLoading] = useState<boolean>(true); // Loading state
 
   useEffect(() => {
-    console.log("Fetching todo lists...");
-    fetchTodoLists(setTodoLists);
+    const fetchData = async () => {
+      console.log("Fetching todo lists and user profile...");
+      await fetchTodoLists(setTodoLists);
+      await fetchUserProfile(setUsername, setBackgroundType, setBackgroundValue, setCustomBackgroundColors);
+      setLoading(false); // Set loading to false after data is fetched
+    };
+    fetchData();
   }, []);
-
-  useEffect(() => {
-    console.log("Fetching user profile...");
-    fetchUserProfile(setUsername, setBackgroundType, setBackgroundValue, setCustomBackgroundColors);
-  }, []); // Ensure this useEffect runs only once on component mount
 
   useEffect(() => {
     console.log(`username: ${username}`); // Debug log
@@ -52,6 +54,14 @@ const App: React.FC = () => {
   useEffect(() => {
     console.log("Todo lists updated:", todoLists);
   }, [todoLists]);
+
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <CircularProgress />
+      </div>
+    );
+  }
 
   return (
     <>
