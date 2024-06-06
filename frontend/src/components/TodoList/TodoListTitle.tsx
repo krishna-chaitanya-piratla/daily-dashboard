@@ -14,9 +14,9 @@ interface TodoListTitleProps {
   title: string;
   isEditingTitle: boolean;
   isMinimized: boolean;
-  setIsEditingTitle: (isEditing: boolean) => void;
+  setIsEditingTitle: React.Dispatch<React.SetStateAction<boolean>>;
   toggleMinimize: () => void;
-  handleTitleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleTitleChange: (e: React.ChangeEvent<HTMLInputElement>, setTitle: React.Dispatch<React.SetStateAction<string>>) => void;
   handleTitleBlur: () => void;
   clearTodos: () => void;
   deleteTodoList?: () => void;
@@ -24,6 +24,9 @@ interface TodoListTitleProps {
   todoLists: TodoListType[];
   setActiveListIndex: React.Dispatch<React.SetStateAction<number>>;
   setTodoLists: React.Dispatch<React.SetStateAction<TodoListType[]>>;
+  activeListIndex: number;
+  setTitle: React.Dispatch<React.SetStateAction<string>>;
+  revertTitle: (originalTitle: string) => void; // Add this prop
 }
 
 const TodoListTitle: React.FC<TodoListTitleProps> = ({
@@ -39,10 +42,14 @@ const TodoListTitle: React.FC<TodoListTitleProps> = ({
   addTodoList,
   todoLists,
   setActiveListIndex,
-  setTodoLists
+  setTodoLists,
+  activeListIndex,
+  setTitle,
+  revertTitle // Destructure the prop
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [currentTitle, setCurrentTitle] = useState(title);
+  const [originalTitle, setOriginalTitle] = useState(title); // Store the original title
+  const [previousTitle, setPreviousTitle] = useState(title); // Store the previous title before editing
 
   useEffect(() => {
     if (isEditingTitle && inputRef.current) {
@@ -52,34 +59,32 @@ const TodoListTitle: React.FC<TodoListTitleProps> = ({
   }, [isEditingTitle]);
 
   useEffect(() => {
-    setCurrentTitle(title);
+    console.log("Title updated:", title);
+    setOriginalTitle(title); // Update original title when the title prop changes
   }, [title]);
 
-  const handleCheckClick = () => {
-    if (currentTitle.trim() === '') {
-      setCurrentTitle(title);
-    } else {
-      handleTitleBlur();
-    }
+  const handleStartEdit = () => {
+    console.log("handleStartEdit called");
+    setPreviousTitle(title); // Store the current title when editing starts
+    setIsEditingTitle(true);
+  };
+
+  const handleCancelEdit = () => {
+    console.log("handleCancelEdit called");
+    console.log("Cancel edit. Reverting to previous title:", previousTitle);
+    setTitle(previousTitle); // Revert to previous title in local state
+    revertTitle(previousTitle); // Call revertTitle to update parent state
     setIsEditingTitle(false);
+    console.log("Local title state after cancel:", previousTitle);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      handleCheckClick();
-    } else if (e.key === 'Escape') {
-      setCurrentTitle(title);
-      setIsEditingTitle(false);
-    }
-  };
-
-  const handleBlur = () => {
-    setCurrentTitle(title);
+  const handleSaveEdit = () => {
+    console.log("handleSaveEdit called");
+    console.log("Save edit. New title:", title);
+    setOriginalTitle(title); // Set the new title as the original title
     setIsEditingTitle(false);
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCurrentTitle(e.target.value);
+    handleTitleBlur();
+    console.log("Local title state after save:", title);
   };
 
   return (
@@ -91,15 +96,23 @@ const TodoListTitle: React.FC<TodoListTitleProps> = ({
         <StyledHeaderEditBox
           ref={inputRef}
           type="text"
-          value={currentTitle}
-          onChange={handleInputChange}
-          onBlur={handleBlur}
-          onKeyDown={handleKeyDown}
+          value={title}
+          onChange={(e) => {
+            console.log("Title change event:", e.target.value);
+            handleTitleChange(e, setTitle);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleSaveEdit();
+            } else if (e.key === 'Escape') {
+              handleCancelEdit();
+            }
+          }}
           autoFocus
         />
       ) : (
         <>
-          <h1 onDoubleClick={() => setIsEditingTitle(true)}>{title}</h1>
+          <h1 onDoubleClick={handleStartEdit}>{title}</h1>
         </>
       )}
       <TodoListDropdownMenu
@@ -110,16 +123,12 @@ const TodoListTitle: React.FC<TodoListTitleProps> = ({
       />
       {isEditingTitle ? (
         <>
-          <span className="edit-icon" onClick={handleCheckClick}>
-            <CheckIcon />
-          </span>
-          <span className="clear-all-icon" onClick={() => setIsEditingTitle(false)}><ClearIcon /></span>
+          <span className="edit-icon" onClick={handleSaveEdit}><CheckIcon /></span>
+          <span className="clear-all-icon" onClick={handleCancelEdit}><ClearIcon /></span>
         </>
       ) : (
         <>
-          <span className="edit-icon" onClick={() => setIsEditingTitle(true)}>
-            <EditIcon />
-          </span>
+          <span className="edit-icon" onClick={handleStartEdit}><EditIcon /></span>
           <span className="clear-all-icon" onClick={clearTodos}><DeleteIcon /></span>
           {deleteTodoList && (
             <span className="delete-list-icon" onClick={deleteTodoList}><BlockIcon /></span>

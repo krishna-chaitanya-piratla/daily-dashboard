@@ -17,7 +17,6 @@ import {
 } from '../../utils/todoFunctions';
 import { DndContext, closestCenter, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { addTodoList } from '../../utils/appFunctions';
 
 export interface Todo {
   id: string;
@@ -34,7 +33,7 @@ export interface TodoListType {
 interface TodoListProps {
   todoLists: TodoListType[];
   removeTodoList: (listId: string) => void;
-  addTodoList: (todoLists: TodoListType[], setTodoLists: React.Dispatch<React.SetStateAction<TodoListType[]>>, setActiveListIndex: React.Dispatch<React.SetStateAction<number>>) => void;
+  addTodoList: () => void;
   setTodoLists: React.Dispatch<React.SetStateAction<TodoListType[]>>;
   activeListIndex: number;
   setActiveListIndex: React.Dispatch<React.SetStateAction<number>>;
@@ -43,7 +42,7 @@ interface TodoListProps {
 const TodoList: React.FC<TodoListProps> = ({ todoLists, removeTodoList, addTodoList, setTodoLists, activeListIndex, setActiveListIndex }) => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodo, setNewTodo] = useState<string>('');
-  const [title, setTitle] = useState<string>(todoLists[activeListIndex]?.title || '');
+  const [title, setTitle] = useState<string>(todoLists[0]?.title || '');
   const [isEditingTitle, setIsEditingTitle] = useState<boolean>(false);
   const [isMinimized, setIsMinimized] = useState<boolean>(false);
 
@@ -55,11 +54,10 @@ const TodoList: React.FC<TodoListProps> = ({ todoLists, removeTodoList, addTodoL
       setTodos([]);
       setTitle('');
     }
-    console.log(`Active list index changed: ${activeListIndex}`);
   }, [activeListIndex, todoLists]);
 
   const handleEditTodo = (todoId: string, newText: string) => {
-    editTodo(todoId, newText, todos, todoLists[activeListIndex]?.id || '', setTodos, setTodoLists, todoLists);
+    editTodo(todoId, newText, todos, todoLists[activeListIndex]?.id || '', setTodos);
   };
 
   const handleDeleteTodoList = async () => {
@@ -96,9 +94,22 @@ const TodoList: React.FC<TodoListProps> = ({ todoLists, removeTodoList, addTodoL
       setTodos(updatedTodos);
 
       // Save the updated order to the backend
-      await reorderTodos(todoLists[activeListIndex]?.id || '', updatedTodos.map((todo) => todo.id), setTodoLists, todoLists);
+      await reorderTodos(todoLists[activeListIndex]?.id || '', updatedTodos.map((todo) => todo.id));
     }
   };
+
+  const revertTitle = (originalTitle: string) => {
+    console.log("revertTitle called with:", originalTitle);
+    setTodoLists((prevTodoLists) =>
+      prevTodoLists.map((list, index) =>
+        index === activeListIndex ? { ...list, title: originalTitle } : list
+      )
+    );
+    console.log("Todo lists after revert:", todoLists);
+  };
+  
+  
+  
 
   return (
     <StyledTodoListWrapper>
@@ -111,12 +122,15 @@ const TodoList: React.FC<TodoListProps> = ({ todoLists, removeTodoList, addTodoL
           toggleMinimize={toggleMinimize}
           handleTitleChange={(e) => handleTitleChange(e, setTitle)}
           handleTitleBlur={() => handleTitleBlur(title, todoLists[activeListIndex]?.id || '', setIsEditingTitle, todoLists, setTodoLists)}
-          clearTodos={() => clearTodos(todoLists[activeListIndex]?.id || '', setTodos, setTodoLists, todoLists)}
+          clearTodos={() => clearTodos(todoLists[activeListIndex]?.id || '', setTodos)}
           deleteTodoList={todoLists.length > 0 ? handleDeleteTodoList : undefined}
-          addTodoList={() => addTodoList(todoLists, setTodoLists, setActiveListIndex)}
+          addTodoList={addTodoList}
           todoLists={todoLists}
           setActiveListIndex={setActiveListIndex}
           setTodoLists={setTodoLists}
+          activeListIndex={activeListIndex}
+          setTitle={setTitle}
+          revertTitle={revertTitle}
         />
         {todoLists.length === 0 ? (
           <div>
@@ -134,8 +148,8 @@ const TodoList: React.FC<TodoListProps> = ({ todoLists, removeTodoList, addTodoL
                         id={todo.id}
                         todo={todo.text}
                         completed={todo.completed}
-                        onToggle={() => toggleTodo(todo.id, todos, todoLists[activeListIndex]?.id || '', setTodos, setTodoLists, todoLists)}
-                        onDelete={() => deleteTodo(todo.id, todos, todoLists[activeListIndex]?.id || '', setTodos, setTodoLists, todoLists)}
+                        onToggle={() => toggleTodo(todo.id, todos, todoLists[activeListIndex]?.id || '', setTodos)}
+                        onDelete={() => deleteTodo(todo.id, todos, todoLists[activeListIndex]?.id || '', setTodos)}
                         onEdit={(newText) => handleEditTodo(todo.id, newText)}
                         isEditingTitle={isEditingTitle}
                       />
@@ -148,7 +162,7 @@ const TodoList: React.FC<TodoListProps> = ({ todoLists, removeTodoList, addTodoL
                   type="text"
                   value={newTodo}
                   onChange={(e) => setNewTodo(e.target.value)}
-                  onKeyDown={(event) => handleKeyDown(event, newTodo, todoLists[activeListIndex]?.id || '', setTodos, setNewTodo, setTodoLists, todoLists)}
+                  onKeyDown={(event) => handleKeyDown(event, newTodo, todoLists[activeListIndex]?.id || '', setTodos, setNewTodo)}
                   placeholder="Add a new to-do"
                   disabled={isEditingTitle}
                 />

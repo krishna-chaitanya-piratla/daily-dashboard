@@ -25,7 +25,7 @@ const App: React.FC = () => {
   const [backgroundValue, setBackgroundValue] = useState<string>('#2f2c5c');
   const [customBackgroundColors, setCustomBackgroundColors] = useState<string[]>([]);
   const [refreshTrigger, setRefreshTrigger] = useState<number>(0);
-  const [activeListIndex, setActiveListIndex] = useState<number>(0);
+  const [activeListIndex, setActiveListIndex] = useState<number>(0); // Added this line
 
   useEffect(() => {
     console.log("Fetching todo lists...");
@@ -86,11 +86,14 @@ const App: React.FC = () => {
           <div>
             <TodoList
               todoLists={todoLists}
-              removeTodoList={(listId) => removeTodoList(listId, setTodoLists)}
+              removeTodoList={async (listId) => {
+                await removeTodoList(listId, setTodoLists);
+                setActiveListIndex(0);
+              }}
               addTodoList={() => addTodoList(todoLists, setTodoLists, setActiveListIndex)}
               setTodoLists={setTodoLists}
-              activeListIndex={activeListIndex}
-              setActiveListIndex={setActiveListIndex}
+              activeListIndex={activeListIndex} // Passed activeListIndex as prop
+              setActiveListIndex={setActiveListIndex} // Passed setActiveListIndex as prop
             />
           </div>
         </AppContainer>
