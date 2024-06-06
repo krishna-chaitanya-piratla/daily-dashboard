@@ -43,6 +43,11 @@ export const CustomColorBox = styled.div<{ color: string; isSelected: boolean }>
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+
+  &:hover > div {
+    visibility: visible;
+  }
 `;
 
 export const RowContainer = styled.div`
@@ -135,5 +140,27 @@ export const AddIconWrapper = styled.div`
   margin-left: 0.5rem;
   &:hover {
     border-color: white;
+  }
+`;
+
+export const DeleteIconWrapper = styled.div`
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 1rem;
+  height: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  visibility: hidden;
+
+  svg {
+    font-size: 1rem;
+    color: white;
+  }
+
+  &:hover {
+    visibility: visible;
   }
 `;

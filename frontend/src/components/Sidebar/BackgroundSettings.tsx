@@ -1,22 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { SketchPicker } from 'react-color';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import ClearIcon from '@mui/icons-material/Clear';
 import axios from 'axios';
-import { BackgroundSettingsContainer, RadioButtonContainer, ColorBoxContainer, ColorBox, StyledUnsplashInput, SaveButton, RefreshButton, CustomColorBox, RowContainer, RowLabel, StyledSaveColorButton, AddIconWrapper, ColorSelectionDiv } from '../../styled-components/Sidebar/BackgroundSettings';
+import {
+  BackgroundSettingsContainer, RadioButtonContainer, ColorBoxContainer, ColorBox, StyledUnsplashInput, SaveButton, RefreshButton, CustomColorBox, RowContainer, RowLabel, StyledSaveColorButton, AddIconWrapper, ColorSelectionDiv, DeleteIconWrapper
+} from '../../styled-components/Sidebar/BackgroundSettings';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import {
-  presetColors,
-  handleRadioChange,
-  handleSolidColorBoxClick,
-  handleUnsplashInputChange,
-  handleUnsplashInputKeyDown,
-  handleSaveButtonClick,
-  handleRefreshButtonClick,
-  handleClickOutside,
-  handleCustomColorBoxClick,
-  handleColorChangeComplete,
-  handleSaveCustomColor,
-  isCustomColorSelected
+  presetColors, handleRadioChange, handleSolidColorBoxClick, handleUnsplashInputChange, handleUnsplashInputKeyDown, handleSaveButtonClick, handleRefreshButtonClick, handleClickOutside, handleCustomColorBoxClick, handleColorChangeComplete, handleSaveCustomColor
 } from '../../utils/sidebarFunctions';
 
 interface BackgroundSettingsProps {
@@ -30,13 +22,7 @@ interface BackgroundSettingsProps {
 }
 
 const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
-  setBackgroundType,
-  setBackgroundValue,
-  setRefreshTrigger,
-  backgroundType,
-  backgroundValue,
-  customBackgroundColors,
-  setCustomBackgroundColors
+  setBackgroundType, setBackgroundValue, setRefreshTrigger, backgroundType, backgroundValue, customBackgroundColors, setCustomBackgroundColors
 }) => {
   const [selectedBackground, setSelectedBackground] = useState<string>(backgroundType);
   const [solidValue, setSolidValue] = useState<string>(backgroundType === 'solid' ? backgroundValue : '#000000');
@@ -63,6 +49,21 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
       document.removeEventListener('mousedown', (event) => handleClickOutside(event, colorPickerRef, inputRef, setIsColorPickerOpen));
     };
   }, []);
+
+  const handleDeleteCustomColor = async (color: string, event: React.MouseEvent) => {
+    event.stopPropagation(); // Stop the event from propagating to the parent element
+    const updatedCustomColors = customBackgroundColors.filter(c => c !== color);
+    setCustomBackgroundColors(updatedCustomColors);
+
+    try {
+      await axios.put(`${process.env.REACT_APP_BACKEND_URL}/userprofile/custombackgroundcolors`, {
+        customBackgroundColors: updatedCustomColors
+      });
+      console.log('Custom background colors updated:', updatedCustomColors);
+    } catch (error) {
+      console.error('Error updating custom background colors:', error);
+    }
+  };
 
   return (
     <BackgroundSettingsContainer>
@@ -108,12 +109,16 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
             <RowLabel>Custom</RowLabel>
             <ColorBoxContainer>
               {customBackgroundColors.map((color, index) => (
-                <ColorBox 
+                <CustomColorBox 
                   key={index}
                   color={color}
                   isSelected={solidValue === color}
                   onClick={() => handleSolidColorBoxClick(color, setSolidValue, setBackgroundType, setBackgroundValue)}
-                />
+                >
+                  <DeleteIconWrapper onClick={(event) => handleDeleteCustomColor(color, event)}>
+                    <ClearIcon />
+                  </DeleteIconWrapper>
+                </CustomColorBox>
               ))}
               <AddIconWrapper>
                 <AddCircleOutlineIcon onClick={() => handleCustomColorBoxClick(isColorPickerOpen, setIsColorPickerOpen)} />
