@@ -35,7 +35,13 @@ const App: React.FC = () => {
   useEffect(() => {
     console.log("Fetching user profile...");
     fetchUserProfile(setUsername, setBackgroundType, setBackgroundValue, setCustomBackgroundColors);
-  }, []);
+  }, []); // Ensure this useEffect runs only once on component mount
+
+  useEffect(() => {
+    console.log("Background type:", backgroundType); // Debug log
+    console.log("Background value:", backgroundValue); // Debug log
+    console.log("Custom background colors:", customBackgroundColors); // Debug log
+  }, [backgroundType, backgroundValue, customBackgroundColors]);
 
   useEffect(() => {
     console.log("Refresh trigger changed:", refreshTrigger);

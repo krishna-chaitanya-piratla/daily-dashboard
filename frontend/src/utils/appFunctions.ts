@@ -21,14 +21,16 @@ export const fetchUserProfile = async (
   try {
     const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/userprofile`);
     const profile = response.data;
+    console.log('Fetched user profile:', profile); // Debug log
     setUsername(profile.username);
-    setBackgroundType(profile.backgroundType);
-    setBackgroundValue(profile.backgroundValue);
+    setBackgroundType(profile.backgroundPreference.type);
+    setBackgroundValue(profile.backgroundPreference.value);
     setCustomBackgroundColors(profile.customBackgroundColors || []);
   } catch (error) {
     console.error('There was an error fetching the user profile!', error);
   }
 };
+
 
 export const addTodoList = async (
   todoLists: TodoListType[],
