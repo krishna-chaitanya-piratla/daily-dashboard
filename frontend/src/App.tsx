@@ -44,6 +44,7 @@ const App: React.FC = () => {
     console.log("Background type:", backgroundType); // Debug log
     console.log("Background value:", backgroundValue); // Debug log
     console.log("Custom background colors:", customBackgroundColors); // Debug log
+    console.log(`APIURL = ${process.env.REACT_APP_TOMORROW_API_URL}`);
   }, [backgroundType, backgroundValue, customBackgroundColors]);
 
   useEffect(() => {
