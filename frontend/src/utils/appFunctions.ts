@@ -22,7 +22,7 @@ export const fetchUserProfile = async (
     const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/userprofile`);
     const profile = response.data;
     console.log('Fetched user profile:', profile); // Debug log
-    setUsername(profile.username);
+    setUsername(profile.userName);
     setBackgroundType(profile.backgroundPreference.type);
     setBackgroundValue(profile.backgroundPreference.value);
     setCustomBackgroundColors(profile.customBackgroundColors || []);

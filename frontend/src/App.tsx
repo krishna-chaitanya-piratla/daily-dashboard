@@ -38,6 +38,7 @@ const App: React.FC = () => {
   }, []); // Ensure this useEffect runs only once on component mount
 
   useEffect(() => {
+    console.log(`username: ${username}`); // Debug log
     console.log("Background type:", backgroundType); // Debug log
     console.log("Background value:", backgroundValue); // Debug log
     console.log("Custom background colors:", customBackgroundColors); // Debug log
