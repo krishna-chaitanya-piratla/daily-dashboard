@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { Tooltip } from '@mui/material';
 import { StyledTodoItem, StyledItemDeleteIcon, StyledTodoEditInput, StyledEditIconContainer, StyledToggleIconContainer, StyledReorderIconContainer } from '../../styled-components/TodoList/TodoItem';
 import EditIcon from '@mui/icons-material/Edit';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
@@ -58,12 +59,16 @@ const TodoItem: React.FC<TodoItemProps> = ({ id, todo, completed, onToggle, onDe
       isEditing={isEditing}
       isEditingTitle={isEditingTitle}
     >
-      <StyledReorderIconContainer className="reorder-icon" completed={completed}>
-        <ReorderIcon />
-      </StyledReorderIconContainer>
-      <StyledToggleIconContainer completed={completed} onClick={isEditing || isEditingTitle ? undefined : onToggle}>
-        {completed ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
-      </StyledToggleIconContainer>
+      <Tooltip title="Reorder" arrow>
+        <StyledReorderIconContainer className="reorder-icon" completed={completed}>
+          <ReorderIcon />
+        </StyledReorderIconContainer>
+      </Tooltip>
+      <Tooltip title={completed ? "Mark as Incomplete" : "Mark as Complete"} arrow>
+        <StyledToggleIconContainer completed={completed} onClick={isEditing || isEditingTitle ? undefined : onToggle}>
+          {completed ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
+        </StyledToggleIconContainer>
+      </Tooltip>
       {isEditing ? (
         <StyledTodoEditInput
           ref={inputRef}
@@ -80,30 +85,34 @@ const TodoItem: React.FC<TodoItemProps> = ({ id, todo, completed, onToggle, onDe
       ) : (
         <>
           {todo}
-          <StyledEditIconContainer
-            completed={completed}
-            className="edit-icon"
-            onClick={(e) => {
-              e.stopPropagation();
-              if (!isEditingTitle) {
-                setIsEditing(true);
-              }
-            }}
-          >
-            <EditIcon />
-          </StyledEditIconContainer>
-          <StyledItemDeleteIcon
-            completed={completed}
-            className="delete-item-icon"
-            onClick={(e) => {
-              e.stopPropagation();
-              if (!isEditingTitle) {
-                onDelete();
-              }
-            }}
-          >
-            &#x1F5D1; {/* Unicode for delete icon */}
-          </StyledItemDeleteIcon>
+          <Tooltip title="Edit Todo" arrow>
+            <StyledEditIconContainer
+              completed={completed}
+              className="edit-icon"
+              onClick={(e) => {
+                e.stopPropagation();
+                if (!isEditingTitle) {
+                  setIsEditing(true);
+                }
+              }}
+            >
+              <EditIcon />
+            </StyledEditIconContainer>
+          </Tooltip>
+          <Tooltip title="Delete Todo" arrow>
+            <StyledItemDeleteIcon
+              completed={completed}
+              className="delete-item-icon"
+              onClick={(e) => {
+                e.stopPropagation();
+                if (!isEditingTitle) {
+                  onDelete();
+                }
+              }}
+            >
+              &#x1F5D1; {/* Unicode for delete icon */}
+            </StyledItemDeleteIcon>
+          </Tooltip>
         </>
       )}
     </StyledTodoItem>

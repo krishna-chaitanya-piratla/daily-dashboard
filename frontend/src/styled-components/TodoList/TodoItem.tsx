@@ -85,11 +85,16 @@ export const StyledReorderIconContainer = styled.div<{ completed: boolean }>`
   visibility: hidden;
   display: flex;
   align-items: center;
-  cursor: pointer;
+  cursor: grab;
   margin-right: 10px;
   color: ${(props) => (props.completed ? 'var(--todo-text-color-secondary)' : 'var(--todo-text-color-primary)')};
 
   &:hover {
     color: ${(props) => (props.completed ? 'var(--todo-text-color-secondary)' : 'var(--todo-text-color-primary)')};
   }
+
+  &:active {
+    cursor: grabbing;
+  }
 `;
+

@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { Tooltip } from '@mui/material';
 import { StyledHeader, StyledHeaderEditBox } from '../../styled-components/TodoList/TodoListTitle';
 import ClearIcon from '@mui/icons-material/Clear';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -89,9 +90,11 @@ const TodoListTitle: React.FC<TodoListTitleProps> = ({
 
   return (
     <StyledHeader className="handle">
-      <span className="minimize-icon" onClick={toggleMinimize}>
-        {isMinimized ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
-      </span>
+      <Tooltip title={isMinimized ? "Expand" : "Minimize"} arrow>
+        <span className="minimize-icon" onClick={toggleMinimize}>
+          {isMinimized ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
+        </span>
+      </Tooltip>
       {isEditingTitle ? (
         <StyledHeaderEditBox
           ref={inputRef}
@@ -123,15 +126,25 @@ const TodoListTitle: React.FC<TodoListTitleProps> = ({
       />
       {isEditingTitle ? (
         <>
-          <span className="edit-icon" onClick={handleSaveEdit}><CheckIcon /></span>
-          <span className="clear-all-icon" onClick={handleCancelEdit}><ClearIcon /></span>
+          <Tooltip title="Save" arrow>
+            <span className="edit-icon" onClick={handleSaveEdit}><CheckIcon /></span>
+          </Tooltip>
+          <Tooltip title="Discard" arrow>
+            <span className="clear-all-icon" onClick={handleCancelEdit}><ClearIcon /></span>
+          </Tooltip>
         </>
       ) : (
         <>
-          <span className="edit-icon" onClick={handleStartEdit}><EditIcon /></span>
-          <span className="clear-all-icon" onClick={clearTodos}><DeleteIcon /></span>
+          <Tooltip title="Edit Title" arrow>
+            <span className="edit-icon" onClick={handleStartEdit}><EditIcon /></span>
+          </Tooltip>
+          <Tooltip title="Clear All Todos" arrow>
+            <span className="clear-all-icon" onClick={clearTodos}><DeleteIcon /></span>
+          </Tooltip>
           {deleteTodoList && (
-            <span className="delete-list-icon" onClick={deleteTodoList}><BlockIcon /></span>
+            <Tooltip title="Delete Todo List" arrow>
+              <span className="delete-list-icon" onClick={deleteTodoList}><BlockIcon /></span>
+            </Tooltip>
           )}
         </>
       )}
