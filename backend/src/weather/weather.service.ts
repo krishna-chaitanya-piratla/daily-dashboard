@@ -24,7 +24,7 @@ export class WeatherService {
       fs.mkdirSync(dirPath, { recursive: true });
     }
     if (!fs.existsSync(this.WEATHER_DATA_FILE_PATH)) {
-      fs.writeFileSync(this.WEATHER_DATA_FILE_PATH, JSON.stringify({ daily: [], hourly: [], location: {} }), 'utf8');
+      fs.writeFileSync(this.WEATHER_DATA_FILE_PATH, JSON.stringify({ daily: [], hourly: [], location: {}, units: 'imperial' }), 'utf8');
     }
   }
 
@@ -57,15 +57,16 @@ export class WeatherService {
       daily: dailyData.timelines.daily,
       hourly: hourlyData.timelines.hourly,
       location: hourlyData.location, // Assuming location is same in both responses
+      units: units, // Adding units to the saved data
     };
     
     this.saveWeatherData(newData);
   }
 
-  private async isWeatherDataOutdated() {
+  private async isWeatherDataOutdated(units: string) {
     const data = this.loadWeatherData();
 
-    if (data.hourly.length === 0) {
+    if (data.hourly.length === 0 || data.units !== units) {
       return true;
     }
 
@@ -77,16 +78,15 @@ export class WeatherService {
   }
 
   async getCurrentWeather(units: string) {
-    if (await this.isWeatherDataOutdated()) {
+    if (await this.isWeatherDataOutdated(units)) {
       await this.updateWeatherData(units);
     }
-
     const data = this.loadWeatherData();
     return data.hourly[0];
   }
 
   async getWeather120Hours(units: string) {
-    if (await this.isWeatherDataOutdated()) {
+    if (await this.isWeatherDataOutdated(units)) {
       await this.updateWeatherData(units);
     }
 
@@ -95,7 +95,7 @@ export class WeatherService {
   }
 
   async getWeather5Days(units: string) {
-    if (await this.isWeatherDataOutdated()) {
+    if (await this.isWeatherDataOutdated(units)) {
       await this.updateWeatherData(units);
     }
 
