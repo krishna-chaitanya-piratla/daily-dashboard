@@ -4,6 +4,7 @@ import { IplocationController } from './iplocation.controller';
 
 @Module({
   providers: [IplocationService],
-  controllers: [IplocationController]
+  controllers: [IplocationController],
+  exports: [IplocationService]
 })
 export class IplocationModule {}

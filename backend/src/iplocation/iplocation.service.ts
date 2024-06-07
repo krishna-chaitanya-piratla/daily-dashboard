@@ -39,6 +39,10 @@ export class IplocationService {
   }
 
   async getClientIp(req: any): Promise<string> {
+    if (!req || !req.headers || !req.connection) {
+      return await this.getPublicIp();
+    }
+
     let clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     if (clientIp === '::1' || clientIp === '127.0.0.1') {
       clientIp = await this.getPublicIp();
@@ -50,7 +54,6 @@ export class IplocationService {
     const ip = await this.getClientIp(req);
     const { ip: storedIp, data } = this.loadIpApiResponse();
 
-    
     if (ip === storedIp && data) {
       return { ip, data };
     }
