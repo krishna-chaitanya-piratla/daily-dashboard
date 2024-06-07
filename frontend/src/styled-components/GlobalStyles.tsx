@@ -3,6 +3,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 export const GlobalStyles = createGlobalStyle`
   :root {
     --widget-background-color: rgba(0, 0, 0, 0.5);
+    --widget-hover-background-color: rgba(0, 0, 0, 0.7);
     --widget-text-color-primary: #fff;
     --widget-text-color-secondary: #ccc;
     --widget-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.25);

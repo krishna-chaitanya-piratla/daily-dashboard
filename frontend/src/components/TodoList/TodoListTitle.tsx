@@ -90,11 +90,9 @@ const TodoListTitle: React.FC<TodoListTitleProps> = ({
 
   return (
     <StyledHeader className="handle">
-      <Tooltip title={isMinimized ? "Expand" : "Minimize"} arrow>
-        <span className="minimize-icon" onClick={toggleMinimize}>
-          {isMinimized ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
-        </span>
-      </Tooltip>
+      <span className="minimize-icon" onClick={toggleMinimize}>
+        {isMinimized ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
+      </span>
       {isEditingTitle ? (
         <StyledHeaderEditBox
           ref={inputRef}
