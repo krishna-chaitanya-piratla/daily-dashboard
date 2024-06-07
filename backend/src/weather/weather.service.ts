@@ -38,60 +38,68 @@ export class WeatherService {
   }
 
   private async fetchWeatherData(timesteps: string) {
-    const locationData = await this.iplocationService.getLocationData({});
+    const locationData = await this.iplocationService.getLocationData({}); // Passing an empty object for request
     const latitude = locationData.data.latitude;
     const longitude = locationData.data.longitude;
-    const location = `${latitude}, ${longitude}`;
+    const location = `${latitude}, ${longitude}`; // Add space between latitude and longitude
 
     const apiKey = this.configService.get<string>('REACT_APP_TOMORROW_API_KEY');
     const url = `${this.configService.get<string>('REACT_APP_TOMORROW_API_URL')}?location=${location}&timesteps=${timesteps}&apikey=${apiKey}`;
     const response = await axios.get(url, { headers: { accept: 'application/json' } });
-    return { data: response.data, location: { lat: latitude, lon: longitude } };
+    return response.data;
   }
 
   private async updateWeatherData() {
-    const hourlyResponse = await this.fetchWeatherData('1h');
-    const dailyResponse = await this.fetchWeatherData('1d');
-
+    const hourlyData = await this.fetchWeatherData('1h');
+    const dailyData = await this.fetchWeatherData('1d');
+    
     const newData = {
-      daily: dailyResponse.data.timelines.daily,
-      hourly: hourlyResponse.data.timelines.hourly,
-      location: hourlyResponse.data.location,
+      daily: dailyData.timelines.daily,
+      hourly: hourlyData.timelines.hourly,
+      location: hourlyData.location, // Assuming location is same in both responses
     };
-
+    
     this.saveWeatherData(newData);
   }
 
-  async getCurrentWeather() {
+  private async isWeatherDataOutdated() {
     const data = this.loadWeatherData();
 
     if (data.hourly.length === 0) {
-      await this.updateWeatherData();
-      data.hourly = this.loadWeatherData().hourly;
+      return true;
     }
 
+    const firstForecastTime = new Date(data.hourly[0].time).getTime();
+    const currentTime = new Date().getTime();
+
+    const differenceInHours = (currentTime - firstForecastTime) / (1000 * 60 * 60);
+    return differenceInHours > 1;
+  }
+
+  async getCurrentWeather() {
+    if (await this.isWeatherDataOutdated()) {
+      await this.updateWeatherData();
+    }
+
+    const data = this.loadWeatherData();
     return data.hourly[0];
   }
 
   async getWeather120Hours() {
-    const data = this.loadWeatherData();
-
-    if (data.hourly.length === 0) {
+    if (await this.isWeatherDataOutdated()) {
       await this.updateWeatherData();
-      data.hourly = this.loadWeatherData().hourly;
     }
 
+    const data = this.loadWeatherData();
     return data.hourly;
   }
 
   async getWeather5Days() {
-    const data = this.loadWeatherData();
-
-    if (data.daily.length === 0) {
+    if (await this.isWeatherDataOutdated()) {
       await this.updateWeatherData();
-      data.daily = this.loadWeatherData().daily;
     }
 
+    const data = this.loadWeatherData();
     return data.daily;
   }
 }
