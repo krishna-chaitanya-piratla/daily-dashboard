@@ -5,11 +5,11 @@ import styled from 'styled-components';
 const WeatherContainer = styled.div`
   font-family: var(--font-family-primary);
   font-size: 14px;
-  text-align: right;
+  text-align: left;
   border: 1px solid none;
   border-radius: 10px;
-  padding: 10px;
-  margin: 10px;
+  padding: 0px;
+  margin: 0px;
   display: inline-block;
   color: var(--widget-text-color-secondary);
   box-sizing: border-box;

@@ -24,9 +24,8 @@ const LocationWeather: React.FC = () => {
 
   return (
     <StyledLocationWeather>
-      <StyledLocation>{location}</StyledLocation>
-      <p>Coordinates: {coords}</p>
       <Weather coords={coords}/>
+      <StyledLocation>{location}</StyledLocation>
     </StyledLocationWeather>
   );
 };
