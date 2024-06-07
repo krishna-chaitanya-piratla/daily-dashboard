@@ -37,21 +37,21 @@ export class WeatherService {
     fs.writeFileSync(this.WEATHER_DATA_FILE_PATH, JSON.stringify(data, null, 2), 'utf8');
   }
 
-  private async fetchWeatherData(timesteps: string) {
+  private async fetchWeatherData(timesteps: string, units: string) {
     const locationData = await this.iplocationService.getLocationData({}); // Passing an empty object for request
     const latitude = locationData.data.latitude;
     const longitude = locationData.data.longitude;
     const location = `${latitude}, ${longitude}`; // Add space between latitude and longitude
 
     const apiKey = this.configService.get<string>('REACT_APP_TOMORROW_API_KEY');
-    const url = `${this.configService.get<string>('REACT_APP_TOMORROW_API_URL')}?location=${location}&timesteps=${timesteps}&apikey=${apiKey}`;
+    const url = `${this.configService.get<string>('REACT_APP_TOMORROW_API_URL')}?location=${location}&timesteps=${timesteps}&units=${units}&apikey=${apiKey}`;
     const response = await axios.get(url, { headers: { accept: 'application/json' } });
     return response.data;
   }
 
-  private async updateWeatherData() {
-    const hourlyData = await this.fetchWeatherData('1h');
-    const dailyData = await this.fetchWeatherData('1d');
+  private async updateWeatherData(units: string) {
+    const hourlyData = await this.fetchWeatherData('1h', units);
+    const dailyData = await this.fetchWeatherData('1d', units);
     
     const newData = {
       daily: dailyData.timelines.daily,
@@ -76,27 +76,27 @@ export class WeatherService {
     return differenceInHours > 1;
   }
 
-  async getCurrentWeather() {
+  async getCurrentWeather(units: string) {
     if (await this.isWeatherDataOutdated()) {
-      await this.updateWeatherData();
+      await this.updateWeatherData(units);
     }
 
     const data = this.loadWeatherData();
     return data.hourly[0];
   }
 
-  async getWeather120Hours() {
+  async getWeather120Hours(units: string) {
     if (await this.isWeatherDataOutdated()) {
-      await this.updateWeatherData();
+      await this.updateWeatherData(units);
     }
 
     const data = this.loadWeatherData();
     return data.hourly;
   }
 
-  async getWeather5Days() {
+  async getWeather5Days(units: string) {
     if (await this.isWeatherDataOutdated()) {
-      await this.updateWeatherData();
+      await this.updateWeatherData(units);
     }
 
     const data = this.loadWeatherData();
