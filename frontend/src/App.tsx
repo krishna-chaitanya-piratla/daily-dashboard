@@ -28,6 +28,7 @@ const App: React.FC = () => {
   const [refreshTrigger, setRefreshTrigger] = useState<number>(0);
   const [activeListIndex, setActiveListIndex] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
+  const [showJokeWidget, setShowJokeWidget] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,6 +56,17 @@ const App: React.FC = () => {
   useEffect(() => {
     console.log("Todo lists updated:", todoLists);
   }, [todoLists]);
+
+  const [isJokeVisible, setIsJokeVisible] = useState<boolean>(showJokeWidget);
+
+  useEffect(() => {
+    if (showJokeWidget) {
+      setIsJokeVisible(true);
+    } else {
+      const timeoutId = setTimeout(() => setIsJokeVisible(false), 500); // Wait for fade-out transition
+      return () => clearTimeout(timeoutId);
+    }
+  }, [showJokeWidget]);
 
   if (loading) {
     return (
@@ -96,6 +108,8 @@ const App: React.FC = () => {
           setRefreshTrigger={setRefreshTrigger}
           customBackgroundColors={customBackgroundColors}
           setCustomBackgroundColors={setCustomBackgroundColors}
+          showJokeWidget={showJokeWidget}
+          setShowJokeWidget={setShowJokeWidget}
         />
         <AppContainer>
           <Header>
@@ -115,7 +129,9 @@ const App: React.FC = () => {
             />
           </div>
           <FocusCenter username={username} />
-          <JokeWidget />
+          {isJokeVisible && (
+            <JokeWidget className={`${showJokeWidget ? 'fade-in' : 'fade-out'}`} />
+          )}
         </AppContainer>
       </Background>
     </>

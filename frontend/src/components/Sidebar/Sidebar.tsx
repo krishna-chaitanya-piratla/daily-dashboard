@@ -18,6 +18,8 @@ interface SidebarProps {
   setRefreshTrigger: React.Dispatch<React.SetStateAction<number>>;
   customBackgroundColors: string[];
   setCustomBackgroundColors: (colors: string[]) => void;
+  showJokeWidget: boolean; // New prop for joke widget visibility
+  setShowJokeWidget: React.Dispatch<React.SetStateAction<boolean>>; // New prop for setting joke widget visibility
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -33,7 +35,9 @@ const Sidebar: React.FC<SidebarProps> = ({
   backgroundValue,
   setRefreshTrigger,
   customBackgroundColors,
-  setCustomBackgroundColors
+  setCustomBackgroundColors,
+  showJokeWidget,
+  setShowJokeWidget
 }) => {
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (e.target === e.currentTarget) {
@@ -62,6 +66,8 @@ const Sidebar: React.FC<SidebarProps> = ({
             setRefreshTrigger={setRefreshTrigger}
             customBackgroundColors={customBackgroundColors}
             setCustomBackgroundColors={setCustomBackgroundColors}
+            showJokeWidget={showJokeWidget} // Pass down the state
+            setShowJokeWidget={setShowJokeWidget} // Pass down the setter
           />
         </StyledSidebar>
       </StyledSidebarContainer>

@@ -43,6 +43,32 @@ export const GlobalStyles = createGlobalStyle`
       text-shadow: none;
     }
   }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  .fade-in {
+    animation: fadeIn 0.5s ease-in forwards;
+  }
+
+  .fade-out {
+    animation: fadeOut 0.5s ease-out forwards;
+  }
 `;
 
 export const Header = styled.header`

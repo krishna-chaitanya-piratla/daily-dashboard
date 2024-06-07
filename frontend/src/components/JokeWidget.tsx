@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { StyledJokeWidget, StyledJokeText, StyledRefreshIcon } from '../styled-components/JokeWidget';
 
-const JokeWidget: React.FC = () => {
+interface JokeWidgetProps {
+  className?: string;
+}
+
+const JokeWidget: React.FC<JokeWidgetProps> = ({ className }) => {
   const [joke, setJoke] = useState<string>('');
 
   const fetchJoke = async () => {
@@ -22,7 +26,7 @@ const JokeWidget: React.FC = () => {
   }, []);
 
   return (
-    <StyledJokeWidget>
+    <StyledJokeWidget className={className}>
       <StyledJokeText>{joke}</StyledJokeText>
       <StyledRefreshIcon onClick={fetchJoke}>
         <RefreshIcon />

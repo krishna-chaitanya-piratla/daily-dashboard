@@ -21,6 +21,10 @@ export const StyledJokeWidget = styled.div`
   z-index: 1000; /* Ensure it's on top */
   word-wrap: break-word; /* Ensure long words break properly */
   overflow-wrap: break-word; /* Ensures long words break properly */
+  transition: opacity 0.5s ease; /* Add transition for opacity */
+  &.fade-out {
+    opacity: 0; /* Fade out effect */
+  }
 `;
 
 export const StyledJokeText = styled.div`

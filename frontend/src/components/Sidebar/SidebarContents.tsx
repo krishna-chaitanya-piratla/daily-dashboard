@@ -1,9 +1,16 @@
-import React, { useState } from 'react';
-import { SidebarContentsContainer, AccordionContainer, AccordionHeader, AccordionContent } from '../../styled-components/Sidebar/SidebarContents';
+import React from 'react';
 import UserName from './UserName';
 import BackgroundSettings from './BackgroundSettings';
+import {
+  SidebarContentsContainer,
+  Separator,
+  AccordionContainer,
+  AccordionHeader,
+  AccordionContent
+} from '../../styled-components/Sidebar/SidebarContents';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import { Switch } from '@mui/material';
 
 interface SidebarContentsProps {
   addTodoList: () => void;
@@ -16,10 +23,11 @@ interface SidebarContentsProps {
   setRefreshTrigger: React.Dispatch<React.SetStateAction<number>>;
   customBackgroundColors: string[];
   setCustomBackgroundColors: (colors: string[]) => void;
+  showJokeWidget: boolean;
+  setShowJokeWidget: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const SidebarContents: React.FC<SidebarContentsProps> = ({
-  addTodoList,
   setUsername,
   username,
   setBackgroundType,
@@ -28,11 +36,13 @@ const SidebarContents: React.FC<SidebarContentsProps> = ({
   backgroundValue,
   setRefreshTrigger,
   customBackgroundColors,
-  setCustomBackgroundColors
+  setCustomBackgroundColors,
+  showJokeWidget,
+  setShowJokeWidget
 }) => {
-  const [isAccordionOpen, setIsAccordionOpen] = useState(false);
+  const [isAccordionOpen, setIsAccordionOpen] = React.useState(false);
 
-  const toggleAccordion = () => {
+  const handleAccordionToggle = () => {
     setIsAccordionOpen(!isAccordionOpen);
   };
 
@@ -40,7 +50,7 @@ const SidebarContents: React.FC<SidebarContentsProps> = ({
     <SidebarContentsContainer>
       <UserName setUsername={setUsername} username={username} />
       <AccordionContainer>
-        <AccordionHeader onClick={toggleAccordion}>
+        <AccordionHeader onClick={handleAccordionToggle}>
           Background Settings
           {isAccordionOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         </AccordionHeader>
@@ -58,7 +68,15 @@ const SidebarContents: React.FC<SidebarContentsProps> = ({
           </AccordionContent>
         )}
       </AccordionContainer>
-      {/* Add more sidebar items here */}
+      <Separator />
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+        <span>Joke Widget</span>
+        <Switch
+          checked={showJokeWidget}
+          onChange={() => setShowJokeWidget(!showJokeWidget)}
+          color="primary"
+        />
+      </div>
     </SidebarContentsContainer>
   );
 };

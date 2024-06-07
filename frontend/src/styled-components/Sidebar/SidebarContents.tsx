@@ -29,7 +29,6 @@ export const AccordionHeader = styled.div`
   font-weight: bold;
   cursor: pointer;
   padding: 10px;
-  background-color: var(--widget-background-color); /* Adjusted color */
   color: var(--widget-text-color-primary);
   border-radius: 5px;
   display: flex;
