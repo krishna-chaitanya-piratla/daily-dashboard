@@ -26,7 +26,7 @@ const LocationWeather: React.FC = () => {
     <StyledLocationWeather>
       <StyledLocation>{location}</StyledLocation>
       <p>Coordinates: {coords}</p>
-      {coords && <Weather coords={coords} />} {/* Render the Weather component */}
+      <Weather coords={coords}/>
     </StyledLocationWeather>
   );
 };

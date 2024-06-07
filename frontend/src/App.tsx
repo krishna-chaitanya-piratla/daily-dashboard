@@ -16,7 +16,7 @@ import {
   openSidebar,
   logRefreshTriggerChange
 } from './utils/appFunctions';
-import CircularProgress from '@mui/material/CircularProgress'; // Import CircularProgress
+import CircularProgress from '@mui/material/CircularProgress';
 
 const App: React.FC = () => {
   const [todoLists, setTodoLists] = useState<TodoListType[]>([]);
@@ -26,24 +26,24 @@ const App: React.FC = () => {
   const [backgroundValue, setBackgroundValue] = useState<string>('#2f2c5c');
   const [customBackgroundColors, setCustomBackgroundColors] = useState<string[]>([]);
   const [refreshTrigger, setRefreshTrigger] = useState<number>(0);
-  const [activeListIndex, setActiveListIndex] = useState<number>(0); // Added this line
-  const [loading, setLoading] = useState<boolean>(true); // Loading state
+  const [activeListIndex, setActiveListIndex] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchData = async () => {
       console.log("Fetching todo lists and user profile...");
       await fetchTodoLists(setTodoLists);
       await fetchUserProfile(setUsername, setBackgroundType, setBackgroundValue, setCustomBackgroundColors);
-      setLoading(false); // Set loading to false after data is fetched
+      setLoading(false);
     };
     fetchData();
   }, []);
 
   useEffect(() => {
-    console.log(`username: ${username}`); // Debug log
-    console.log("Background type:", backgroundType); // Debug log
-    console.log("Background value:", backgroundValue); // Debug log
-    console.log("Custom background colors:", customBackgroundColors); // Debug log
+    console.log(`username: ${username}`);
+    console.log("Background type:", backgroundType);
+    console.log("Background value:", backgroundValue);
+    console.log("Custom background colors:", customBackgroundColors);
     console.log(`APIURL = ${process.env.REACT_APP_TOMORROW_API_URL}`);
   }, [backgroundType, backgroundValue, customBackgroundColors]);
 
@@ -110,13 +110,13 @@ const App: React.FC = () => {
               }}
               addTodoList={() => addTodoList(todoLists, setTodoLists, setActiveListIndex)}
               setTodoLists={setTodoLists}
-              activeListIndex={activeListIndex} // Passed activeListIndex as prop
-              setActiveListIndex={setActiveListIndex} // Passed setActiveListIndex as prop
+              activeListIndex={activeListIndex}
+              setActiveListIndex={setActiveListIndex}
             />
           </div>
+          <FocusCenter username={username} />
+          <JokeWidget />
         </AppContainer>
-        <FocusCenter username={username} />
-        <JokeWidget />
       </Background>
     </>
   );

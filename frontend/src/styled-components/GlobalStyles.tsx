@@ -54,10 +54,13 @@ export const Header = styled.header`
 export const AppContainer = styled.div`
   text-align: center;
   height: 100vh;
+  width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   background-size: cover; /* Ensure the background image covers the entire container */
   position: relative;
+  z-index: 0; /* Ensure it has a base z-index */
 `;
+

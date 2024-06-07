@@ -13,6 +13,20 @@ const WeatherContainer = styled.div`
   display: inline-block;
   color: var(--widget-text-color-secondary);
   box-sizing: border-box;
+  z-index: 100; /* Ensure it has a higher z-index */
+  position: relative; /* Ensure positioning context for the dropdown */
+`;
+
+const DropdownContainer = styled.div`
+  position: relative;
+`;
+
+const Dropdown = styled.select`
+  font-size: 14px;
+  padding: 5px;
+  margin-bottom: 10px;
+  z-index: 101; /* Ensure the dropdown has a higher z-index */
+  position: relative;
 `;
 
 interface WeatherProps {
@@ -22,12 +36,13 @@ interface WeatherProps {
 const Weather: React.FC<WeatherProps> = ({ coords }) => {
   const [temperature, setTemperature] = useState<number | null>(null);
   const [humidity, setHumidity] = useState<number | null>(null);
+  const [units, setUnits] = useState<string>('imperial');
 
   useEffect(() => {
     const fetchWeather = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/weather/current`
+          `${process.env.REACT_APP_BACKEND_URL}/weather/current?units=${units}`
         );
         const weatherData = response.data.values;
         setTemperature(weatherData.temperature);
@@ -38,11 +53,17 @@ const Weather: React.FC<WeatherProps> = ({ coords }) => {
     };
 
     fetchWeather();
-  }, []);
+  }, [units]);
 
   return (
     <WeatherContainer>
-      <p>Temperature: {temperature !== null ? `${temperature}°F` : 'Loading...'}</p>
+      <DropdownContainer>
+        <Dropdown value={units} onChange={(e) => setUnits(e.target.value)}>
+          <option value="imperial">Imperial</option>
+          <option value="metric">Metric</option>
+        </Dropdown>
+      </DropdownContainer>
+      <p>Temperature: {temperature !== null ? `${temperature}°${units === 'imperial' ? 'F' : 'C'}` : 'Loading...'}</p>
       <p>Humidity: {humidity !== null ? `${humidity}%` : 'Loading...'}</p>
     </WeatherContainer>
   );
