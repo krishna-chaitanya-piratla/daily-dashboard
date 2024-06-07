@@ -27,9 +27,9 @@ const Weather: React.FC<WeatherProps> = ({ coords }) => {
     const fetchWeather = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_TOMORROW_API_URL}?location=${coords}&timesteps=1h&units=imperial&apikey=${process.env.REACT_APP_TOMORROW_API_KEY}`
+          `${process.env.REACT_APP_BACKEND_URL}/weather/current`
         );
-        const weatherData = response.data.timelines.hourly[0].values;
+        const weatherData = response.data.values;
         setTemperature(weatherData.temperature);
         setHumidity(weatherData.humidity);
       } catch (error) {
@@ -38,7 +38,7 @@ const Weather: React.FC<WeatherProps> = ({ coords }) => {
     };
 
     fetchWeather();
-  }, [coords]);
+  }, []);
 
   return (
     <WeatherContainer>
