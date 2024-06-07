@@ -17,16 +17,10 @@ const WeatherContainer = styled.div`
   position: relative; /* Ensure positioning context for the dropdown */
 `;
 
-const DropdownContainer = styled.div`
-  position: relative;
-`;
-
-const Dropdown = styled.select`
-  font-size: 14px;
-  padding: 5px;
-  margin-bottom: 10px;
-  z-index: 101; /* Ensure the dropdown has a higher z-index */
-  position: relative;
+const TemperatureUnit = styled.span<{ isSelected: boolean }>`
+  cursor: pointer;
+  margin-left: 5px;
+  color: ${(props) => (props.isSelected ? 'inherit' : 'gray')};
 `;
 
 interface WeatherProps {
@@ -55,15 +49,27 @@ const Weather: React.FC<WeatherProps> = ({ coords }) => {
     fetchWeather();
   }, [units]);
 
+  const handleUnitChange = (unit: string) => {
+    setUnits(unit);
+  };
+
   return (
     <WeatherContainer>
-      <DropdownContainer>
-        <Dropdown value={units} onChange={(e) => setUnits(e.target.value)}>
-          <option value="imperial">Imperial</option>
-          <option value="metric">Metric</option>
-        </Dropdown>
-      </DropdownContainer>
-      <p>Temperature: {temperature !== null ? `${temperature}°${units === 'imperial' ? 'F' : 'C'}` : 'Loading...'}</p>
+      <p>
+        Temperature: 
+        {temperature !== null ? `${temperature}°` : 'Loading...'}
+        {units === 'imperial' ? (
+          <>
+            <TemperatureUnit isSelected={true}>F</TemperatureUnit>
+            <TemperatureUnit isSelected={false} onClick={() => handleUnitChange('metric')}>C</TemperatureUnit>
+          </>
+        ) : (
+          <>
+            <TemperatureUnit isSelected={true}>C</TemperatureUnit>
+            <TemperatureUnit isSelected={false} onClick={() => handleUnitChange('imperial')}>F</TemperatureUnit>
+          </>
+        )}
+      </p>
       <p>Humidity: {humidity !== null ? `${humidity}%` : 'Loading...'}</p>
     </WeatherContainer>
   );
