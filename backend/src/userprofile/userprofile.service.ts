@@ -12,6 +12,7 @@ export interface UserProfile {
   userName: string;
   backgroundPreference: BackgroundPreference;
   customBackgroundColors: string[];
+  showJokeWidget?: boolean;
 }
 
 @Injectable()
@@ -38,7 +39,8 @@ export class UserProfileService {
           type: 'solid',
           value: '#2f2c5c'
         },
-        customBackgroundColors: []
+        customBackgroundColors: [],
+        showJokeWidget: true,
       }, null, 2), 'utf8');
     }
   }
@@ -52,7 +54,8 @@ export class UserProfileService {
           type: 'solid',
           value: '#2f2c5c'
         },
-        customBackgroundColors: []
+        customBackgroundColors: [],
+        showJokeWidget: true,
       };
     } catch (error) {
       this.userProfile = {
@@ -61,7 +64,8 @@ export class UserProfileService {
           type: 'solid',
           value: '#2f2c5c'
         },
-        customBackgroundColors: []
+        customBackgroundColors: [],
+        showJokeWidget: true,
       };
     }
   }
@@ -89,6 +93,12 @@ export class UserProfileService {
 
   updateCustomBackgroundColors(customBackgroundColors: string[]): UserProfile {
     this.userProfile.customBackgroundColors = customBackgroundColors;
+    this.saveUserProfile();
+    return this.userProfile;
+  }
+
+  updateShowJokeWidget(showJokeWidget: boolean): UserProfile {
+    this.userProfile.showJokeWidget = showJokeWidget;
     this.saveUserProfile();
     return this.userProfile;
   }

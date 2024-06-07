@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { TodoListType } from '../components/TodoList/TodoList';
+import React from 'react';
 
 export const fetchTodoLists = async (setTodoLists: React.Dispatch<React.SetStateAction<TodoListType[]>>) => {
   try {
@@ -16,7 +17,8 @@ export const fetchUserProfile = async (
   setUsername: React.Dispatch<React.SetStateAction<string>>,
   setBackgroundType: React.Dispatch<React.SetStateAction<'custom' | 'solid'>>,
   setBackgroundValue: React.Dispatch<React.SetStateAction<string>>,
-  setCustomBackgroundColors: React.Dispatch<React.SetStateAction<string[]>>
+  setCustomBackgroundColors: React.Dispatch<React.SetStateAction<string[]>>,
+  setShowJokeWidget: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   try {
     const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/userprofile`);
@@ -26,6 +28,7 @@ export const fetchUserProfile = async (
     setBackgroundType(profile.backgroundPreference.type);
     setBackgroundValue(profile.backgroundPreference.value);
     setCustomBackgroundColors(profile.customBackgroundColors || []);
+    setShowJokeWidget(profile.showJokeWidget);
   } catch (error) {
     console.error('There was an error fetching the user profile!', error);
   }

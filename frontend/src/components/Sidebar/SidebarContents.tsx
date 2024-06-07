@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import UserName from './UserName';
 import BackgroundSettings from './BackgroundSettings';
 import {
@@ -11,6 +11,7 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { Switch } from '@mui/material';
+import axios from 'axios';
 
 interface SidebarContentsProps {
   addTodoList: () => void;
@@ -46,6 +47,20 @@ const SidebarContents: React.FC<SidebarContentsProps> = ({
     setIsAccordionOpen(!isAccordionOpen);
   };
 
+  const handleJokeWidgetToggle = async () => {
+    const newValue = !showJokeWidget;
+    setShowJokeWidget(newValue);
+
+    try {
+      await axios.put(`${process.env.REACT_APP_BACKEND_URL}/userprofile/jokewidget`, {
+        showJokeWidget: newValue
+      });
+      console.log('Joke widget status updated:', newValue);
+    } catch (error) {
+      console.error('Error updating joke widget status:', error);
+    }
+  };
+
   return (
     <SidebarContentsContainer>
       <UserName setUsername={setUsername} username={username} />
@@ -73,7 +88,7 @@ const SidebarContents: React.FC<SidebarContentsProps> = ({
         <span>Joke Widget</span>
         <Switch
           checked={showJokeWidget}
-          onChange={() => setShowJokeWidget(!showJokeWidget)}
+          onChange={handleJokeWidgetToggle}
           color="primary"
         />
       </div>

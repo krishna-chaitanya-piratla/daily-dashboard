@@ -25,6 +25,11 @@ export class UserProfileController {
     return this.userProfileService.updateCustomBackgroundColors(customBackgroundColors);
   }
 
+  @Put('jokewidget')
+  updateShowJokeWidget(@Body('showJokeWidget') showJokeWidget: boolean): UserProfile {
+    return this.userProfileService.updateShowJokeWidget(showJokeWidget);
+  }
+
   @Delete()
   resetUserProfile(): UserProfile {
     return this.userProfileService.resetUserProfile();

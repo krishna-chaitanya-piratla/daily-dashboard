@@ -34,7 +34,7 @@ const App: React.FC = () => {
     const fetchData = async () => {
       console.log("Fetching todo lists and user profile...");
       await fetchTodoLists(setTodoLists);
-      await fetchUserProfile(setUsername, setBackgroundType, setBackgroundValue, setCustomBackgroundColors);
+      await fetchUserProfile(setUsername, setBackgroundType, setBackgroundValue, setCustomBackgroundColors, setShowJokeWidget);
       setLoading(false);
     };
     fetchData();
