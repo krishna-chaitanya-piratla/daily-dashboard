@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import SolidBackground from './SolidBackground';
 import CustomBackground from './CustomBackground';
+import { observer } from 'mobx-react-lite';
+import { useStore } from '../../store/StoreProvider';
 
 interface BackgroundProps {
   type?: 'custom' | 'solid';
@@ -9,7 +11,10 @@ interface BackgroundProps {
   children: React.ReactNode;
 }
 
-const Background: React.FC<BackgroundProps> = ({ type = 'solid', value = '#2f2c5c', refreshTrigger = 0, children }) => {
+const Background: React.FC<BackgroundProps> = observer(({ children }) => {
+  const { backgroundStore } = useStore();
+  const { type, value, refreshTrigger } = backgroundStore;
+
   useEffect(() => {
     console.log('Background component called with type:', type, 'value:', value, 'refreshTrigger:', refreshTrigger);
   }, [type, value, refreshTrigger]);
@@ -19,6 +24,6 @@ const Background: React.FC<BackgroundProps> = ({ type = 'solid', value = '#2f2c5
   }
 
   return <SolidBackground colorCode={value}>{children}</SolidBackground>;
-};
+});
 
 export default Background;

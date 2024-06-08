@@ -1,38 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { observer } from 'mobx-react-lite';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { StyledJokeWidget, StyledJokeText, StyledRefreshIcon } from '../styled-components/JokeWidget';
+import { useStore } from '../store/StoreProvider';
 
 interface JokeWidgetProps {
   className?: string;
 }
 
-const JokeWidget: React.FC<JokeWidgetProps> = ({ className }) => {
-  const [joke, setJoke] = useState<string>('');
-
-  const fetchJoke = async () => {
-    try {
-      const response = await fetch('https://icanhazdadjoke.com/', {
-        headers: { 'Accept': 'application/json' },
-      });
-      const data = await response.json();
-      setJoke(data.joke);
-    } catch (error) {
-      console.error('Error fetching joke:', error);
-    }
-  };
+const JokeWidget: React.FC<JokeWidgetProps> = observer(({ className }) => {
+  const { jokeStore } = useStore();
 
   useEffect(() => {
-    fetchJoke();
-  }, []);
+    jokeStore.fetchJoke();
+  }, [jokeStore]);
 
   return (
     <StyledJokeWidget className={className}>
-      <StyledJokeText>{joke}</StyledJokeText>
-      <StyledRefreshIcon onClick={fetchJoke}>
+      <StyledJokeText>{jokeStore.joke}</StyledJokeText>
+      <StyledRefreshIcon onClick={jokeStore.fetchJoke}>
         <RefreshIcon />
       </StyledRefreshIcon>
     </StyledJokeWidget>
   );
-};
+});
 
 export default JokeWidget;
