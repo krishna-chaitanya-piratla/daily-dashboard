@@ -1,14 +1,17 @@
 import React, { createContext, useContext } from 'react';
 import JokeStore from './JokeStore';
 import BackgroundStore from './BackgroundStore';
+import LocationWeatherStore from './LocationWeatherStore';
 
 class RootStore {
   jokeStore: JokeStore;
   backgroundStore: BackgroundStore;
+  locationWeatherStore: LocationWeatherStore;
 
   constructor() {
     this.jokeStore = new JokeStore();
     this.backgroundStore = new BackgroundStore();
+    this.locationWeatherStore = new LocationWeatherStore();
   }
 }
 

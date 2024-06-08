@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect } from 'react';
+import { observer } from 'mobx-react-lite';
 import styled from 'styled-components';
+import { useStore } from '../../store/StoreProvider';
 
 const WeatherContainer = styled.div`
   font-family: var(--font-family-primary);
@@ -23,42 +24,23 @@ const TemperatureUnit = styled.span<{ isSelected: boolean }>`
   color: ${(props) => (props.isSelected ? 'inherit' : 'gray')};
 `;
 
-interface WeatherProps {
-  coords: string;
-}
-
-const Weather: React.FC<WeatherProps> = ({ coords }) => {
-  const [temperature, setTemperature] = useState<number | null>(null);
-  const [humidity, setHumidity] = useState<number | null>(null);
-  const [units, setUnits] = useState<string>('imperial');
+const Weather: React.FC = observer(() => {
+  const { locationWeatherStore } = useStore();
 
   useEffect(() => {
-    const fetchWeather = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/weather/current?units=${units}`
-        );
-        const weatherData = response.data.values;
-        setTemperature(weatherData.temperature);
-        setHumidity(weatherData.humidity);
-      } catch (error) {
-        console.error('Error fetching weather data:', error);
-      }
-    };
-
-    fetchWeather();
-  }, [units]);
+    locationWeatherStore.fetchWeather();
+  }, [locationWeatherStore, locationWeatherStore.units]);
 
   const handleUnitChange = (unit: string) => {
-    setUnits(unit);
+    locationWeatherStore.setUnits(unit);
   };
 
   return (
     <WeatherContainer>
       <p>
         Temperature: 
-        {temperature !== null ? `${temperature}°` : 'Loading...'}
-        {units === 'imperial' ? (
+        {locationWeatherStore.temperature !== null ? `${locationWeatherStore.temperature}°` : 'Loading...'}
+        {locationWeatherStore.units === 'imperial' ? (
           <>
             <TemperatureUnit isSelected={true}>F</TemperatureUnit>
             <TemperatureUnit isSelected={false} onClick={() => handleUnitChange('metric')}>C</TemperatureUnit>
@@ -70,9 +52,9 @@ const Weather: React.FC<WeatherProps> = ({ coords }) => {
           </>
         )}
       </p>
-      <p>Humidity: {humidity !== null ? `${humidity}%` : 'Loading...'}</p>
+      <p>Humidity: {locationWeatherStore.humidity !== null ? `${locationWeatherStore.humidity}%` : 'Loading...'}</p>
     </WeatherContainer>
   );
-};
+});
 
 export default Weather;

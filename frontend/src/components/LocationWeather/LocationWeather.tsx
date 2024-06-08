@@ -1,33 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { observer } from 'mobx-react-lite';
 import { StyledLocationWeather, StyledLocation } from '../../styled-components/LocationWeather/LocationWeather';
-import axios from 'axios';
-import Weather from './Weather'; // Import the Weather component
+import Weather from './Weather';
+import { useStore } from '../../store/StoreProvider';
 
-const LocationWeather: React.FC = () => {
-  const [location, setLocation] = useState<string>('');
-  const [coords, setCoords] = useState<string>('');
+const LocationWeather: React.FC = observer(() => {
+  const { locationWeatherStore } = useStore();
 
   useEffect(() => {
-    const fetchLocation = async () => {
-      try {
-        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/ip`);
-        const { data } = response.data;
-        setLocation(`${data.city}, ${data.region}`);
-        setCoords(`${data.latitude},${data.longitude}`);
-      } catch (error) {
-        setLocation('Location not found');
-      }
-    };
-
-    fetchLocation();
-  }, []);
+    locationWeatherStore.fetchLocation();
+  }, [locationWeatherStore]);
 
   return (
     <StyledLocationWeather>
-      <Weather coords={coords}/>
-      <StyledLocation>{location}</StyledLocation>
+      <Weather />
+      <StyledLocation>{locationWeatherStore.location}</StyledLocation>
     </StyledLocationWeather>
   );
-};
+});
 
 export default LocationWeather;
