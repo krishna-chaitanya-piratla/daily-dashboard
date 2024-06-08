@@ -13,6 +13,8 @@ export interface UserProfile {
   backgroundPreference: BackgroundPreference;
   customBackgroundColors: string[];
   showJokeWidget?: boolean;
+  showLocationWeather?: boolean;
+  showTodos?: boolean;
 }
 
 @Injectable()
@@ -41,6 +43,8 @@ export class UserProfileService {
         },
         customBackgroundColors: [],
         showJokeWidget: true,
+        showLocationWeather: true,
+        showTodos: true,
       }, null, 2), 'utf8');
     }
   }
@@ -56,6 +60,8 @@ export class UserProfileService {
         },
         customBackgroundColors: [],
         showJokeWidget: true,
+        showLocationWeather: true,
+        showTodos: true,
       };
     } catch (error) {
       this.userProfile = {
@@ -66,6 +72,8 @@ export class UserProfileService {
         },
         customBackgroundColors: [],
         showJokeWidget: true,
+        showLocationWeather: true,
+        showTodos: true,
       };
     }
   }
@@ -99,6 +107,18 @@ export class UserProfileService {
 
   updateShowJokeWidget(showJokeWidget: boolean): UserProfile {
     this.userProfile.showJokeWidget = showJokeWidget;
+    this.saveUserProfile();
+    return this.userProfile;
+  }
+
+  updateShowLocationWeather(showLocationWeather: boolean): UserProfile {
+    this.userProfile.showLocationWeather = showLocationWeather;
+    this.saveUserProfile();
+    return this.userProfile;
+  }
+
+  updateShowTodos(showTodos: boolean): UserProfile {
+    this.userProfile.showTodos = showTodos;
     this.saveUserProfile();
     return this.userProfile;
   }

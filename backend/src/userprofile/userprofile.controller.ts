@@ -30,6 +30,16 @@ export class UserProfileController {
     return this.userProfileService.updateShowJokeWidget(showJokeWidget);
   }
 
+  @Put('locationweather')
+  updateShowLocationWeather(@Body('showLocationWeather') showLocationWeather: boolean): UserProfile {
+    return this.userProfileService.updateShowLocationWeather(showLocationWeather);
+  }
+
+  @Put('todos')
+  updateShowTodos(@Body('showTodos') showTodos: boolean): UserProfile {
+    return this.userProfileService.updateShowTodos(showTodos);
+  }
+
   @Delete()
   resetUserProfile(): UserProfile {
     return this.userProfileService.resetUserProfile();
