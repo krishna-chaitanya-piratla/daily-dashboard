@@ -14,11 +14,11 @@ export const fetchTodoLists = async (setTodoLists: React.Dispatch<React.SetState
 };
 
 export const fetchUserProfile = async (
-  setUsername: React.Dispatch<React.SetStateAction<string>>,
-  setBackgroundType: React.Dispatch<React.SetStateAction<'custom' | 'solid'>>,
-  setBackgroundValue: React.Dispatch<React.SetStateAction<string>>,
-  setCustomBackgroundColors: React.Dispatch<React.SetStateAction<string[]>>,
-  setShowJokeWidget: React.Dispatch<React.SetStateAction<boolean>>
+  setUsername: (value: string) => void,
+  setBackgroundType: (value: 'custom' | 'solid') => void,
+  setBackgroundValue: (value: string) => void,
+  setCustomBackgroundColors: (value: string[]) => void,
+  setShowJokeWidget: (value: boolean) => void
 ) => {
   try {
     const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/userprofile`);

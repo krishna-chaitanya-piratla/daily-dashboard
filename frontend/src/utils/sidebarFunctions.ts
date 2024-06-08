@@ -200,29 +200,25 @@ export const handleEditClick = (
   setIsEditing(true);
 };
 
-export const handleSaveClick = (
+export const handleSaveClick = async (
   tempUsername: string,
   setUsername: (username: string) => void,
-  setIsEditing: React.Dispatch<React.SetStateAction<boolean>>
+  setIsEditing: (isEditing: boolean) => void
 ) => {
-  setUsername(tempUsername);
-  axios.put(`${process.env.REACT_APP_BACKEND_URL}/userprofile/username`, { userName: tempUsername })
+  console.log('Saving username:', tempUsername);
+  try {
+    await axios.put(`${process.env.REACT_APP_BACKEND_URL}/userprofile/username`, { userName: tempUsername })
     .then(response => {
-      console.log('Username updated successfully:', response.data);
+      console.log('Username updated successfully through click:', response.data);
     })
     .catch(error => {
-      console.error('There was an error updating the username:', error);
+      console.error('There was an error updating the username through click:', error);
     });
-  setIsEditing(false);
-};
-
-export const handleClearClick = (
-  username: string,
-  setTempUsername: React.Dispatch<React.SetStateAction<string>>,
-  setIsEditing: React.Dispatch<React.SetStateAction<boolean>>
-) => {
-  setTempUsername(username);
-  setIsEditing(false);
+    setUsername(tempUsername);
+    setIsEditing(false);
+  } catch (error) {
+    console.error('Error updating username:', error);
+  }
 };
 
 export const handleKeyPress = (
@@ -235,14 +231,26 @@ export const handleKeyPress = (
     setUsername(tempUsername);
     axios.put(`${process.env.REACT_APP_BACKEND_URL}/userprofile/username`, { userName: tempUsername })
       .then(response => {
-        console.log('Username updated successfully:', response.data);
+        console.log('Username updated successfully through enter key press:', response.data);
       })
       .catch(error => {
-        console.error('There was an error updating the username:', error);
+        console.error('There was an error updating the username through enter key press:', error);
       });
     setIsEditing(false);
   }
 };
+
+
+export const handleClearClick = (
+  username: string,
+  setTempUsername: React.Dispatch<React.SetStateAction<string>>,
+  setIsEditing: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  setTempUsername(username);
+  setIsEditing(false);
+};
+
+
 
 export const handleDoubleClick = (
   username: string,

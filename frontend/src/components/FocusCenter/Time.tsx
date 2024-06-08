@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { StyledTimeContainer, StyledTimeWrapper, StyledTime, StyledMoreIcon } from '../../styled-components/FocusCenter/Time';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import { useStore } from '../../store/StoreProvider';
 
 interface TimeProps {
   displaySeconds?: boolean;
@@ -8,49 +10,23 @@ interface TimeProps {
   display24Hour?: boolean;
 }
 
-const Time: React.FC<TimeProps> = ({
+const Time: React.FC<TimeProps> = observer(({
   displaySeconds = false,
   displayAMPM = false,
   display24Hour = false,
 }) => {
-  const [time, setTime] = useState<string>(formatTime(new Date()));
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setTime(formatTime(new Date()));
-    }, 1000);
-
-    return () => clearInterval(intervalId);
-  }, [displaySeconds, displayAMPM, display24Hour]);
-
-  function formatTime(date: Date): string {
-    const options: Intl.DateTimeFormatOptions = {
-      hour: 'numeric',
-      minute: 'numeric',
-      second: displaySeconds ? 'numeric' : undefined,
-      hour12: !display24Hour,
-    };
-
-    let timeString = date.toLocaleTimeString(undefined, options);
-
-    // If we don't want to display AM/PM, remove it from the time string
-    if (!displayAMPM && !display24Hour) {
-      timeString = timeString.replace(/ AM| PM/, '');
-    }
-
-    return timeString;
-  }
+  const { focusCenterStore } = useStore();
 
   return (
     <StyledTimeContainer>
       <StyledTimeWrapper>
-        <StyledTime>{time}</StyledTime>
+        <StyledTime>{focusCenterStore.time}</StyledTime>
         <StyledMoreIcon className="more-icon">
           <MoreHorizIcon />
         </StyledMoreIcon>
       </StyledTimeWrapper>
     </StyledTimeContainer>
   );
-};
+});
 
 export default Time;

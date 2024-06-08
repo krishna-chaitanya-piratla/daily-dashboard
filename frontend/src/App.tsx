@@ -21,10 +21,9 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useStore } from './store/StoreProvider';
 
 const App: React.FC = observer(() => {
-  const { backgroundStore, jokeStore } = useStore();
+  const { backgroundStore, jokeStore, focusCenterStore } = useStore();
   const [todoLists, setTodoLists] = useState<TodoListType[]>([]);
   const [isSidebarOpen, setSidebarOpen] = useState<boolean>(false);
-  const [username, setUsername] = useState<string>('');
   const [activeListIndex, setActiveListIndex] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -32,14 +31,20 @@ const App: React.FC = observer(() => {
     const fetchData = async () => {
       console.log("Fetching todo lists and user profile...");
       await fetchTodoLists(setTodoLists);
-      await fetchUserProfile(setUsername, backgroundStore.setTypeWrapper, backgroundStore.setValueWrapper, backgroundStore.setCustomBackgroundColorsWrapper, jokeStore.setShowJokeWidgetWrapper);
+      await fetchUserProfile(
+        focusCenterStore.setUserNameWrapper,
+        backgroundStore.setTypeWrapper, 
+        backgroundStore.setValueWrapper, 
+        backgroundStore.setCustomBackgroundColorsWrapper, 
+        jokeStore.setShowJokeWidgetWrapper
+      );
       setLoading(false);
     };
     fetchData();
-  }, [backgroundStore, jokeStore]);
+  }, [backgroundStore, jokeStore, focusCenterStore]);
 
   useEffect(() => {
-    console.log(`username: ${username}`);
+    console.log(`username: ${focusCenterStore.userName}`);
     console.log("Background type:", backgroundStore.type);
     console.log("Background value:", backgroundStore.value);
     console.log("Custom background colors:", backgroundStore.customBackgroundColors);
@@ -97,8 +102,6 @@ const App: React.FC = observer(() => {
           isOpen={isSidebarOpen}
           onClose={() => closeSidebar(setSidebarOpen)}
           onOpen={() => openSidebar(setSidebarOpen)}
-          setUsername={setUsername}
-          username={username}
           setBackgroundType={backgroundStore.setTypeWrapper}
           setBackgroundValue={backgroundStore.setValueWrapper}
           backgroundType={backgroundStore.type}
@@ -126,7 +129,7 @@ const App: React.FC = observer(() => {
               setActiveListIndex={setActiveListIndex}
             />
           </div>
-          <FocusCenter username={username} />
+          <FocusCenter />
           {isJokeVisible && (
             <JokeWidget className={`${jokeStore.showJokeWidget ? 'fade-in' : 'fade-out'}`} />
           )}

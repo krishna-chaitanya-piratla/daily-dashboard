@@ -15,8 +15,6 @@ import axios from 'axios';
 
 interface SidebarContentsProps {
   addTodoList: () => void;
-  setUsername: React.Dispatch<React.SetStateAction<string>>;
-  username: string;
   setBackgroundType: (type: 'custom' | 'solid') => void;
   setBackgroundValue: (value: string) => void;
   backgroundType: 'custom' | 'solid';
@@ -29,8 +27,6 @@ interface SidebarContentsProps {
 }
 
 const SidebarContents: React.FC<SidebarContentsProps> = ({
-  setUsername,
-  username,
   setBackgroundType,
   setBackgroundValue,
   backgroundType,
@@ -63,7 +59,7 @@ const SidebarContents: React.FC<SidebarContentsProps> = ({
 
   return (
     <SidebarContentsContainer>
-      <UserName setUsername={setUsername} username={username} />
+      <UserName />
       <AccordionContainer>
         <AccordionHeader onClick={handleAccordionToggle}>
           Background Settings

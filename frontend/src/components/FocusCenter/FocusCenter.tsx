@@ -1,19 +1,23 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import Time from './Time';
 import { StyledFocusCenter } from '../../styled-components/FocusCenter/FocusCenter';
 import WelcomeMessage from './WelcomeMessage';
+import { useStore } from '../../store/StoreProvider';
 
-interface FocusCenterProps {
-  username: string;
-}
+const FocusCenter: React.FC = observer(() => {
+  const { focusCenterStore } = useStore();
 
-const FocusCenter: React.FC<FocusCenterProps> = ({ username }) => {
   return (
     <StyledFocusCenter>
-      <Time displaySeconds={false} displayAMPM={false} display24Hour={false} />
-      <WelcomeMessage userName={username} />
+      <Time 
+        displaySeconds={focusCenterStore.displaySeconds} 
+        displayAMPM={focusCenterStore.displayAMPM} 
+        display24Hour={focusCenterStore.display24Hour} 
+      />
+      <WelcomeMessage />
     </StyledFocusCenter>
   );
-};
+});
 
 export default FocusCenter;

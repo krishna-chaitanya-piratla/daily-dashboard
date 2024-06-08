@@ -9,8 +9,6 @@ interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
   onOpen: () => void;
-  setUsername: React.Dispatch<React.SetStateAction<string>>;
-  username: string;
   setBackgroundType: (type: 'custom' | 'solid') => void;
   setBackgroundValue: (value: string) => void;
   backgroundType: 'custom' | 'solid';
@@ -18,8 +16,8 @@ interface SidebarProps {
   setRefreshTrigger: React.Dispatch<React.SetStateAction<number>>;
   customBackgroundColors: string[];
   setCustomBackgroundColors: (colors: string[]) => void;
-  showJokeWidget: boolean; // New prop for joke widget visibility
-  setShowJokeWidget: React.Dispatch<React.SetStateAction<boolean>>; // New prop for setting joke widget visibility
+  showJokeWidget: boolean;
+  setShowJokeWidget: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -27,8 +25,6 @@ const Sidebar: React.FC<SidebarProps> = ({
   isOpen,
   onClose,
   onOpen,
-  setUsername,
-  username,
   setBackgroundType,
   setBackgroundValue,
   backgroundType,
@@ -57,8 +53,6 @@ const Sidebar: React.FC<SidebarProps> = ({
           </StyledCloseIcon>
           <SidebarContents
             addTodoList={addTodoList}
-            setUsername={setUsername}
-            username={username}
             setBackgroundType={setBackgroundType}
             setBackgroundValue={setBackgroundValue}
             backgroundType={backgroundType}
@@ -66,8 +60,8 @@ const Sidebar: React.FC<SidebarProps> = ({
             setRefreshTrigger={setRefreshTrigger}
             customBackgroundColors={customBackgroundColors}
             setCustomBackgroundColors={setCustomBackgroundColors}
-            showJokeWidget={showJokeWidget} // Pass down the state
-            setShowJokeWidget={setShowJokeWidget} // Pass down the setter
+            showJokeWidget={showJokeWidget}
+            setShowJokeWidget={setShowJokeWidget}
           />
         </StyledSidebar>
       </StyledSidebarContainer>
