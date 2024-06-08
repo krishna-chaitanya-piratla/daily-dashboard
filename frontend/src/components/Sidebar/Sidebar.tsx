@@ -35,10 +35,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           <StyledCloseIcon onClick={onClose}>
             <CloseIcon />
           </StyledCloseIcon>
-          <SidebarContents
-            showJokeWidget={showJokeWidget}
-            setShowJokeWidget={setShowJokeWidget}
-          />
+          <SidebarContents/>
         </StyledSidebar>
       </StyledSidebarContainer>
     </>

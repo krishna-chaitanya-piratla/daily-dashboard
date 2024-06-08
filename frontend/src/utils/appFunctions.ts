@@ -14,11 +14,12 @@ export const fetchTodoLists = async (setTodoLists: React.Dispatch<React.SetState
 };
 
 export const fetchUserProfile = async (
-  setUsername: (value: string) => void,
-  setBackgroundType: (value: 'custom' | 'solid') => void,
-  setBackgroundValue: (value: string) => void,
-  setCustomBackgroundColors: (value: string[]) => void,
-  setShowJokeWidget: (value: boolean) => void
+  setUsername: React.Dispatch<React.SetStateAction<string>>,
+  setBackgroundType: React.Dispatch<React.SetStateAction<'custom' | 'solid'>>,
+  setBackgroundValue: React.Dispatch<React.SetStateAction<string>>,
+  setCustomBackgroundColors: React.Dispatch<React.SetStateAction<string[]>>,
+  setShowJokeWidget: React.Dispatch<React.SetStateAction<boolean>>,
+  setShowLocationWeather: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   try {
     const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/userprofile`);
@@ -29,10 +30,12 @@ export const fetchUserProfile = async (
     setBackgroundValue(profile.backgroundPreference.value);
     setCustomBackgroundColors(profile.customBackgroundColors || []);
     setShowJokeWidget(profile.showJokeWidget);
+    setShowLocationWeather(profile.showLocationWeather);
   } catch (error) {
     console.error('There was an error fetching the user profile!', error);
   }
 };
+
 
 
 export const addTodoList = async (

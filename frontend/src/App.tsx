@@ -21,7 +21,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useStore } from './store/StoreProvider';
 
 const App: React.FC = observer(() => {
-  const { backgroundStore, jokeStore, focusCenterStore } = useStore();
+  const { backgroundStore, jokeStore, focusCenterStore, locationWeatherStore } = useStore();
   const [todoLists, setTodoLists] = useState<TodoListType[]>([]);
   const [isSidebarOpen, setSidebarOpen] = useState<boolean>(false);
   const [activeListIndex, setActiveListIndex] = useState<number>(0);
@@ -36,12 +36,13 @@ const App: React.FC = observer(() => {
         backgroundStore.setTypeWrapper, 
         backgroundStore.setValueWrapper, 
         backgroundStore.setCustomBackgroundColorsWrapper, 
-        jokeStore.setShowJokeWidgetWrapper
+        jokeStore.setShowJokeWidgetWrapper,
+        locationWeatherStore.setShowLocationWeatherWrapper
       );
       setLoading(false);
     };
     fetchData();
-  }, [backgroundStore, jokeStore, focusCenterStore]);
+  }, [backgroundStore, jokeStore, focusCenterStore, locationWeatherStore]);
 
   useEffect(() => {
     console.log(`username: ${focusCenterStore.userName}`);

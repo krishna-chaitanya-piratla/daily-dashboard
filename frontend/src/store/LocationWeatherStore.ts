@@ -7,6 +7,7 @@ class LocationWeatherStore {
   temperature: number | null = null;
   humidity: number | null = null;
   units: string = 'imperial';
+  showLocationWeather: boolean = true;
 
   constructor() {
     makeAutoObservable(this);
@@ -40,6 +41,18 @@ class LocationWeatherStore {
     this.units = units;
     this.fetchWeather(); // Fetch weather again with the new units
   }
+
+  setShowLocationWeather(show: boolean) {
+    this.showLocationWeather = show;
+  }
+
+  setShowLocationWeatherWrapper = (value: React.SetStateAction<boolean>) => {
+    if (typeof value === 'function') {
+      this.setShowLocationWeather(value(this.showLocationWeather));
+    } else {
+      this.setShowLocationWeather(value);
+    }
+  };
 }
 
 export default LocationWeatherStore;
