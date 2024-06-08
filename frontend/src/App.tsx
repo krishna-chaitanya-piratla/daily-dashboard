@@ -60,17 +60,6 @@ const App: React.FC = observer(() => {
     console.log("Todo lists updated:", todoLists);
   }, [todoLists]);
 
-  const [isJokeVisible, setIsJokeVisible] = useState<boolean>(jokeStore.showJokeWidget);
-
-  useEffect(() => {
-    if (jokeStore.showJokeWidget) {
-      setIsJokeVisible(true);
-    } else {
-      const timeoutId = setTimeout(() => setIsJokeVisible(false), 500); // Wait for fade-out transition
-      return () => clearTimeout(timeoutId);
-    }
-  }, [jokeStore.showJokeWidget]);
-
   if (loading) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
@@ -122,9 +111,7 @@ const App: React.FC = observer(() => {
             />
           </div>
           <FocusCenter />
-          {isJokeVisible && (
-            <JokeWidget className={`${jokeStore.showJokeWidget ? 'fade-in' : 'fade-out'}`} />
-          )}
+          <JokeWidget />
         </AppContainer>
       </Background>
     </>
