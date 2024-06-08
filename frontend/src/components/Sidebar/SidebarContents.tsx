@@ -14,26 +14,11 @@ import { Switch } from '@mui/material';
 import axios from 'axios';
 
 interface SidebarContentsProps {
-  addTodoList: () => void;
-  setBackgroundType: (type: 'custom' | 'solid') => void;
-  setBackgroundValue: (value: string) => void;
-  backgroundType: 'custom' | 'solid';
-  backgroundValue: string;
-  setRefreshTrigger: React.Dispatch<React.SetStateAction<number>>;
-  customBackgroundColors: string[];
-  setCustomBackgroundColors: (colors: string[]) => void;
   showJokeWidget: boolean;
   setShowJokeWidget: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const SidebarContents: React.FC<SidebarContentsProps> = ({
-  setBackgroundType,
-  setBackgroundValue,
-  backgroundType,
-  backgroundValue,
-  setRefreshTrigger,
-  customBackgroundColors,
-  setCustomBackgroundColors,
   showJokeWidget,
   setShowJokeWidget
 }) => {
@@ -67,15 +52,7 @@ const SidebarContents: React.FC<SidebarContentsProps> = ({
         </AccordionHeader>
         {isAccordionOpen && (
           <AccordionContent>
-            <BackgroundSettings
-              setBackgroundType={setBackgroundType}
-              setBackgroundValue={setBackgroundValue}
-              backgroundType={backgroundType}
-              backgroundValue={backgroundValue}
-              setRefreshTrigger={setRefreshTrigger}
-              customBackgroundColors={customBackgroundColors}
-              setCustomBackgroundColors={setCustomBackgroundColors}
-            />
+            <BackgroundSettings/>
           </AccordionContent>
         )}
       </AccordionContainer>

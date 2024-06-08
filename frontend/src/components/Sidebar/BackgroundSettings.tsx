@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { observer } from 'mobx-react-lite';
+import { useStore } from '../../store/StoreProvider';
 import { SketchPicker } from 'react-color';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -8,25 +10,14 @@ import {
 } from '../../styled-components/Sidebar/BackgroundSettings';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import {
-  presetColors, handleRadioChange, handleSolidColorBoxClick, handleUnsplashInputChange, handleUnsplashInputKeyDown, handleSaveButtonClick, handleRefreshButtonClick, handleClickOutside, handleCustomColorBoxClick, handleColorChangeComplete, handleSaveCustomColor
+  presetColors, handleClickOutside, handleColorChangeComplete
 } from '../../utils/sidebarFunctions';
 
-interface BackgroundSettingsProps {
-  setBackgroundType: (type: 'custom' | 'solid') => void;
-  setBackgroundValue: (value: string) => void;
-  setRefreshTrigger: React.Dispatch<React.SetStateAction<number>>;
-  backgroundType: 'custom' | 'solid';
-  backgroundValue: string;
-  customBackgroundColors: string[];
-  setCustomBackgroundColors: (colors: string[]) => void;
-}
-
-const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
-  setBackgroundType, setBackgroundValue, setRefreshTrigger, backgroundType, backgroundValue, customBackgroundColors, setCustomBackgroundColors
-}) => {
-  const [selectedBackground, setSelectedBackground] = useState<string>(backgroundType);
-  const [solidValue, setSolidValue] = useState<string>(backgroundType === 'solid' ? backgroundValue : '#000000');
-  const [unsplashValue, setUnsplashValue] = useState<string>(backgroundType === 'custom' ? backgroundValue : '');
+const BackgroundSettings: React.FC = observer(() => {
+  const { backgroundStore } = useStore();
+  const [selectedBackground, setSelectedBackground] = useState<string>(backgroundStore.type);
+  const [solidValue, setSolidValue] = useState<string>(backgroundStore.type === 'solid' ? backgroundStore.value : '#000000');
+  const [unsplashValue, setUnsplashValue] = useState<string>(backgroundStore.type === 'custom' ? backgroundStore.value : '');
   const [isUnsplashValueChanged, setIsUnsplashValueChanged] = useState<boolean>(false);
   const [isColorPickerOpen, setIsColorPickerOpen] = useState<boolean>(false);
   const [customColor, setCustomColor] = useState<string>('');
@@ -34,14 +25,13 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
   const colorPickerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    console.log('useEffect - backgroundType or backgroundValue changed');
-    setSelectedBackground(backgroundType);
-    if (backgroundType === 'solid') {
-      setSolidValue(backgroundValue);
-    } else if (backgroundType === 'custom') {
-      setUnsplashValue(backgroundValue);
+    setSelectedBackground(backgroundStore.type);
+    if (backgroundStore.type === 'solid') {
+      setSolidValue(backgroundStore.value);
+    } else if (backgroundStore.type === 'custom') {
+      setUnsplashValue(backgroundStore.value);
     }
-  }, [backgroundType, backgroundValue]);
+  }, [backgroundStore.type, backgroundStore.value]);
 
   useEffect(() => {
     document.addEventListener('mousedown', (event) => handleClickOutside(event, colorPickerRef, inputRef, setIsColorPickerOpen));
@@ -52,8 +42,8 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
 
   const handleDeleteCustomColor = async (color: string, event: React.MouseEvent) => {
     event.stopPropagation(); // Stop the event from propagating to the parent element
-    const updatedCustomColors = customBackgroundColors.filter(c => c !== color);
-    setCustomBackgroundColors(updatedCustomColors);
+    const updatedCustomColors = backgroundStore.customBackgroundColors.filter(c => c !== color);
+    backgroundStore.setCustomBackgroundColors(updatedCustomColors);
 
     try {
       await axios.put(`${process.env.REACT_APP_BACKEND_URL}/userprofile/custombackgroundcolors`, {
@@ -63,6 +53,86 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
     } catch (error) {
       console.error('Error updating custom background colors:', error);
     }
+  };
+
+  const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    setSelectedBackground(value);
+    backgroundStore.setType(value as 'custom' | 'solid');
+  };
+
+  const handleSolidColorBoxClick = (color: string) => {
+    setSolidValue(color);
+    backgroundStore.setType('solid');
+    backgroundStore.setValue(color);
+
+    axios.put(`${process.env.REACT_APP_BACKEND_URL}/userprofile/background`, {
+      type: 'solid',
+      value: color
+    }).then(response => {
+      console.log('Background preference updated:', response.data);
+    }).catch(error => {
+      console.error('Error updating background preference:', error);
+    });
+  };
+
+  const handleUnsplashInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUnsplashValue(event.target.value);
+    setIsUnsplashValueChanged(event.target.value !== backgroundStore.value);
+  };
+
+  const handleUnsplashInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      backgroundStore.setType('custom');
+      backgroundStore.setValue(unsplashValue);
+      setIsUnsplashValueChanged(false);
+
+      axios.put(`${process.env.REACT_APP_BACKEND_URL}/userprofile/background`, {
+        type: 'custom',
+        value: unsplashValue
+      }).then(response => {
+        console.log('Background preference updated:', response.data);
+      }).catch(error => {
+        console.error('Error updating background preference:', error);
+      });
+    } else if (event.key === 'Escape') {
+      setUnsplashValue(backgroundStore.value);
+      setIsUnsplashValueChanged(false);
+    }
+  };
+
+  const handleSaveButtonClick = () => {
+    backgroundStore.setType('custom');
+    backgroundStore.setValue(unsplashValue);
+    setIsUnsplashValueChanged(false);
+
+    axios.put(`${process.env.REACT_APP_BACKEND_URL}/userprofile/background`, {
+      type: 'custom',
+      value: unsplashValue
+    }).then(response => {
+      console.log('Background preference updated:', response.data);
+    }).catch(error => {
+      console.error('Error updating background preference:', error);
+    });
+  };
+
+  const handleRefreshButtonClick = () => {
+    backgroundStore.setRefreshTriggerWrapper((prev: number) => prev + 1);
+    console.log('Background refreshed with value:', unsplashValue);
+  };
+
+  const handleSaveCustomColor = () => {
+    const updatedCustomColors = [...backgroundStore.customBackgroundColors, customColor];
+    backgroundStore.setCustomBackgroundColors(updatedCustomColors);
+    setIsColorPickerOpen(false);
+
+    axios.put(`${process.env.REACT_APP_BACKEND_URL}/userprofile/custombackgroundcolors`, {
+      customBackgroundColors: updatedCustomColors
+    }).then(response => {
+      console.log('Custom background colors updated:', response.data);
+    }).catch(error => {
+      console.error('Error updating custom background colors:', error);
+    });
   };
 
   return (
@@ -75,7 +145,7 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
             name="background"
             value="solid"
             checked={selectedBackground === 'solid'}
-            onChange={(event) => handleRadioChange(event, setSelectedBackground)}
+            onChange={handleRadioChange}
           />
           Solid
         </label>
@@ -85,7 +155,7 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
             name="background"
             value="custom"
             checked={selectedBackground === 'custom'}
-            onChange={(event) => handleRadioChange(event, setSelectedBackground)}
+            onChange={handleRadioChange}
           />
           Unsplash
         </label>
@@ -100,7 +170,7 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
                   key={index}
                   color={color}
                   isSelected={solidValue === color}
-                  onClick={() => handleSolidColorBoxClick(color, setSolidValue, setBackgroundType, setBackgroundValue)}
+                  onClick={() => handleSolidColorBoxClick(color)}
                 />
               ))}
             </ColorBoxContainer>
@@ -108,12 +178,12 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
           <RowContainer>
             <RowLabel>Custom</RowLabel>
             <ColorBoxContainer>
-              {customBackgroundColors.map((color, index) => (
+              {backgroundStore.customBackgroundColors.map((color, index) => (
                 <CustomColorBox 
                   key={index}
                   color={color}
                   isSelected={solidValue === color}
-                  onClick={() => handleSolidColorBoxClick(color, setSolidValue, setBackgroundType, setBackgroundValue)}
+                  onClick={() => handleSolidColorBoxClick(color)}
                 >
                   <DeleteIconWrapper onClick={(event) => handleDeleteCustomColor(color, event)}>
                     <ClearIcon />
@@ -121,7 +191,7 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
                 </CustomColorBox>
               ))}
               <AddIconWrapper>
-                <AddCircleOutlineIcon onClick={() => handleCustomColorBoxClick(isColorPickerOpen, setIsColorPickerOpen)} />
+                <AddCircleOutlineIcon onClick={() => setIsColorPickerOpen(!isColorPickerOpen)} />
               </AddIconWrapper>
             </ColorBoxContainer>
           </RowContainer>
@@ -133,13 +203,13 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
             type="text" 
             placeholder="Enter search query" 
             value={unsplashValue} 
-            onChange={(event) => handleUnsplashInputChange(event, setUnsplashValue, setIsUnsplashValueChanged, backgroundValue)} 
-            onKeyDown={(event) => handleUnsplashInputKeyDown(event, unsplashValue, backgroundValue, setUnsplashValue, setIsUnsplashValueChanged, setBackgroundType, setBackgroundValue)}
+            onChange={handleUnsplashInputChange} 
+            onKeyDown={handleUnsplashInputKeyDown}
           />
           {isUnsplashValueChanged ? (
-            <SaveButton onClick={() => handleSaveButtonClick(unsplashValue, setBackgroundType, setBackgroundValue, setIsUnsplashValueChanged)} />
+            <SaveButton onClick={handleSaveButtonClick} />
           ) : unsplashValue && (
-            <RefreshButton as={RefreshIcon} onClick={() => handleRefreshButtonClick(unsplashValue, setRefreshTrigger)} />
+            <RefreshButton as={RefreshIcon} onClick={handleRefreshButtonClick} />
           )}
         </div>
       )}
@@ -149,11 +219,11 @@ const BackgroundSettings: React.FC<BackgroundSettingsProps> = ({
             color={customColor}
             onChangeComplete={(color) => handleColorChangeComplete(color, setCustomColor)}
           />
-          <StyledSaveColorButton onClick={() => handleSaveCustomColor(customColor, customBackgroundColors, setCustomBackgroundColors, setIsColorPickerOpen)}>Save Color</StyledSaveColorButton>
+          <StyledSaveColorButton onClick={handleSaveCustomColor}>Save Color</StyledSaveColorButton>
         </div>
       )}
     </BackgroundSettingsContainer>
   );
-};
+});
 
 export default BackgroundSettings;

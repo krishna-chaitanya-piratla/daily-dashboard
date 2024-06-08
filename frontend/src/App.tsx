@@ -98,17 +98,9 @@ const App: React.FC = observer(() => {
       <GlobalStyles />
       <Background type={backgroundStore.type} value={backgroundStore.value} refreshTrigger={backgroundStore.refreshTrigger}>
         <Sidebar
-          addTodoList={() => addTodoList(todoLists, setTodoLists, setActiveListIndex)}
           isOpen={isSidebarOpen}
           onClose={() => closeSidebar(setSidebarOpen)}
           onOpen={() => openSidebar(setSidebarOpen)}
-          setBackgroundType={backgroundStore.setTypeWrapper}
-          setBackgroundValue={backgroundStore.setValueWrapper}
-          backgroundType={backgroundStore.type}
-          backgroundValue={backgroundStore.value}
-          setRefreshTrigger={backgroundStore.setRefreshTriggerWrapper}
-          customBackgroundColors={backgroundStore.customBackgroundColors}
-          setCustomBackgroundColors={backgroundStore.setCustomBackgroundColorsWrapper}
           showJokeWidget={jokeStore.showJokeWidget}
           setShowJokeWidget={jokeStore.setShowJokeWidgetWrapper}
         />
