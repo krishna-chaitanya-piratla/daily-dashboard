@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '../../store/StoreProvider';
-import { StyledColorPicker, StyledSaveColorButton, StyledRevertColorButton, StyledCloseIconButton } from '../../styled-components/Sidebar/ColorPickerStyles';
+import { StyledColorPicker, StyledColorButton, StyledCloseIconButton, ColorPickerContainer, ColorPickerAndButtons, RightSpace, SaveandRevertButtons } from '../../styled-components/Sidebar/ColorPickerStyles';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ClearIcon from '@mui/icons-material/Clear';
 import CloseIcon from '@mui/icons-material/Close';
@@ -255,17 +255,23 @@ const BackgroundSettings: React.FC = observer(() => {
         </div>
       )}
       {isColorPickerOpen && (
-        <div ref={colorPickerRef} style={{ position: 'relative' }}>
-          <StyledCloseIconButton onClick={handleCloseColorPicker}>
-            <CloseIcon />
-          </StyledCloseIconButton>
-          <StyledColorPicker
-            color={customColor}
-            onChangeComplete={handleColorChange}
-          />
-          <StyledSaveColorButton onClick={handleSaveCustomColor}>Save Color</StyledSaveColorButton>
-          <StyledRevertColorButton onClick={handleRevertColor}>Revert Color</StyledRevertColorButton>
-        </div>
+        <ColorPickerContainer ref={colorPickerRef}>
+          <ColorPickerAndButtons>
+            <StyledColorPicker
+              color={customColor}
+              onChangeComplete={handleColorChange}
+            />
+            <SaveandRevertButtons>
+              <StyledColorButton onClick={handleSaveCustomColor}>Save Color</StyledColorButton>
+              <StyledColorButton onClick={handleRevertColor}>Revert Color</StyledColorButton>
+            </SaveandRevertButtons>
+          </ColorPickerAndButtons>
+          <RightSpace>
+            <StyledCloseIconButton onClick={handleCloseColorPicker}>
+              <CloseIcon />
+            </StyledCloseIconButton>
+          </RightSpace>
+        </ColorPickerContainer>
       )}
     </BackgroundSettingsContainer>
   );
