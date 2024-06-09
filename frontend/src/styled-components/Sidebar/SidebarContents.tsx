@@ -61,30 +61,55 @@ export const AccordionContent = styled.div`
 
 export const StyledSwitch = styled(Switch)`
   && {
-    .MuiSwitch-switchBase.Mui-checked {
-      color: deeppink;
+    .MuiSwitch-switchBase {
+      color: #d3d3d3; // Mild gray for the thumb when off
+
+      &.Mui-checked {
+        color: deeppink;
+
+        .MuiSwitch-thumb {
+          background-color: deeppink;
+
+          &::before {
+            content: '✔';
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            font-size: 0.75rem;
+            color: white;
+          }
+        }
+
+        & + .MuiSwitch-track {
+          background-color: deeppink;
+        }
+      }
+
+      .MuiSwitch-thumb {
+        background-color: #d3d3d3; // Mild gray for the thumb when off
+        width: 1.5rem;
+        height: 1.5rem;
+
+        &::before {
+          content: '✖';
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          height: 100%;
+          font-size: 0.75rem;
+          color: gray; // Darker gray for the cross mark
+        }
+      }
     }
 
-    .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track {
-      background-color: deeppink;
-    }
-
-    .MuiSwitch-thumb {
-      position: relative;
-    }
-
-    .MuiSwitch-switchBase.Mui-checked .MuiSwitch-thumb:before {
-      content: '✓';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 12px; /* Adjust the size as needed */
-      color: white;
+    .MuiSwitch-track {
+      background-color: #f5f5f5; // Mild gray for the track when off
     }
   }
 `;
-
 
 export const ToggleContainer = styled.div`
   display: flex;
