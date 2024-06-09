@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '../../store/StoreProvider';
-import { SketchPicker } from 'react-color';
+import { StyledColorPicker, StyledSaveColorButton } from '../../styled-components/Sidebar/ColorPickerStyles';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ClearIcon from '@mui/icons-material/Clear';
 import axios from 'axios';
 import {
-  BackgroundSettingsContainer, RadioButtonContainer, ColorBoxContainer, ColorBox, StyledUnsplashInput, SaveButton, RefreshButton, CustomColorBox, RowContainer, RowLabel, StyledSaveColorButton, AddIconWrapper, ColorSelectionDiv, DeleteIconWrapper
+  BackgroundSettingsContainer, RadioButtonContainer, ColorBoxContainer, ColorBox, StyledUnsplashInput, SaveButton, RefreshButton, CustomColorBox, RowContainer, RowLabel, AddIconWrapper, ColorSelectionDiv, DeleteIconWrapper
 } from '../../styled-components/Sidebar/BackgroundSettings';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { presetColors, handleClickOutside, handleColorChangeComplete } from '../../utils/sidebarFunctions';
+import { presetColors, handleClickOutside } from '../../utils/sidebarFunctions';
 
 const BackgroundSettings: React.FC = observer(() => {
   const { backgroundStore } = useStore();
@@ -228,7 +228,7 @@ const BackgroundSettings: React.FC = observer(() => {
       )}
       {isColorPickerOpen && (
         <div ref={colorPickerRef}>
-          <SketchPicker
+          <StyledColorPicker
             color={customColor}
             onChangeComplete={handleColorChange}
           />
