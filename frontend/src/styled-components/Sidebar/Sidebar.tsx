@@ -4,7 +4,7 @@ export const StyledSidebarContainer = styled.div<{ isOpen: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 25%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
@@ -21,7 +21,7 @@ export const StyledSidebar = styled.div<{ isOpen: boolean }>`
   background-color: inherit;
   border: 0.5px solid var(--border-color);
   border-left: none;
-  width: 25%;
+  width: 100%;
   height: 100%;
   padding: 20px;
   box-sizing: border-box;

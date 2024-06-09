@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '../../store/StoreProvider';
-import { StyledColorPicker, StyledSaveColorButton, StyledRevertColorButton } from '../../styled-components/Sidebar/ColorPickerStyles';
+import { StyledColorPicker, StyledSaveColorButton, StyledRevertColorButton, StyledCloseIconButton } from '../../styled-components/Sidebar/ColorPickerStyles';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ClearIcon from '@mui/icons-material/Clear';
+import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
 import {
   BackgroundSettingsContainer, RadioButtonContainer, ColorBoxContainer, ColorBox, StyledUnsplashInput, SaveButton, RefreshButton, CustomColorBox, RowContainer, RowLabel, AddIconWrapper, ColorSelectionDiv, DeleteIconWrapper
@@ -171,6 +172,10 @@ const BackgroundSettings: React.FC = observer(() => {
     setIsColorPickerOpen(!isColorPickerOpen);
   };
 
+  const handleCloseColorPicker = () => {
+    setIsColorPickerOpen(false);
+  };
+
   return (
     <BackgroundSettingsContainer>
       <h3>Background</h3>
@@ -250,7 +255,10 @@ const BackgroundSettings: React.FC = observer(() => {
         </div>
       )}
       {isColorPickerOpen && (
-        <div ref={colorPickerRef}>
+        <div ref={colorPickerRef} style={{ position: 'relative' }}>
+          <StyledCloseIconButton onClick={handleCloseColorPicker}>
+            <CloseIcon />
+          </StyledCloseIconButton>
           <StyledColorPicker
             color={customColor}
             onChangeComplete={handleColorChange}

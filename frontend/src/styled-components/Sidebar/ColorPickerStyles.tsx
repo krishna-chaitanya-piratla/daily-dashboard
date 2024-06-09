@@ -69,3 +69,21 @@ export const StyledRevertColorButton = styled.button`
     outline: none;
   }
 `;
+
+export const StyledCloseIconButton = styled.button`
+  position: absolute;
+  top: 0px;
+  right: 7rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: white;
+
+  &:hover {
+    color: ${(props) => props.theme.primaryColor};
+  }
+
+  &:focus {
+    outline: none;
+  }
+`;
