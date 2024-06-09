@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Switch } from '@mui/material';
 
 export const SidebarContentsContainer = styled.div`
   display: flex;
@@ -56,4 +57,39 @@ export const AccordionContent = styled.div`
       transform: translateY(0);
     }
   }
+`;
+
+export const StyledSwitch = styled(Switch)`
+  && {
+    .MuiSwitch-switchBase.Mui-checked {
+      color: deeppink;
+    }
+
+    .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track {
+      background-color: deeppink;
+    }
+
+    .MuiSwitch-thumb {
+      position: relative;
+    }
+
+    .MuiSwitch-switchBase.Mui-checked .MuiSwitch-thumb:before {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 12px; /* Adjust the size as needed */
+      color: white;
+    }
+  }
+`;
+
+
+export const ToggleContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px 0;
 `;

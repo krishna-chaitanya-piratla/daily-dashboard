@@ -8,11 +8,12 @@ import {
   Separator,
   AccordionContainer,
   AccordionHeader,
-  AccordionContent
+  AccordionContent,
+  StyledSwitch,
+  ToggleContainer
 } from '../../styled-components/Sidebar/SidebarContents';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import { Switch } from '@mui/material';
 import axios from 'axios';
 
 const SidebarContents: React.FC = observer(() => {
@@ -71,23 +72,23 @@ const SidebarContents: React.FC = observer(() => {
         )}
       </AccordionContainer>
       <Separator />
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+      <ToggleContainer>
         <span>Joke Widget</span>
-        <Switch
+        <StyledSwitch
           checked={jokeStore.showJokeWidget}
           onChange={handleJokeWidgetToggle}
-          color="primary"
+          
         />
-      </div>
+      </ToggleContainer>
       <Separator />
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+      <ToggleContainer>
         <span>Location Weather</span>
-        <Switch
+        <StyledSwitch
           checked={locationWeatherStore.showLocationWeather}
           onChange={handleLocationWeatherToggle}
-          color="primary"
+          
         />
-      </div>
+      </ToggleContainer>
     </SidebarContentsContainer>
   );
 });
