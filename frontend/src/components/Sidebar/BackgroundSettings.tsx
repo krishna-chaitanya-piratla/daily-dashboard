@@ -9,9 +9,7 @@ import {
   BackgroundSettingsContainer, RadioButtonContainer, ColorBoxContainer, ColorBox, StyledUnsplashInput, SaveButton, RefreshButton, CustomColorBox, RowContainer, RowLabel, StyledSaveColorButton, AddIconWrapper, ColorSelectionDiv, DeleteIconWrapper
 } from '../../styled-components/Sidebar/BackgroundSettings';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import {
-  presetColors, handleClickOutside, handleColorChangeComplete
-} from '../../utils/sidebarFunctions';
+import { presetColors, handleClickOutside, handleColorChangeComplete } from '../../utils/sidebarFunctions';
 
 const BackgroundSettings: React.FC = observer(() => {
   const { backgroundStore } = useStore();
@@ -135,6 +133,21 @@ const BackgroundSettings: React.FC = observer(() => {
     });
   };
 
+  const handleColorChange = (color: any) => {
+    setCustomColor(color.hex);
+    backgroundStore.setType('solid');
+    backgroundStore.setValue(color.hex);
+
+    axios.put(`${process.env.REACT_APP_BACKEND_URL}/userprofile/background`, {
+      type: 'solid',
+      value: color.hex
+    }).then(response => {
+      console.log('Background preference updated:', response.data);
+    }).catch(error => {
+      console.error('Error updating background preference:', error);
+    });
+  };
+
   return (
     <BackgroundSettingsContainer>
       <h3>Background</h3>
@@ -217,7 +230,7 @@ const BackgroundSettings: React.FC = observer(() => {
         <div ref={colorPickerRef}>
           <SketchPicker
             color={customColor}
-            onChangeComplete={(color) => handleColorChangeComplete(color, setCustomColor)}
+            onChangeComplete={handleColorChange}
           />
           <StyledSaveColorButton onClick={handleSaveCustomColor}>Save Color</StyledSaveColorButton>
         </div>
