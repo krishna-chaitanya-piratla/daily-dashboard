@@ -48,3 +48,24 @@ export const StyledSaveColorButton = styled.button`
     outline: none;
   }
 `;
+
+export const StyledRevertColorButton = styled.button`
+  background-color: ${(props) => props.theme.secondaryColor};
+  color: ${(props) => props.theme.textColor};
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-left: 10px;
+
+  &:hover {
+    background-color: var(--widget-background-color);
+    color: white;
+  }
+
+  &:focus {
+    outline: none;
+  }
+`;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '../../store/StoreProvider';
-import { StyledColorPicker, StyledSaveColorButton } from '../../styled-components/Sidebar/ColorPickerStyles';
+import { StyledColorPicker, StyledSaveColorButton, StyledRevertColorButton } from '../../styled-components/Sidebar/ColorPickerStyles';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ClearIcon from '@mui/icons-material/Clear';
 import axios from 'axios';
@@ -35,8 +35,9 @@ const BackgroundSettings: React.FC = observer(() => {
     document.addEventListener('mousedown', (event) => handleClickOutside(event, colorPickerRef, inputRef, setIsColorPickerOpen));
     return () => {
       document.removeEventListener('mousedown', (event) => handleClickOutside(event, colorPickerRef, inputRef, setIsColorPickerOpen));
+      backgroundStore.setOriginalValue(backgroundStore.value);
     };
-  }, []);
+  }, [isColorPickerOpen, backgroundStore]);
 
   const handleDeleteCustomColor = async (color: string, event: React.MouseEvent) => {
     event.stopPropagation(); // Stop the event from propagating to the parent element
@@ -148,8 +149,23 @@ const BackgroundSettings: React.FC = observer(() => {
     });
   };
 
+  const handleRevertColor = () => {
+    backgroundStore.setValue(backgroundStore.originalValue);
+    setCustomColor(backgroundStore.originalValue);
+
+    axios.put(`${process.env.REACT_APP_BACKEND_URL}/userprofile/background`, {
+      type: 'solid',
+      value: backgroundStore.originalValue
+    }).then(response => {
+      console.log('Background reverted to original:', response.data);
+    }).catch(error => {
+      console.error('Error reverting background color:', error);
+    });
+  };
+
   const handleColorPickerOpen = () => {
     if (!isColorPickerOpen) {
+      backgroundStore.setOriginalValue(backgroundStore.value);
       setCustomColor(backgroundStore.value);
     }
     setIsColorPickerOpen(!isColorPickerOpen);
@@ -240,6 +256,7 @@ const BackgroundSettings: React.FC = observer(() => {
             onChangeComplete={handleColorChange}
           />
           <StyledSaveColorButton onClick={handleSaveCustomColor}>Save Color</StyledSaveColorButton>
+          <StyledRevertColorButton onClick={handleRevertColor}>Revert Color</StyledRevertColorButton>
         </div>
       )}
     </BackgroundSettingsContainer>

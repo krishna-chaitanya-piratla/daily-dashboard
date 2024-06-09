@@ -3,6 +3,7 @@ import { makeAutoObservable } from 'mobx';
 class BackgroundStore {
   type: 'custom' | 'solid' = 'solid';
   value: string = '#2f2c5c';
+  originalValue: string = '#2f2c5c'; // Add originalValue to store the original color
   customBackgroundColors: string[] = [];
   refreshTrigger: number = 0;
 
@@ -16,6 +17,10 @@ class BackgroundStore {
 
   setValue(value: string) {
     this.value = value;
+  }
+
+  setOriginalValue(value: string) {
+    this.originalValue = value;
   }
 
   setCustomBackgroundColors(colors: string[]) {
@@ -40,6 +45,14 @@ class BackgroundStore {
       this.setValue(value(this.value));
     } else {
       this.setValue(value);
+    }
+  };
+
+  setOriginalValueWrapper = (value: React.SetStateAction<string>) => {
+    if (typeof value === 'function') {
+      this.setOriginalValue(value(this.originalValue));
+    } else {
+      this.setOriginalValue(value);
     }
   };
 
