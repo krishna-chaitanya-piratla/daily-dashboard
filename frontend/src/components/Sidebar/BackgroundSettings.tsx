@@ -18,7 +18,7 @@ const BackgroundSettings: React.FC = observer(() => {
   const [unsplashValue, setUnsplashValue] = useState<string>(backgroundStore.type === 'custom' ? backgroundStore.value : '');
   const [isUnsplashValueChanged, setIsUnsplashValueChanged] = useState<boolean>(false);
   const [isColorPickerOpen, setIsColorPickerOpen] = useState<boolean>(false);
-  const [customColor, setCustomColor] = useState<string>('');
+  const [customColor, setCustomColor] = useState<string>(backgroundStore.type === 'solid' ? backgroundStore.value : '#000000');
   const inputRef = useRef<HTMLInputElement>(null);
   const colorPickerRef = useRef<HTMLDivElement>(null);
 
@@ -148,6 +148,13 @@ const BackgroundSettings: React.FC = observer(() => {
     });
   };
 
+  const handleColorPickerOpen = () => {
+    if (!isColorPickerOpen) {
+      setCustomColor(backgroundStore.value);
+    }
+    setIsColorPickerOpen(!isColorPickerOpen);
+  };
+
   return (
     <BackgroundSettingsContainer>
       <h3>Background</h3>
@@ -204,7 +211,7 @@ const BackgroundSettings: React.FC = observer(() => {
                 </CustomColorBox>
               ))}
               <AddIconWrapper>
-                <AddCircleOutlineIcon onClick={() => setIsColorPickerOpen(!isColorPickerOpen)} />
+                <AddCircleOutlineIcon onClick={handleColorPickerOpen} />
               </AddIconWrapper>
             </ColorBoxContainer>
           </RowContainer>
