@@ -8,16 +8,12 @@ interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
   onOpen: () => void;
-  showJokeWidget: boolean;
-  setShowJokeWidget: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
   isOpen,
   onClose,
   onOpen,
-  showJokeWidget,
-  setShowJokeWidget
 }) => {
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (e.target === e.currentTarget) {

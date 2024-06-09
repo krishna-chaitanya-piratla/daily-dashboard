@@ -91,8 +91,6 @@ const App: React.FC = observer(() => {
           isOpen={isSidebarOpen}
           onClose={() => closeSidebar(setSidebarOpen)}
           onOpen={() => openSidebar(setSidebarOpen)}
-          showJokeWidget={jokeStore.showJokeWidget}
-          setShowJokeWidget={jokeStore.setShowJokeWidgetWrapper}
         />
         <AppContainer>
           <Header>
