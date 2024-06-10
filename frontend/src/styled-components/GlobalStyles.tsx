@@ -37,6 +37,7 @@ export const GlobalStyles = createGlobalStyle`
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    overflow: hidden;
     ::selection {
       background: #ff0073;
       color: white;
