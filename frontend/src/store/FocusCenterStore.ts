@@ -1,5 +1,11 @@
 import { makeAutoObservable } from 'mobx';
 
+interface GreetingConfig {
+  startHour: number;
+  startMinute: number;
+  message: string;
+}
+
 class FocusCenterStore {
   time: string = '';
   greeting: string = '';
@@ -7,14 +13,28 @@ class FocusCenterStore {
   displayAMPM: boolean = false;
   display24Hour: boolean = false;
   userName: string = 'Stranger';
+  greetingConfigs: GreetingConfig[] = [
+    { startHour: 6, startMinute: 0, message: 'Good Morning' },
+    { startHour: 12, startMinute: 0, message: 'Good Afternoon' },
+    { startHour: 18, startMinute: 0, message: 'Good Evening' },
+    { startHour: 22, startMinute: 0, message: 'Time to Sleep' },
+  ];
 
   constructor() {
-    makeAutoObservable(this);
+    makeAutoObservable(this, {}, { autoBind: true });
     this.setTime();
     this.setGreeting();
-    setInterval(this.setTime, 1000);
-    setInterval(this.setGreeting, 60000);
+    setInterval(this.updateTime, 1000);
+    setInterval(this.updateGreeting, 1000);
   }
+
+  updateTime = () => {
+    this.setTime();
+  };
+
+  updateGreeting = () => {
+    this.setGreeting();
+  };
 
   setTime = () => {
     const date = new Date();
@@ -36,15 +56,32 @@ class FocusCenterStore {
 
   setGreeting = () => {
     const currentHour = new Date().getHours();
+    const currentMinute = new Date().getMinutes();
     const welcomeName = this.userName === '' ? 'Stranger' : this.userName;
 
-    if (currentHour >= 22 || currentHour < 4) {
-      this.greeting = `Time to Sleep, ${welcomeName}`;
-    } else if (currentHour >= 4 && currentHour < 12) {
-      this.greeting = `Good Morning, ${welcomeName}`;
-    } else {
-      this.greeting = `Good Evening, ${welcomeName}`;
+    let selectedGreeting = this.greetingConfigs[this.greetingConfigs.length - 1].message;
+
+    for (let i = 0; i < this.greetingConfigs.length; i++) {
+      const { startHour, startMinute, message } = this.greetingConfigs[i];
+      if (
+        currentHour > startHour ||
+        (currentHour === startHour && currentMinute >= startMinute)
+      ) {
+        selectedGreeting = message;
+      } else {
+        break;
+      }
     }
+
+    // If the current time is before the first start time, use the last configuration's message
+    if (
+      currentHour < this.greetingConfigs[0].startHour ||
+      (currentHour === this.greetingConfigs[0].startHour && currentMinute < this.greetingConfigs[0].startMinute)
+    ) {
+      selectedGreeting = this.greetingConfigs[this.greetingConfigs.length - 1].message;
+    }
+
+    this.greeting = `${selectedGreeting}, ${welcomeName}`;
   };
 
   setUserName = (userName: string) => {
@@ -73,6 +110,11 @@ class FocusCenterStore {
   setDisplay24Hour = (display: boolean) => {
     this.display24Hour = display;
     this.setTime();
+  };
+
+  setGreetingConfigs = (configs: GreetingConfig[]) => {
+    this.greetingConfigs = configs;
+    this.setGreeting();
   };
 }
 
