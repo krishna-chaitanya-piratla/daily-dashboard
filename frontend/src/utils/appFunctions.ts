@@ -14,27 +14,27 @@ export const fetchTodoLists = async (setTodoLists: React.Dispatch<React.SetState
 };
 
 export const fetchUserProfile = async (
-  setUsername: React.Dispatch<React.SetStateAction<string>>,
-  setBackgroundType: React.Dispatch<React.SetStateAction<'custom' | 'solid'>>,
-  setBackgroundValue: React.Dispatch<React.SetStateAction<string>>,
-  setCustomBackgroundColors: React.Dispatch<React.SetStateAction<string[]>>,
-  setShowJokeWidget: React.Dispatch<React.SetStateAction<boolean>>,
-  setShowLocationWeather: React.Dispatch<React.SetStateAction<boolean>>
+  focusCenterStore: any,
+  backgroundStore: any,
+  jokeStore: any,
+  locationWeatherStore: any
 ) => {
   try {
     const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/userprofile`);
     const profile = response.data;
     console.log('Fetched user profile:', profile); // Debug log
-    setUsername(profile.userName);
-    setBackgroundType(profile.backgroundPreference.type);
-    setBackgroundValue(profile.backgroundPreference.value);
-    setCustomBackgroundColors(profile.customBackgroundColors || []);
-    setShowJokeWidget(profile.showJokeWidget);
-    setShowLocationWeather(profile.showLocationWeather);
+
+    focusCenterStore.setUserName(profile.userName);
+    backgroundStore.setType(profile.backgroundPreference.type);
+    backgroundStore.setValue(profile.backgroundPreference.value);
+    backgroundStore.setCustomBackgroundColors(profile.customBackgroundColors || []);
+    jokeStore.setShowJokeWidget(profile.showJokeWidget);
+    locationWeatherStore.setShowLocationWeather(profile.showLocationWeather);
   } catch (error) {
     console.error('There was an error fetching the user profile!', error);
   }
 };
+
 
 
 

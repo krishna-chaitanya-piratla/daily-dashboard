@@ -4,18 +4,10 @@ import { useStore } from '../../store/StoreProvider';
 import { InputContainer, StyledUserName, StyledUsernameEditIcon, HiddenTextSpan, StyledCheckIcon, StyledClearIcon } from '../../styled-components/Sidebar/UserName';
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
-import {
-  handleUsernameChange,
-  handleEditClick,
-  handleSaveClick,
-  handleClearClick,
-  handleKeyPress,
-  handleDoubleClick
-} from '../../utils/sidebarFunctions';
 
 const UserName: React.FC = observer(() => {
   const { focusCenterStore } = useStore();
-  const [tempUsername, setTempUsername] = useState<string>(focusCenterStore.userName ? focusCenterStore.userName : 'Stranger');
+  const [tempUsername, setTempUsername] = useState<string>(focusCenterStore.userName);
   const [inputWidth, setInputWidth] = useState<number>(0);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const textSpanRef = useRef<HTMLSpanElement>(null);
@@ -37,13 +29,15 @@ const UserName: React.FC = observer(() => {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-        handleClearClick(focusCenterStore.userName, setTempUsername, setIsEditing);
+        setTempUsername(focusCenterStore.userName);
+        setIsEditing(false);
       }
     };
 
     const handleEscapePress = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        handleClearClick(focusCenterStore.userName, setTempUsername, setIsEditing);
+        setTempUsername(focusCenterStore.userName);
+        setIsEditing(false);
       }
     };
 
@@ -59,17 +53,33 @@ const UserName: React.FC = observer(() => {
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('keydown', handleEscapePress);
     };
-  }, [isEditing]);
+  }, [isEditing, focusCenterStore.userName]);
+
+  useEffect(() => {
+    setTempUsername(focusCenterStore.userName);
+  }, [focusCenterStore.userName]);
+
+  const handleSaveClick = async () => {
+    await focusCenterStore.updateUserName(tempUsername);
+    setIsEditing(false);
+  };
 
   return (
     <InputContainer ref={containerRef}>
       <StyledUserName
         type="text"
         value={tempUsername}
-        onChange={(event) => handleUsernameChange(event, setTempUsername)}
-        onKeyDown={(event) => handleKeyPress(event, tempUsername, focusCenterStore.setUserName, setIsEditing)}
-        onDoubleClick={() => handleDoubleClick(focusCenterStore.userName, setTempUsername, setIsEditing)}
-        placeholder={focusCenterStore.userName ? focusCenterStore.userName : "Enter Name..."}
+        onChange={(event) => setTempUsername(event.target.value)}
+        onKeyDown={async (event) => {
+          if (event.key === 'Enter') {
+            await handleSaveClick();
+          } else if (event.key === 'Escape') {
+            setTempUsername(focusCenterStore.userName);
+            setIsEditing(false);
+          }
+        }}
+        onDoubleClick={() => setIsEditing(true)}
+        placeholder="Enter Name..."
         width={inputWidth}
         isEditing={isEditing}
         readOnly={!isEditing}
@@ -77,11 +87,14 @@ const UserName: React.FC = observer(() => {
       />
       {isEditing ? (
         <>
-          <StyledCheckIcon as={CheckIcon} onClick={() => handleSaveClick(tempUsername, focusCenterStore.setUserName, setIsEditing)} />
-          <StyledClearIcon as={ClearIcon} onClick={() => handleClearClick(focusCenterStore.userName, setTempUsername, setIsEditing)} />
+          <StyledCheckIcon as={CheckIcon} onClick={handleSaveClick} />
+          <StyledClearIcon as={ClearIcon} onClick={() => {
+            setTempUsername(focusCenterStore.userName);
+            setIsEditing(false);
+          }} />
         </>
       ) : (
-        <StyledUsernameEditIcon className="edit-icon" onClick={() => handleEditClick(focusCenterStore.userName, setTempUsername, setIsEditing)} />
+        <StyledUsernameEditIcon className="edit-icon" onClick={() => setIsEditing(true)} />
       )}
       <HiddenTextSpan ref={textSpanRef}>{tempUsername || 'Stranger'}</HiddenTextSpan>
     </InputContainer>

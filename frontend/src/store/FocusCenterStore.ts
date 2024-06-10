@@ -1,4 +1,5 @@
 import { makeAutoObservable } from 'mobx';
+import axios from 'axios';
 
 interface GreetingConfig {
   startHour: number;
@@ -8,7 +9,6 @@ interface GreetingConfig {
 
 class FocusCenterStore {
   time: string = '';
-  greeting: string = '';
   displaySeconds: boolean = false;
   displayAMPM: boolean = false;
   display24Hour: boolean = false;
@@ -23,17 +23,11 @@ class FocusCenterStore {
   constructor() {
     makeAutoObservable(this, {}, { autoBind: true });
     this.setTime();
-    this.setGreeting();
     setInterval(this.updateTime, 1000);
-    setInterval(this.updateGreeting, 1000);
   }
 
   updateTime = () => {
     this.setTime();
-  };
-
-  updateGreeting = () => {
-    this.setGreeting();
   };
 
   setTime = () => {
@@ -54,7 +48,7 @@ class FocusCenterStore {
     this.time = timeString;
   };
 
-  setGreeting = () => {
+  getGreeting = (): string => {
     const currentHour = new Date().getHours();
     const currentMinute = new Date().getMinutes();
     const welcomeName = this.userName === '' ? 'Stranger' : this.userName;
@@ -81,12 +75,21 @@ class FocusCenterStore {
       selectedGreeting = this.greetingConfigs[this.greetingConfigs.length - 1].message;
     }
 
-    this.greeting = `${selectedGreeting}, ${welcomeName}`;
+    return `${selectedGreeting}`;
   };
 
   setUserName = (userName: string) => {
     this.userName = userName && userName !== '' ? userName : 'Stranger';
-    this.setGreeting();
+  };
+
+  updateUserName = async (userName: string) => {
+    this.setUserName(userName);
+    try {
+      await axios.put(`${process.env.REACT_APP_BACKEND_URL}/userprofile/username`, { userName });
+      console.log('Username updated successfully:', userName);
+    } catch (error) {
+      console.error('Error updating username:', error);
+    }
   };
 
   setUserNameWrapper = (value: React.SetStateAction<string>) => {
@@ -114,7 +117,6 @@ class FocusCenterStore {
 
   setGreetingConfigs = (configs: GreetingConfig[]) => {
     this.greetingConfigs = configs;
-    this.setGreeting();
   };
 }
 

@@ -5,7 +5,7 @@ export const StyledWelcomeMessageContainer = styled.div`
   align-items: center;
   position: relative;
   z-index: 1; /* Ensure it has a lower z-index */
-  max-width: 70%;
+  max-width: 100%;
 `;
 
 export const StyledWelcomeMessageWrapper = styled.div`
@@ -27,6 +27,19 @@ export const StyledWelcomeMessage = styled.div`
   max-width: 100%;
 `;
 
+export const StyledWelcomeInput = styled.input`
+  font-family: 'Wotfard';
+  font-size: 4rem;
+  color: var(--widget-text-color-primary);
+  text-align: center;
+  margin-top: -2rem;
+  max-width: 100%;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--widget-text-color-primary);
+  outline: none;
+`;
+
 export const StyledEditMessageIcon = styled.div`
   display: none; /* Hide by default */
   position: absolute; /* Position it absolutely */
@@ -35,4 +48,21 @@ export const StyledEditMessageIcon = styled.div`
   color: var(--widget-text-color-primary);
   cursor: pointer;
   margin-top: -2rem;
+`;
+
+export const StyledSaveIcon = styled(StyledEditMessageIcon)`
+  right: 3rem; /* Position it left of the discard icon */
+`;
+
+export const StyledDiscardIcon = styled(StyledEditMessageIcon)`
+  right: 0; /* Position it absolutely */
+`;
+
+export const StyledGreetingMessage = styled.div`
+  font-size: 4rem;
+  color: var(--widget-text-color-primary);
+  text-align: center;
+  margin-top: -2rem;
+  max-width: 100%;
+  margin-right: 0.5rem; /* Add some space between the greeting and the username */
 `;

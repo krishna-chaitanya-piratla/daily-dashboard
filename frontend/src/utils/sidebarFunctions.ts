@@ -234,22 +234,23 @@ export const handleSaveClick = async (
   }
 };
 
-export const handleKeyPress = (
+export const handleKeyPress = async (
   event: React.KeyboardEvent<HTMLInputElement>,
   tempUsername: string,
   setUsername: (username: string) => void,
-  setIsEditing: React.Dispatch<React.SetStateAction<boolean>>
+  setIsEditing: React.Dispatch<React.SetStateAction<boolean>>,
+  setTempUsername: React.Dispatch<React.SetStateAction<string>>
 ) => {
   if (event.key === 'Enter') {
-    setUsername(tempUsername);
-    axios.put(`${process.env.REACT_APP_BACKEND_URL}/userprofile/username`, { userName: tempUsername })
-      .then(response => {
-        console.log('Username updated successfully through enter key press:', response.data);
-      })
-      .catch(error => {
-        console.error('There was an error updating the username through enter key press:', error);
-      });
-    setIsEditing(false);
+    try {
+      await axios.put(`${process.env.REACT_APP_BACKEND_URL}/userprofile/username`, { userName: tempUsername });
+      setUsername(tempUsername);
+      setIsEditing(false);
+    } catch (error) {
+      console.error('Error saving username:', error);
+    }
+  } else if (event.key === 'Escape') {
+    handleClearClick(tempUsername, setTempUsername, setIsEditing);
   }
 };
 

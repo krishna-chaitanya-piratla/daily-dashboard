@@ -1,3 +1,5 @@
+// src/App.tsx
+
 import React, { useState, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import TodoList, { TodoListType } from './components/TodoList/TodoList';
@@ -32,12 +34,10 @@ const App: React.FC = observer(() => {
       console.log("Fetching todo lists and user profile...");
       await fetchTodoLists(setTodoLists);
       await fetchUserProfile(
-        focusCenterStore.setUserNameWrapper,
-        backgroundStore.setTypeWrapper, 
-        backgroundStore.setValueWrapper, 
-        backgroundStore.setCustomBackgroundColorsWrapper, 
-        jokeStore.setShowJokeWidgetWrapper,
-        locationWeatherStore.setShowLocationWeatherWrapper
+        focusCenterStore,
+        backgroundStore, 
+        jokeStore,
+        locationWeatherStore
       );
       setLoading(false);
     };
