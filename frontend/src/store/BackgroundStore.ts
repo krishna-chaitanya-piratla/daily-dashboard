@@ -6,6 +6,7 @@ class BackgroundStore {
   originalValue: string = '#2f2c5c'; // Add originalValue to store the original color
   customBackgroundColors: string[] = [];
   refreshTrigger: number = 0;
+  showBackgroundSettings: boolean = false; // Add showBackgroundSettings state
 
   constructor() {
     makeAutoObservable(this);
@@ -29,6 +30,10 @@ class BackgroundStore {
 
   setRefreshTrigger(trigger: number) {
     this.refreshTrigger = trigger;
+  }
+
+  setShowBackgroundSettings(show: boolean) {
+    this.showBackgroundSettings = show;
   }
 
   // Wrapper functions for compatibility with Dispatch<SetStateAction<T>>
@@ -69,6 +74,14 @@ class BackgroundStore {
       this.setRefreshTrigger(value(this.refreshTrigger));
     } else {
       this.setRefreshTrigger(value);
+    }
+  };
+
+  setShowBackgroundSettingsWrapper = (value: React.SetStateAction<boolean>) => {
+    if (typeof value === 'function') {
+      this.setShowBackgroundSettings(value(this.showBackgroundSettings));
+    } else {
+      this.setShowBackgroundSettings(value);
     }
   };
 }

@@ -18,6 +18,10 @@ const CustomBackground: React.FC<CustomBackgroundProps> = ({ query, refreshTrigg
     console.log('CustomBackground useEffect called with query:', query, 'refreshTrigger:', refreshTrigger);
 
     const fetchRandomPhoto = async () => {
+      if (!query) {
+        return; // Do nothing if the query is empty
+      }
+
       try {
         const result = await unsplash.photos.getRandom({ query });
         if (result.errors) {

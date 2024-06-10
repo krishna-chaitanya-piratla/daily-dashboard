@@ -24,10 +24,11 @@ const BackgroundSettings: React.FC = observer(() => {
   const colorPickerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    setSelectedBackground(backgroundStore.type);
     if (backgroundStore.type === 'solid') {
       setSolidValue(backgroundStore.value);
     } else if (backgroundStore.type === 'custom') {
-      setUnsplashValue('');
+      setUnsplashValue(backgroundStore.value);
     }
   }, [backgroundStore.type, backgroundStore.value]);
 
@@ -59,7 +60,7 @@ const BackgroundSettings: React.FC = observer(() => {
     setSelectedBackground(value);
 
     if (value === 'custom') {
-      setUnsplashValue('');
+      setUnsplashValue(''); // Clear the Unsplash input field when switching to custom
     }
   };
 

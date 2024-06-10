@@ -1,4 +1,5 @@
 import axios from 'axios';
+import BackgroundStore from '../store/BackgroundStore';
 
 export const presetColors = {
   color2: '#2F2C5C',
@@ -10,12 +11,20 @@ export const presetColors = {
 // BackgroundSettings related functions
 export const handleRadioChange = (
   event: React.ChangeEvent<HTMLInputElement>,
-  setSelectedBackground: React.Dispatch<React.SetStateAction<string>>
+  setSelectedBackground: React.Dispatch<React.SetStateAction<string>>,
+  setUnsplashValue: React.Dispatch<React.SetStateAction<string>>,
+  backgroundStore: BackgroundStore
 ) => {
   const { value } = event.target;
   console.log('handleRadioChange', value);
   setSelectedBackground(value);
+
+  if (value === 'custom') {
+    setUnsplashValue(''); // Clear the Unsplash input field when switching to custom
+  }
 };
+
+
 
 export const handleSolidColorBoxClick = (
   color: string,

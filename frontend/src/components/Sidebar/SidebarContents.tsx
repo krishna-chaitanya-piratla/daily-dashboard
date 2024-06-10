@@ -17,11 +17,10 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import axios from 'axios';
 
 const SidebarContents: React.FC = observer(() => {
-  const { jokeStore, locationWeatherStore } = useStore();
-  const [isAccordionOpen, setIsAccordionOpen] = React.useState(false);
+  const { jokeStore, locationWeatherStore, backgroundStore } = useStore();
 
   const handleAccordionToggle = () => {
-    setIsAccordionOpen(!isAccordionOpen);
+    backgroundStore.setShowBackgroundSettingsWrapper(!backgroundStore.showBackgroundSettings);
   };
 
   const handleJokeWidgetToggle = async () => {
@@ -63,9 +62,9 @@ const SidebarContents: React.FC = observer(() => {
       <AccordionContainer>
         <AccordionHeader onClick={handleAccordionToggle}>
           Background Settings
-          {isAccordionOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+          {backgroundStore.showBackgroundSettings ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         </AccordionHeader>
-        {isAccordionOpen && (
+        {backgroundStore.showBackgroundSettings && (
           <AccordionContent>
             <BackgroundSettings />
           </AccordionContent>
