@@ -1,5 +1,5 @@
 import axios from 'axios';
-import BackgroundStore from '../store/BackgroundStore';
+import BackgroundStore from '../store/BackgroundStore'; // Import the BackgroundStore
 
 export const presetColors = {
   color2: '#2F2C5C',
@@ -20,22 +20,26 @@ export const handleRadioChange = (
   setSelectedBackground(value);
 
   if (value === 'custom') {
-    setUnsplashValue(''); // Clear the Unsplash input field when switching to custom
+    if (backgroundStore.type === 'custom') {
+      setUnsplashValue(backgroundStore.value); // Set Unsplash input field to current custom background value
+    } else {
+      setUnsplashValue(''); // Clear Unsplash input field if switching from solid background
+    }
   }
 };
-
-
 
 export const handleSolidColorBoxClick = (
   color: string,
   setSolidValue: React.Dispatch<React.SetStateAction<string>>,
   setBackgroundType: (type: 'custom' | 'solid') => void,
-  setBackgroundValue: (value: string) => void
+  setBackgroundValue: (value: string) => void,
+  setUnsplashValue: React.Dispatch<React.SetStateAction<string>> // Add this parameter
 ) => {
   console.log('handleSolidColorBoxClick', color);
   setSolidValue(color);
   setBackgroundType('solid');
   setBackgroundValue(color);
+  setUnsplashValue(''); // Reset Unsplash query when a solid background is rendered
 
   // Call backend to save the background preference
   axios.put(`${process.env.REACT_APP_BACKEND_URL}/userprofile/background`, {
