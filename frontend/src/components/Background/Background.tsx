@@ -19,11 +19,15 @@ const Background: React.FC<BackgroundProps> = observer(({ children }) => {
     console.log('Background component called with type:', type, 'value:', value, 'refreshTrigger:', refreshTrigger);
   }, [type, value, refreshTrigger]);
 
-  if (type === 'custom') {
+  if (type === 'custom' && value) {
     return <CustomBackground query={value} refreshTrigger={refreshTrigger}>{children}</CustomBackground>;
   }
 
-  return <SolidBackground colorCode={value}>{children}</SolidBackground>;
+  if (type === 'solid' && value) {
+    return <SolidBackground colorCode={value}>{children}</SolidBackground>;
+  }
+
+  return null;
 });
 
 export default Background;

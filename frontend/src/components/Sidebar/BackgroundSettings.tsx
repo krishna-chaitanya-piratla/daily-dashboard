@@ -24,11 +24,10 @@ const BackgroundSettings: React.FC = observer(() => {
   const colorPickerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setSelectedBackground(backgroundStore.type);
     if (backgroundStore.type === 'solid') {
       setSolidValue(backgroundStore.value);
     } else if (backgroundStore.type === 'custom') {
-      setUnsplashValue(backgroundStore.value);
+      setUnsplashValue('');
     }
   }, [backgroundStore.type, backgroundStore.value]);
 
@@ -58,7 +57,10 @@ const BackgroundSettings: React.FC = observer(() => {
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     setSelectedBackground(value);
-    backgroundStore.setType(value as 'custom' | 'solid');
+
+    if (value === 'custom') {
+      setUnsplashValue('');
+    }
   };
 
   const handleSolidColorBoxClick = (color: string) => {
