@@ -1,8 +1,6 @@
-// src/App.tsx
-
 import React, { useState, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
-import TodoList, { TodoListType } from './components/TodoList/TodoList';
+import TodoList from './components/TodoList/TodoList';
 import FocusCenter from './components/FocusCenter/FocusCenter';
 import { GlobalStyles, AppContainer, Header } from './styled-components/GlobalStyles';
 import { Helmet } from 'react-helmet';
@@ -13,8 +11,6 @@ import LocationWeather from './components/LocationWeather/LocationWeather';
 import {
   fetchTodoLists,
   fetchUserProfile,
-  addTodoList,
-  removeTodoList,
   closeSidebar,
   openSidebar,
   logRefreshTriggerChange
@@ -23,26 +19,24 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useStore } from './store/StoreProvider';
 
 const App: React.FC = observer(() => {
-  const { backgroundStore, jokeStore, focusCenterStore, locationWeatherStore } = useStore();
-  const [todoLists, setTodoLists] = useState<TodoListType[]>([]);
+  const { backgroundStore, jokeStore, focusCenterStore, locationWeatherStore, todoStore } = useStore();
   const [isSidebarOpen, setSidebarOpen] = useState<boolean>(false);
-  const [activeListIndex, setActiveListIndex] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchData = async () => {
       console.log("Fetching todo lists and user profile...");
-      await fetchTodoLists(setTodoLists);
+      await todoStore.fetchTodoLists();
       await fetchUserProfile(
         focusCenterStore,
-        backgroundStore, 
+        backgroundStore,
         jokeStore,
         locationWeatherStore
       );
       setLoading(false);
     };
     fetchData();
-  }, [backgroundStore, jokeStore, focusCenterStore, locationWeatherStore]);
+  }, [backgroundStore, jokeStore, focusCenterStore, locationWeatherStore, todoStore]);
 
   useEffect(() => {
     console.log(`username: ${focusCenterStore.userName}`);
@@ -58,8 +52,8 @@ const App: React.FC = observer(() => {
   }, [backgroundStore.refreshTrigger]);
 
   useEffect(() => {
-    console.log("Todo lists updated:", todoLists);
-  }, [todoLists]);
+    console.log("Todo lists updated:", todoStore.todoLists);
+  }, [todoStore.todoLists]);
 
   if (loading) {
     return (
@@ -97,17 +91,7 @@ const App: React.FC = observer(() => {
             <LocationWeather />
           </Header>
           <div>
-            <TodoList
-              todoLists={todoLists}
-              removeTodoList={async (listId) => {
-                await removeTodoList(listId, setTodoLists);
-                setActiveListIndex(0);
-              }}
-              addTodoList={() => addTodoList(todoLists, setTodoLists, setActiveListIndex)}
-              setTodoLists={setTodoLists}
-              activeListIndex={activeListIndex}
-              setActiveListIndex={setActiveListIndex}
-            />
+            <TodoList />
           </div>
           <FocusCenter />
           <JokeWidget />

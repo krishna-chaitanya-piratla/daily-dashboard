@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { TodoListType } from '../components/TodoList/TodoList';
+import { Todo, TodoListType } from '../store/TodoStore';
 import React from 'react';
 
 export const fetchTodoLists = async (setTodoLists: React.Dispatch<React.SetStateAction<TodoListType[]>>) => {

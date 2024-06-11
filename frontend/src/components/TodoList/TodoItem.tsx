@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { observer } from 'mobx-react-lite';
 import { Tooltip } from '@mui/material';
 import { StyledTodoItem, StyledItemDeleteIcon, StyledTodoEditInput, StyledEditIconContainer, StyledToggleIconContainer, StyledReorderIconContainer } from '../../styled-components/TodoList/TodoItem';
 import EditIcon from '@mui/icons-material/Edit';
@@ -7,20 +8,18 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import ReorderIcon from '@mui/icons-material/Reorder';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { useStore } from '../../store/StoreProvider';
 
 interface TodoItemProps {
   id: string;
-  todo: string;
-  completed: boolean;
-  onToggle: () => void;
-  onDelete: () => void;
-  onEdit: (newText: string) => void;
-  isEditingTitle: boolean;
 }
 
-const TodoItem: React.FC<TodoItemProps> = ({ id, todo, completed, onToggle, onDelete, onEdit, isEditingTitle }) => {
+const TodoItem: React.FC<TodoItemProps> = observer(({ id }) => {
+  const { todoStore } = useStore();
+  const todo = todoStore.todos.find(t => t.id === id);
+
   const [isEditing, setIsEditing] = useState(false);
-  const [editText, setEditText] = useState(todo);
+  const [editText, setEditText] = useState(todo?.text || '');
   const inputRef = useRef<HTMLInputElement>(null);
 
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
@@ -38,10 +37,10 @@ const TodoItem: React.FC<TodoItemProps> = ({ id, todo, completed, onToggle, onDe
 
   const handleBlur = () => {
     setIsEditing(false);
-    if (editText.trim()) {
-      onEdit(editText);
+    if (editText.trim() && todo) {
+      todoStore.editTodo(todo.id, editText);
     } else {
-      setEditText(todo); // Revert to original text if input is empty
+      setEditText(todo?.text || ''); // Revert to original text if input is empty
     }
   };
 
@@ -49,24 +48,28 @@ const TodoItem: React.FC<TodoItemProps> = ({ id, todo, completed, onToggle, onDe
     setEditText(e.target.value);
   };
 
+  if (!todo) {
+    return null; // If todo is not found, do not render anything
+  }
+
   return (
     <StyledTodoItem
       ref={setNodeRef}
       {...attributes}
       {...listeners}
       style={style}
-      completed={completed}
+      completed={todo.completed}
       isEditing={isEditing}
-      isEditingTitle={isEditingTitle}
+      isEditingTitle={todoStore.isEditingTitle}
     >
       <Tooltip title="Reorder" arrow>
-        <StyledReorderIconContainer className="reorder-icon" completed={completed}>
+        <StyledReorderIconContainer className="reorder-icon" completed={todo.completed}>
           <ReorderIcon />
         </StyledReorderIconContainer>
       </Tooltip>
-      <Tooltip title={completed ? "Mark as Incomplete" : "Mark as Complete"} arrow>
-        <StyledToggleIconContainer completed={completed} onClick={isEditing || isEditingTitle ? undefined : onToggle}>
-          {completed ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
+      <Tooltip title={todo.completed ? "Mark as Incomplete" : "Mark as Complete"} arrow>
+        <StyledToggleIconContainer completed={todo.completed} onClick={isEditing || todoStore.isEditingTitle ? undefined : () => todoStore.toggleTodo(todo.id)}>
+          {todo.completed ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
         </StyledToggleIconContainer>
       </Tooltip>
       {isEditing ? (
@@ -84,14 +87,14 @@ const TodoItem: React.FC<TodoItemProps> = ({ id, todo, completed, onToggle, onDe
         />
       ) : (
         <>
-          {todo}
+          {todo.text}
           <Tooltip title="Edit Todo" arrow>
             <StyledEditIconContainer
-              completed={completed}
+              completed={todo.completed}
               className="edit-icon"
               onClick={(e) => {
                 e.stopPropagation();
-                if (!isEditingTitle) {
+                if (!todoStore.isEditingTitle) {
                   setIsEditing(true);
                 }
               }}
@@ -101,12 +104,12 @@ const TodoItem: React.FC<TodoItemProps> = ({ id, todo, completed, onToggle, onDe
           </Tooltip>
           <Tooltip title="Delete Todo" arrow>
             <StyledItemDeleteIcon
-              completed={completed}
+              completed={todo.completed}
               className="delete-item-icon"
               onClick={(e) => {
                 e.stopPropagation();
-                if (!isEditingTitle) {
-                  onDelete();
+                if (!todoStore.isEditingTitle) {
+                  todoStore.deleteTodo(todo.id);
                 }
               }}
             >
@@ -117,6 +120,6 @@ const TodoItem: React.FC<TodoItemProps> = ({ id, todo, completed, onToggle, onDe
       )}
     </StyledTodoItem>
   );
-};
+});
 
 export default TodoItem;

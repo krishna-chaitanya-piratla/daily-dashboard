@@ -3,18 +3,21 @@ import JokeStore from './JokeStore';
 import BackgroundStore from './BackgroundStore';
 import LocationWeatherStore from './LocationWeatherStore';
 import FocusCenterStore from './FocusCenterStore';
+import TodoStore from './TodoStore';
 
 class RootStore {
   jokeStore: JokeStore;
   backgroundStore: BackgroundStore;
   locationWeatherStore: LocationWeatherStore;
   focusCenterStore: FocusCenterStore;
+  todoStore: TodoStore;
 
   constructor() {
     this.jokeStore = new JokeStore();
     this.backgroundStore = new BackgroundStore();
     this.locationWeatherStore = new LocationWeatherStore();
     this.focusCenterStore = new FocusCenterStore();
+    this.todoStore = new TodoStore();
   }
 }
 

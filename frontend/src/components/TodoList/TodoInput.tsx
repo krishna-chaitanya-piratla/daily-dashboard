@@ -1,26 +1,27 @@
-import React from "react";
-import { StyledTodoInput } from "../../styled-components/TodoList/TodoInput";
+import React from 'react';
+import { observer } from 'mobx-react-lite';
+import { useStore } from '../../store/StoreProvider';
+import { StyledTodoInput } from '../../styled-components/TodoList/TodoInput';
 
-interface TodoInputProps {
-  type: 'text';
-  value: string;
-  onChange: (e: any) => void;
-  onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-  placeholder: string;
-  disabled: boolean;
-}
+const TodoInput: React.FC = observer(() => {
+  const { todoStore } = useStore();
 
-const TodoInput: React.FC<TodoInputProps> = ({ type, value, onChange, onKeyDown, placeholder, disabled }) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      todoStore.addTodo();
+    }
+  };
+
   return (
     <StyledTodoInput 
-      type={type} 
-      value={value} 
-      onChange={onChange} 
-      onKeyDown={onKeyDown} 
-      placeholder={placeholder}
-      disabled={disabled}
+      type="text" 
+      value={todoStore.newTodo} 
+      onChange={(e) => todoStore.setNewTodo(e.target.value)} 
+      onKeyDown={handleKeyDown} 
+      placeholder="Add a new to-do"
+      disabled={todoStore.isEditingTitle}
     />
   );
-};
+});
 
 export default TodoInput;

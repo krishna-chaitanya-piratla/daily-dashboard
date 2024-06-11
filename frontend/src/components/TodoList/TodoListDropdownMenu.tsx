@@ -1,17 +1,12 @@
 import React, { useState, MouseEvent } from 'react';
+import { observer } from 'mobx-react-lite';
 import { StyledMenu, StyledMenuItem, StyledDropDownIcon } from '../../styled-components/TodoList/TodoListDropdownMenu';
 import AddIcon from '@mui/icons-material/Add';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { TodoListType } from './TodoList';
+import { useStore } from '../../store/StoreProvider';
 
-interface TodoListDropdownMenuProps {
-  todoLists: TodoListType[];
-  setActiveListIndex: React.Dispatch<React.SetStateAction<number>>;
-  addTodoList: (todoLists: TodoListType[], setTodoLists: React.Dispatch<React.SetStateAction<TodoListType[]>>, setActiveListIndex: React.Dispatch<React.SetStateAction<number>>) => void;
-  setTodoLists: React.Dispatch<React.SetStateAction<TodoListType[]>>;
-}
-
-const TodoListDropdownMenu: React.FC<TodoListDropdownMenuProps> = ({ todoLists, setActiveListIndex, addTodoList, setTodoLists }) => {
+const TodoListDropdownMenu: React.FC = observer(() => {
+  const { todoStore } = useStore();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleClick = (event: MouseEvent<HTMLElement>) => {
@@ -23,12 +18,12 @@ const TodoListDropdownMenu: React.FC<TodoListDropdownMenuProps> = ({ todoLists, 
   };
 
   const handleMenuItemClick = (index: number) => {
-    setActiveListIndex(index);
+    todoStore.setActiveListIndex(index);
     handleClose();
   };
 
   const handleAddTodoList = () => {
-    addTodoList(todoLists, setTodoLists, setActiveListIndex);
+    todoStore.addTodoList();
     handleClose();
   };
 
@@ -38,7 +33,7 @@ const TodoListDropdownMenu: React.FC<TodoListDropdownMenuProps> = ({ todoLists, 
         <ArrowDropDownIcon className="todo-list-dropdown-icon" />
       </StyledDropDownIcon>
       <StyledMenu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
-        {todoLists.map((list, index) => (
+        {todoStore.todoLists.map((list, index) => (
           <StyledMenuItem key={list.id} onClick={() => handleMenuItemClick(index)}>
             {list.title}
           </StyledMenuItem>
@@ -49,6 +44,6 @@ const TodoListDropdownMenu: React.FC<TodoListDropdownMenuProps> = ({ todoLists, 
       </StyledMenu>
     </>
   );
-};
+});
 
 export default TodoListDropdownMenu;

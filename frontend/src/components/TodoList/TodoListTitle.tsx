@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { observer } from 'mobx-react-lite';
 import { Tooltip } from '@mui/material';
 import { StyledHeader, StyledHeaderEditBox } from '../../styled-components/TodoList/TodoListTitle';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -9,99 +10,56 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import EditIcon from '@mui/icons-material/Edit';
 import CheckIcon from '@mui/icons-material/Check';
 import TodoListDropdownMenu from './TodoListDropdownMenu';
-import { TodoListType } from './TodoList';
+import { useStore } from '../../store/StoreProvider';
 
-interface TodoListTitleProps {
-  title: string;
-  isEditingTitle: boolean;
-  isMinimized: boolean;
-  setIsEditingTitle: React.Dispatch<React.SetStateAction<boolean>>;
-  toggleMinimize: () => void;
-  handleTitleChange: (e: React.ChangeEvent<HTMLInputElement>, setTitle: React.Dispatch<React.SetStateAction<string>>) => void;
-  handleTitleBlur: () => void;
-  clearTodos: () => void;
-  deleteTodoList?: () => void;
-  addTodoList: (todoLists: TodoListType[], setTodoLists: React.Dispatch<React.SetStateAction<TodoListType[]>>, setActiveListIndex: React.Dispatch<React.SetStateAction<number>>) => void;
-  todoLists: TodoListType[];
-  setActiveListIndex: React.Dispatch<React.SetStateAction<number>>;
-  setTodoLists: React.Dispatch<React.SetStateAction<TodoListType[]>>;
-  activeListIndex: number;
-  setTitle: React.Dispatch<React.SetStateAction<string>>;
-  revertTitle: (originalTitle: string) => void; // Add this prop
-}
-
-const TodoListTitle: React.FC<TodoListTitleProps> = ({
-  title,
-  isEditingTitle,
-  isMinimized,
-  setIsEditingTitle,
-  toggleMinimize,
-  handleTitleChange,
-  handleTitleBlur,
-  clearTodos,
-  deleteTodoList,
-  addTodoList,
-  todoLists,
-  setActiveListIndex,
-  setTodoLists,
-  activeListIndex,
-  setTitle,
-  revertTitle // Destructure the prop
-}) => {
+const TodoListTitle: React.FC = observer(() => {
+  const { todoStore } = useStore();
   const inputRef = useRef<HTMLInputElement>(null);
-  const [originalTitle, setOriginalTitle] = useState(title); // Store the original title
-  const [previousTitle, setPreviousTitle] = useState(title); // Store the previous title before editing
+  const [originalTitle, setOriginalTitle] = useState(todoStore.title);
+  const [previousTitle, setPreviousTitle] = useState(todoStore.title);
 
   useEffect(() => {
-    if (isEditingTitle && inputRef.current) {
+    if (todoStore.isEditingTitle && inputRef.current) {
       inputRef.current.focus();
       inputRef.current.select();
     }
-  }, [isEditingTitle]);
+  }, [todoStore.isEditingTitle]);
 
   useEffect(() => {
-    console.log("Title updated:", title);
-    setOriginalTitle(title); // Update original title when the title prop changes
-  }, [title]);
+    setOriginalTitle(todoStore.title);
+  }, [todoStore.title]);
 
   const handleStartEdit = () => {
-    console.log("handleStartEdit called");
-    setPreviousTitle(title); // Store the current title when editing starts
-    setIsEditingTitle(true);
+    setPreviousTitle(todoStore.title);
+    todoStore.setIsEditingTitle(true);
   };
 
   const handleCancelEdit = () => {
-    console.log("handleCancelEdit called");
-    console.log("Cancel edit. Reverting to previous title:", previousTitle);
-    setTitle(previousTitle); // Revert to previous title in local state
-    revertTitle(previousTitle); // Call revertTitle to update parent state
-    setIsEditingTitle(false);
-    console.log("Local title state after cancel:", previousTitle);
+    todoStore.setTitle(previousTitle);
+    todoStore.setIsEditingTitle(false);
   };
 
   const handleSaveEdit = () => {
-    console.log("handleSaveEdit called");
-    console.log("Save edit. New title:", title);
-    setOriginalTitle(title); // Set the new title as the original title
-    setIsEditingTitle(false);
-    handleTitleBlur();
-    console.log("Local title state after save:", title);
+    setOriginalTitle(todoStore.title);
+    todoStore.setIsEditingTitle(false);
+    todoStore.handleTitleBlur();
+  };
+
+  const toggleMinimize = () => {
+    todoStore.setIsMinimized(!todoStore.isMinimized);
   };
 
   return (
     <StyledHeader className="handle">
       <span className="minimize-icon" onClick={toggleMinimize}>
-        {isMinimized ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
+        {todoStore.isMinimized ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
       </span>
-      {isEditingTitle ? (
+      {todoStore.isEditingTitle ? (
         <StyledHeaderEditBox
           ref={inputRef}
           type="text"
-          value={title}
-          onChange={(e) => {
-            console.log("Title change event:", e.target.value);
-            handleTitleChange(e, setTitle);
-          }}
+          value={todoStore.title}
+          onChange={(e) => todoStore.handleTitleChange(e)}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
               handleSaveEdit();
@@ -113,16 +71,11 @@ const TodoListTitle: React.FC<TodoListTitleProps> = ({
         />
       ) : (
         <>
-          <h1 onDoubleClick={handleStartEdit}>{title}</h1>
+          <h1 onDoubleClick={handleStartEdit}>{todoStore.title}</h1>
         </>
       )}
-      <TodoListDropdownMenu
-        todoLists={todoLists}
-        setActiveListIndex={setActiveListIndex}
-        addTodoList={addTodoList}
-        setTodoLists={setTodoLists}
-      />
-      {isEditingTitle ? (
+      <TodoListDropdownMenu />
+      {todoStore.isEditingTitle ? (
         <>
           <Tooltip title="Save" arrow>
             <span className="edit-icon" onClick={handleSaveEdit}><CheckIcon /></span>
@@ -137,17 +90,15 @@ const TodoListTitle: React.FC<TodoListTitleProps> = ({
             <span className="edit-icon" onClick={handleStartEdit}><EditIcon /></span>
           </Tooltip>
           <Tooltip title="Clear All Todos" arrow>
-            <span className="clear-all-icon" onClick={clearTodos}><DeleteIcon /></span>
+            <span className="clear-all-icon" onClick={todoStore.clearTodos}><DeleteIcon /></span>
           </Tooltip>
-          {deleteTodoList && (
-            <Tooltip title="Delete Todo List" arrow>
-              <span className="delete-list-icon" onClick={deleteTodoList}><BlockIcon /></span>
-            </Tooltip>
-          )}
+          <Tooltip title="Delete Todo List" arrow>
+            <span className="delete-list-icon" onClick={() => todoStore.removeTodoList(todoStore.activeListId)}><BlockIcon /></span>
+          </Tooltip>
         </>
       )}
     </StyledHeader>
   );
-};
+});
 
 export default TodoListTitle;

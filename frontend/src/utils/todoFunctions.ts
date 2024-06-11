@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Todo, TodoListType } from '../components/TodoList/TodoList'; // Adjust the import path as necessary
+import { Todo, TodoListType } from '../store/TodoStore'; 
 
 export const addTodo = async (
   newTodo: string,
