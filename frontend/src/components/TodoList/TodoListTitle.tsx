@@ -40,7 +40,9 @@ const TodoListTitle: React.FC = observer(() => {
   };
 
   const handleSaveEdit = () => {
-    setOriginalTitle(todoStore.title);
+    const newTitle = todoStore.title.trim() === '' ? 'Unnamed Todo List' : todoStore.title;
+    todoStore.setTitle(newTitle);
+    setOriginalTitle(newTitle);
     todoStore.setIsEditingTitle(false);
     todoStore.handleTitleBlur();
   };
