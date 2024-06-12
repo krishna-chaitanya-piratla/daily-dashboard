@@ -29,6 +29,7 @@ Currently, this dashboard supports the following features:
 
 ### Adding, Completing, and Deleting Todo Items
 The Todo items can be added, edited, marked as complete, and deleted from the list - one at a time or all in one-go.
+
 ![Adding, Completing, and Deleting Todo Items](https://i.postimg.cc/25hRv8Sv/06-Working-With-Todos.gif)
 
 ## Customizing Background
