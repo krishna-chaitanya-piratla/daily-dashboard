@@ -37,11 +37,12 @@ class TodoStore {
   }
 
   async addTodoList() {
-    const newList = { title: 'New Todo List', todos: [] };
+    const newList = { title: 'New List', todos: [] };
     try {
       const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/todos`, newList);
       this.todoLists.push(response.data);
       this.activeListIndex = this.todoLists.length - 1;
+      this.setTitle('New List'); // Set the title for the new list
     } catch (error) {
       console.error('There was an error adding the todo list!', error);
     }

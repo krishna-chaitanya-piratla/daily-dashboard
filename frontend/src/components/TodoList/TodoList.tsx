@@ -18,7 +18,7 @@ const TodoList: React.FC = observer(() => {
       todoStore.setTitle(todoStore.todoLists[todoStore.activeListIndex]?.title);
     } else {
       todoStore.setTodos([]);
-      todoStore.setTitle('');
+      todoStore.setTitle('Todos'); // Set default title when there are no todo lists
     }
   }, [todoStore.activeListIndex, todoStore.todoLists]);
 

@@ -15,8 +15,8 @@ import { useStore } from '../../store/StoreProvider';
 const TodoListTitle: React.FC = observer(() => {
   const { todoStore } = useStore();
   const inputRef = useRef<HTMLInputElement>(null);
-  const [originalTitle, setOriginalTitle] = useState(todoStore.title);
-  const [previousTitle, setPreviousTitle] = useState(todoStore.title);
+  const [originalTitle, setOriginalTitle] = useState(todoStore.title ? todoStore.title : 'New List');
+  const [previousTitle, setPreviousTitle] = useState(todoStore.title ? todoStore.title : 'New List');
 
   useEffect(() => {
     if (todoStore.isEditingTitle && inputRef.current) {
