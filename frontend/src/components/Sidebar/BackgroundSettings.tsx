@@ -22,6 +22,7 @@ const BackgroundSettings: React.FC = observer(() => {
   const [customColor, setCustomColor] = useState<string>(backgroundStore.type === 'solid' ? backgroundStore.value : '#000000');
   const inputRef = useRef<HTMLInputElement>(null);
   const colorPickerRef = useRef<HTMLDivElement>(null);
+  const [isColorSelected, setIsColorSelected] = useState<boolean>(false);
 
   useEffect(() => {
     setSelectedBackground(backgroundStore.type);
@@ -145,6 +146,7 @@ const BackgroundSettings: React.FC = observer(() => {
   };
 
   const handleColorChange = (color: any) => {
+    setIsColorSelected(true);
     setCustomColor(color.hex);
     backgroundStore.setType('solid');
     backgroundStore.setValue(color.hex);
@@ -161,6 +163,7 @@ const BackgroundSettings: React.FC = observer(() => {
   };
 
   const handleRevertColor = () => {
+    setIsColorSelected(false);
     backgroundStore.setValue(backgroundStore.originalValue);
     setCustomColor(backgroundStore.originalValue);
 
@@ -272,8 +275,8 @@ const BackgroundSettings: React.FC = observer(() => {
               onChangeComplete={handleColorChange}
             />
             <SaveandRevertButtons>
-              <StyledColorButton onClick={handleSaveCustomColor}>Save Color</StyledColorButton>
-              <StyledColorButton onClick={handleRevertColor}>Revert Color</StyledColorButton>
+              {isColorSelected && <StyledColorButton onClick={handleSaveCustomColor}>Save Color</StyledColorButton>}
+              {isColorSelected && <StyledColorButton onClick={handleRevertColor}>Revert Color</StyledColorButton>}
             </SaveandRevertButtons>
           </ColorPickerAndButtons>
           <RightSpace>

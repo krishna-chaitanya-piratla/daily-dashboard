@@ -57,19 +57,23 @@ export const StyledColorPicker = styled(SketchPicker)`
 
 export const StyledColorButton = styled.button`
   font-family: 'Wotfard', sans-serif;
-  background-color: var(--widget-background-color);
+  // background-color: var(--widget-background-color);
+  background-color: inherit;
   color: white;
-  border: 0.5px dotted gray;
+  // border: 0.5px solid gray;
+  border: none;
   border-radius: 0.5rem;
   padding: 0.75rem 1.5rem;
-  font-size: 1.15rem;
+  font-size: 0.9rem;
   cursor: pointer;
   margin: 0.5rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); 
 
   &:hover {
     border: none;
     background-color: deeppink;
     color: white;
+    text-shadow: none;
   }
 
   &:focus {
