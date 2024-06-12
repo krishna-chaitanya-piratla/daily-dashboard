@@ -65,6 +65,10 @@ Both these widgets can be shown or hidden using the toggles in the sidebar.
 ![Hide and Unhide Widgets](https://i.postimg.cc/C1JFBLc7/04-Hideand-Unhide-Widgets.gif)
 
 
+### Display Name
+Customize your display name either through the sidebar or on the homepage itself. 
+![Customize display name](https://i.postimg.cc/T11XWJwh/01-Change-User-Name.gif)
+
 ## Setup Instructions
 ### Prerequisites
 - Node
