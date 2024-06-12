@@ -95,9 +95,14 @@ class TodoStore {
   }
 
   async clearTodos() {
+    const activeListId = this.activeListId; // Capture the activeListId to avoid potential issues with this context
+    if (!activeListId) {
+      console.error('No active list ID found!');
+      return;
+    }
     try {
-      await axios.put(`${process.env.REACT_APP_BACKEND_URL}/todos/${this.activeListId}/clear`);
-      this.todos = [];
+      await axios.put(`${process.env.REACT_APP_BACKEND_URL}/todos/${activeListId}/clear`);
+      this.setTodos([]); // Ensure todos are cleared in the store
     } catch (error) {
       console.error('There was an error clearing the todos!', error);
     }

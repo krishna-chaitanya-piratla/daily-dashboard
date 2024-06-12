@@ -103,7 +103,7 @@ const TodoListTitle: React.FC = observer(() => {
                 <span className="edit-icon" onClick={handleStartEdit}><EditIcon /></span>
               </Tooltip>
               <Tooltip title="Clear All Todos" arrow>
-                <span className="clear-all-icon" onClick={todoStore.clearTodos}><DeleteIcon /></span>
+                <span className="clear-all-icon" onClick={() => todoStore.clearTodos()}><DeleteIcon /></span>
               </Tooltip>
               <Tooltip title="Delete Todo List" arrow>
                 <span className="delete-list-icon" onClick={() => todoStore.removeTodoList(todoStore.activeListId)}><BlockIcon /></span>
