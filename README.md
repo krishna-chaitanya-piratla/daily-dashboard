@@ -104,7 +104,7 @@ SERVER_PORT_LOCAL=9988
 
 DATA_LOCATION_LOCAL=/path/to/your/data/folder
 
-REACT_APP_TOMORROW_API_KEY=abcdxyz
+REACT_APP_TOMORROW_API_KEY=enter_your_tomorrowio_api_access_key_here
 
 REACT_APP_TOMORROW_API_URL=https://api.tomorrow.io/v4/weather/forecast
 ```
