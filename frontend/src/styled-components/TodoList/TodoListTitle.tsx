@@ -41,7 +41,7 @@ export const StyledHeader = styled.div`
 
   .minimize-icon {
     margin-right: 0.25rem; /* Adjust spacing as needed */
-    visibility: hidden; /* Always visible */
+    visibility: visible; /* Always visible */
   }
 
   .clear-all-icon {
@@ -61,23 +61,25 @@ export const StyledHeader = styled.div`
 `;
 
 export const StyledHeaderEditBox = styled.input`
-  width: 80%;
-  height: 2.5rem;
+  font-size: var(--todo-title-font-size); /* Match the font size of h1 */
+  font-weight: 800;
+  color: var(--todo-text-color-primary); /* Match the color of h1 */
+  width: auto;
+  flex: 1; /* Allow the input to take available space */
+  margin: 0;
   background: none;
   border: none;
-  border-radius: 10px;
-  padding: 0 1rem;
+  border-bottom: 2px solid transparent;
+  transition: border-bottom 0.2s ease-in-out;
 
   &:focus,
   &:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 0.5px #999;
-    color: var(--input-focus-text-color);
+    border-bottom: 2px solid var(--input-focus-border-color);
   }
 
   &:hover {
-    outline: none;
-    box-shadow: 0 0 0 0.5px #999;
+    border-bottom: 2px solid var(--input-hover-border-color);
   }
 
   &::placeholder {
@@ -85,7 +87,7 @@ export const StyledHeaderEditBox = styled.input`
   }
 
   @media (max-width: 1024px) {
-    height: 2rem; /* Adjust height for smaller screens */
+    font-size: 1.25rem; /* Adjust font size for smaller screens */
   }
 `;
 

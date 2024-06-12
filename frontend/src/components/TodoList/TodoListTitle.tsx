@@ -72,9 +72,7 @@ const TodoListTitle: React.FC = observer(() => {
           autoFocus
         />
       ) : (
-        <>
-          <h1 onDoubleClick={handleStartEdit}>{todoStore.title}</h1>
-        </>
+        <h1 onDoubleClick={handleStartEdit}>{todoStore.title}</h1>
       )}
       <TodoListDropdownMenu />
       {todoStore.isEditingTitle ? (
