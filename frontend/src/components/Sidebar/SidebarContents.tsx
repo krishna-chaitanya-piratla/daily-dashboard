@@ -72,19 +72,19 @@ const SidebarContents: React.FC = observer(() => {
       </AccordionContainer>
       <Separator />
       <ToggleContainer>
-        <span>Joke Widget</span>
+        <span>Weather and Location</span>
         <StyledSwitch
-          checked={jokeStore.showJokeWidget}
-          onChange={handleJokeWidgetToggle}
+          checked={locationWeatherStore.showLocationWeather}
+          onChange={handleLocationWeatherToggle}
           
         />
       </ToggleContainer>
       <Separator />
       <ToggleContainer>
-        <span>Location Weather</span>
+        <span>Joke Widget</span>
         <StyledSwitch
-          checked={locationWeatherStore.showLocationWeather}
-          onChange={handleLocationWeatherToggle}
+          checked={jokeStore.showJokeWidget}
+          onChange={handleJokeWidgetToggle}
           
         />
       </ToggleContainer>
