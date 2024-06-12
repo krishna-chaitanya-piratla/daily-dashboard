@@ -19,12 +19,12 @@ Currently, this dashboard supports the following features:
 
 ![Creating and Working with Todo Lists](https://i.postimg.cc/nr9y1FHq/05-Create-Todo-Lists.gif)
 
-![Minimize Todo List widget](https://i.postimg.cc/dVF0DXB5/image.png) Minimizes the Todo List Widget
-![Open Todo List widget](https://i.postimg.cc/2jPyN3BR/image.png) Opens the Todo List Widget
-![Open Dropdown Menu](https://i.postimg.cc/6phpZ0bt/image.png) Opens the dropdown menu to switch between lists or to create a new list
-![Edit the name of Todo List](https://i.postimg.cc/7LYYn2j7/image.png) Edit the name of the list
-![Clear the contents of Todo List](https://i.postimg.cc/yNQ6QNzG/image.png) Clears the items in the list (*retains the list to add new items to it*)
-![Delete the Todo List](https://i.postimg.cc/HxrYfCYk/image.png) Deletes the list completely 
+- ![Minimize Todo List widget](https://i.postimg.cc/dVF0DXB5/image.png) Minimizes the Todo List Widget
+- ![Open Todo List widget](https://i.postimg.cc/2jPyN3BR/image.png) Opens the Todo List Widget
+- ![Open Dropdown Menu](https://i.postimg.cc/6phpZ0bt/image.png) Opens the dropdown menu to switch between lists or to create a new list
+- ![Edit the name of Todo List](https://i.postimg.cc/7LYYn2j7/image.png) Edit the name of the list
+- ![Clear the contents of Todo List](https://i.postimg.cc/yNQ6QNzG/image.png) Clears the items in the list (*retains the list to add new items to it*)
+- ![Delete the Todo List](https://i.postimg.cc/HxrYfCYk/image.png) Deletes the list completely 
 
 
 ### Adding, Completing, and Deleting Todo Items
@@ -68,7 +68,6 @@ Both these widgets can be shown or hidden using the toggles in the sidebar.
 ## Setup Instructions
 ### Prerequisites
 - Node
-- React.js
 - Unsplash API key (to fetch and set random background photos)
 - Tomorrow.io API key (to get the weather data for your location)
 
