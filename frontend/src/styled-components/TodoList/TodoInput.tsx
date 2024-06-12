@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
 export const StyledTodoInput = styled.input`
+  font-family: 'Wotfard', sans-serif;
+  font-size: 1rem;
   width: 80%;
   height: 2.5rem;
   background: none;
@@ -12,7 +14,7 @@ export const StyledTodoInput = styled.input`
   &:focus-visible {
     outline: none;
     box-shadow: 0 0 0 0.5px var(--input-focus-box-shadow-color);
-    color: var(--input-focus-text-color);
+    color: var(--todo-text-color-primary);
   }
   &:hover {
     outline: none;

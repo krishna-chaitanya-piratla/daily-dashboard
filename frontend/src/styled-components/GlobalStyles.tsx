@@ -23,7 +23,7 @@ export const GlobalStyles = createGlobalStyle`
     --dropdown-menu-item-selected-bg-color: rgba(255, 255, 255, 0.3);
     --dropdown-menu-item-selected-hover-bg-color: rgba(255, 255, 255, 0.4);
     --todo-item-border-color: rgba(0, 0, 0, 0.3);
-    --todo-edit-input-color: gray;
+    --todo-edit-input-color: #ccc;
     --todo-edit-input-focus-bg: rgba(0, 0, 0, 0.2);
     --input-focus-box-shadow-color: #999;
     --input-hover-box-shadow-color: #999;
