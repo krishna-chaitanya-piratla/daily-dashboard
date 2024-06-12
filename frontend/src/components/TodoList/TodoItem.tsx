@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Tooltip } from '@mui/material';
-import { StyledTodoItem, StyledItemDeleteIcon, StyledTodoEditInput, StyledEditIconContainer, StyledToggleIconContainer, StyledReorderIconContainer } from '../../styled-components/TodoList/TodoItem';
+import { StyledTodoItem, StyledItemDeleteIcon, StyledTodoEditInput, StyledEditIconContainer, StyledToggleIconContainer, StyledReorderIconContainer, StyledTodoItemBorder } from '../../styled-components/TodoList/TodoItem';
 import EditIcon from '@mui/icons-material/Edit';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
@@ -53,6 +53,7 @@ const TodoItem: React.FC<TodoItemProps> = observer(({ id }) => {
   }
 
   return (
+    <>
     <StyledTodoItem
       ref={setNodeRef}
       {...attributes}
@@ -119,6 +120,8 @@ const TodoItem: React.FC<TodoItemProps> = observer(({ id }) => {
         </>
       )}
     </StyledTodoItem>
+    <StyledTodoItemBorder />
+    </>
   );
 });
 

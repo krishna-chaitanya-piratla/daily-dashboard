@@ -10,10 +10,6 @@ export const SidebarContentsContainer = styled.div`
   width: 100%;
   box-sizing: border-box;
   overflow-y: auto; /* Enable vertical scrolling */
-
-  @media (max-width: 1024px) {
-    padding: 0.5rem; /* Adjust padding for smaller screens */
-  }
 `;
 
 export const Separator = styled.div`

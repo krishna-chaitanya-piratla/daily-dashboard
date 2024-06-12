@@ -4,7 +4,7 @@ export const StyledTodoItem = styled.div<{ completed: boolean; isEditing?: boole
   display: flex;
   align-items: center;
   padding: 0.625rem 0.625rem 0.625rem 1.875rem;
-  border-bottom: 0.5px dashed var(--todo-item-border-color);
+  // border-bottom: 2px dashed var(--todo-item-border-color);
   text-align: left;
   color: ${(props) => (props.completed ? 'var(--todo-text-color-secondary)' : 'var(--todo-text-color-primary)')};
   word-wrap: break-word;
@@ -27,6 +27,13 @@ export const StyledTodoItem = styled.div<{ completed: boolean; isEditing?: boole
     padding: 0.5rem; /* Adjust padding for smaller screens */
     margin-left: -1rem;
   }
+`;
+
+export const StyledTodoItemBorder = styled.hr`
+  width: 100%;
+  border: 0;
+  height: 1px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
 `;
 
 export const StyledTodoEditInput = styled.input`
