@@ -68,11 +68,9 @@ const TodoItem: React.FC<TodoItemProps> = observer(({ id }) => {
           <ReorderIcon />
         </StyledReorderIconContainer>
       </Tooltip>
-      <Tooltip title={todo.completed ? "Mark as Incomplete" : "Mark as Complete"} arrow>
-        <StyledToggleIconContainer completed={todo.completed} onClick={isEditing || todoStore.isEditingTitle ? undefined : () => todoStore.toggleTodo(todo.id)}>
-          {todo.completed ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
-        </StyledToggleIconContainer>
-      </Tooltip>
+      <StyledToggleIconContainer completed={todo.completed} onClick={isEditing || todoStore.isEditingTitle ? undefined : () => todoStore.toggleTodo(todo.id)}>
+        {todo.completed ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
+      </StyledToggleIconContainer>
       {isEditing ? (
         <StyledTodoEditInput
           ref={inputRef}
