@@ -79,6 +79,7 @@ export const StyledGreetingMessage = styled.div`
   margin-top: -1rem;
   max-width: 100%;
   margin-right: 0.5rem; /* Add some space between the greeting and the username */
+  white-space: nowrap;
 
   @media (max-width: 1600px) {
     font-size: clamp(1.75rem, 2.5vw, 2.5rem); /* Adjust font size for smaller laptop screens */
