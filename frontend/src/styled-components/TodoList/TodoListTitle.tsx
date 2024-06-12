@@ -20,7 +20,8 @@ export const StyledHeader = styled.div`
   .clear-all-icon,
   .delete-list-icon,
   .minimize-icon,
-  .todo-list-dropdown-icon {
+  .todo-list-dropdown-icon,
+  .add-icon {
     visibility: hidden;
     cursor: pointer;
     font-size: var(--icon-font-size);
@@ -30,7 +31,8 @@ export const StyledHeader = styled.div`
   &:hover .clear-all-icon,
   &:hover .delete-list-icon,
   &:hover .minimize-icon,
-  &:hover .todo-list-dropdown-icon {
+  &:hover .todo-list-dropdown-icon,
+  &:hover .add-icon {
     visibility: visible;
   }
 
@@ -61,8 +63,9 @@ export const StyledHeader = styled.div`
 `;
 
 export const StyledHeaderEditBox = styled.input`
+  font-family: 'Wotfard', sans-serif;
   font-size: var(--todo-title-font-size); /* Match the font size of h1 */
-  font-weight: 800;
+  font-weight: 600;
   color: var(--todo-text-color-primary); /* Match the color of h1 */
   width: auto;
   flex: 1; /* Allow the input to take available space */
@@ -88,6 +91,18 @@ export const StyledHeaderEditBox = styled.input`
 
   @media (max-width: 1024px) {
     font-size: 1.25rem; /* Adjust font size for smaller screens */
+  }
+`;
+
+export const StyledAddIcon = styled.span`
+  cursor: pointer;
+  font-size: var(--icon-font-size);
+  margin-left: 0; /* Adjust this if needed */
+  margin-top: 0.25rem;
+  color: var(--icon-color);
+
+  &:hover {
+    color: var(--icon-hover-color);
   }
 `;
 
