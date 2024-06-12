@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const StyledTodoItem = styled.div<{ completed: boolean; isEditing?: boolean; isEditingTitle?: boolean }>`
   display: flex;
   align-items: center;
-  padding: 10px 10px 10px 30px;
+  padding: 0.625rem 0.625rem 0.625rem 1.875rem;
   border-bottom: 0.5px dashed var(--todo-item-border-color);
   text-align: left;
   color: ${(props) => (props.completed ? 'var(--todo-text-color-secondary)' : 'var(--todo-text-color-primary)')};
@@ -14,7 +14,7 @@ export const StyledTodoItem = styled.div<{ completed: boolean; isEditing?: boole
   text-decoration: ${(props) => (props.completed ? 'line-through' : 'none')};
   background-color: inherit;
   pointer-events: ${(props) => (props.isEditingTitle ? 'none' : 'auto')}; /* Disable interaction */
-  padding-right: 60px;
+  padding-right: 3.75rem;
   margin-left: -1.35rem;
 
   &:hover .delete-item-icon,
@@ -22,13 +22,18 @@ export const StyledTodoItem = styled.div<{ completed: boolean; isEditing?: boole
   &:hover .reorder-icon {
     visibility: visible;
   }
+
+  @media (max-width: 1024px) {
+    padding: 0.5rem; /* Adjust padding for smaller screens */
+    margin-left: -1rem;
+  }
 `;
 
 export const StyledTodoEditInput = styled.input`
-  width: calc(100% - 40px); /* Adjust based on padding and delete icon */
+  width: calc(100% - 2.5rem); /* Adjust based on padding and delete icon */
   background: none;
   border: none;
-  padding: 10px 10px 10px 30px;
+  padding: 0.625rem 0.625rem 0.625rem 1.875rem;
   box-sizing: border-box;
   color: var(--todo-edit-input-color);
 
@@ -37,12 +42,16 @@ export const StyledTodoEditInput = styled.input`
     outline: none;
     background-color: var(--todo-edit-input-focus-bg);
   }
+
+  @media (max-width: 1024px) {
+    padding: 0.5rem; /* Adjust padding for smaller screens */
+  }
 `;
 
 export const StyledItemDeleteIcon = styled.span<{ completed: boolean }>`
   visibility: hidden;
   position: absolute;
-  right: 10px;
+  right: 0.625rem;
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
@@ -52,12 +61,16 @@ export const StyledItemDeleteIcon = styled.span<{ completed: boolean }>`
   &:hover {
     color: ${(props) => (props.completed ? 'var(--todo-text-color-secondary)' : 'var(--todo-text-color-primary)')};
   }
+
+  @media (max-width: 1024px) {
+    font-size: 1.25em; /* Adjust font size for smaller screens */
+  }
 `;
 
 export const StyledEditIconContainer = styled.div<{ completed: boolean }>`
   visibility: hidden;
   position: absolute;
-  right: 40px;
+  right: 2.5rem;
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
@@ -66,6 +79,10 @@ export const StyledEditIconContainer = styled.div<{ completed: boolean }>`
 
   &:hover {
     color: ${(props) => (props.completed ? 'var(--todo-text-color-secondary)' : 'var(--todo-text-color-primary)')};
+  }
+
+  @media (max-width: 1024px) {
+    font-size: 1.25em; /* Adjust font size for smaller screens */
   }
 `;
 
@@ -73,11 +90,15 @@ export const StyledToggleIconContainer = styled.div<{ completed: boolean }>`
   display: flex;
   align-items: center;
   cursor: pointer;
-  margin-right: 10px;
+  margin-right: 0.625rem;
   color: ${(props) => (props.completed ? 'var(--todo-text-color-secondary)' : 'var(--todo-text-color-primary)')};
 
   &:hover {
     color: ${(props) => (props.completed ? 'var(--todo-text-color-secondary)' : 'var(--todo-text-color-primary)')};
+  }
+
+  @media (max-width: 1024px) {
+    font-size: 1.25em; /* Adjust font size for smaller screens */
   }
 `;
 
@@ -86,7 +107,7 @@ export const StyledReorderIconContainer = styled.div<{ completed: boolean }>`
   display: flex;
   align-items: center;
   cursor: grab;
-  margin-right: 10px;
+  margin-right: 0.625rem;
   color: ${(props) => (props.completed ? 'var(--todo-text-color-secondary)' : 'var(--todo-text-color-primary)')};
 
   &:hover {
@@ -96,5 +117,8 @@ export const StyledReorderIconContainer = styled.div<{ completed: boolean }>`
   &:active {
     cursor: grabbing;
   }
-`;
 
+  @media (max-width: 1024px) {
+    font-size: 1.25em; /* Adjust font size for smaller screens */
+  }
+`;

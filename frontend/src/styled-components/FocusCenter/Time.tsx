@@ -4,7 +4,7 @@ export const StyledTimeContainer = styled.div`
   display: flex;
   align-items: center;
   position: relative;
-  z-index: 1; /* Ensure it has a lower z-index */
+  z-index: 1;
 `;
 
 export const StyledTimeWrapper = styled.div`
@@ -20,15 +20,19 @@ export const StyledTimeWrapper = styled.div`
 
 export const StyledTime = styled.div`
   font-weight: 800;
-  font-size: 10rem;
+  font-size: 8rem; /* Adjusted for better responsiveness */
   color: var(--widget-text-color-primary);
+  
+  @media (max-width: 1600px) {
+    font-size: 6.5rem; /* Adjust font size for smaller laptop screens */
+  }
 `;
 
 export const StyledMoreIcon = styled.div`
   display: none; /* Hide by default */
-  position: absolute; /* Position it absolutely */
+  position: absolute;
   right: 0; /* Adjust the position so it doesn't affect the time component */
-  font-size: 3rem;
+  font-size: 2rem; /* Adjusted for better responsiveness */
   color: var(--widget-text-color-primary);
   cursor: pointer;
 `;

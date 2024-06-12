@@ -25,6 +25,10 @@ export const StyledTodoInput = styled.input`
     cursor: not-allowed;
     opacity: 0.5;
   }
+
+  @media (max-width: 1024px) {
+    height: 2rem; /* Adjust height for smaller screens */
+  }
 `;
 
 export const StyledTodoInputContainer = styled.div<{ isEditingTitle: boolean }>`

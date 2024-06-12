@@ -1,22 +1,30 @@
 import styled from 'styled-components';
 
 export const WeatherContainer = styled.div`
-  font-family: var(--font-family-primary);
-  font-size: 14px;
-  text-align: left;
   border: 1px solid none;
   border-radius: 10px;
-  padding: 0px;
-  margin: 0px;
+  padding: 1rem;
+  margin: 0;
+  margin-bottom: -0.5rem;
   display: inline-block;
-  color: var(--widget-text-color-secondary);
+  color: var(--widget-text-color-primary);
   box-sizing: border-box;
   z-index: 100; /* Ensure it has a higher z-index */
   position: relative; /* Ensure positioning context for the dropdown */
+
+  @media (max-width: 1600px) {
+    font-size: 0.875rem; 
+    padding: 0.5rem;
+    margin: 0.5rem;
+  }
 `;
 
 export const TemperatureUnit = styled.span<{ isSelected: boolean }>`
   cursor: pointer;
-  margin-left: 5px;
-  color: ${(props) => (props.isSelected ? 'inherit' : 'gray')};
+  margin-left: 0.5rem;
+  color: ${(props) => (props.isSelected ? 'var(--widget-text-color-primary)' : 'gray')};
+
+  @media (min-width: 1025px) {
+    margin-left: 1rem;
+  }
 `;

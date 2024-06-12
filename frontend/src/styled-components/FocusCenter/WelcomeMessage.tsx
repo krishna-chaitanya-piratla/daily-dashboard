@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const StyledWelcomeMessageContainer = styled.div`
   display: flex;
@@ -6,13 +6,14 @@ export const StyledWelcomeMessageContainer = styled.div`
   position: relative;
   z-index: 1; /* Ensure it has a lower z-index */
   max-width: 100%;
+  text-align: center; /* Ensure text is centered */
 `;
 
 export const StyledWelcomeMessageWrapper = styled.div`
   display: flex;
   align-items: center;
   position: relative;
-  padding-right: 3rem; /* Ensure there's space for the icon */
+  padding-right: 1rem; /* Ensure there's space for the icon */
 
   &:hover .edit-message-icon {
     display: block;
@@ -20,34 +21,47 @@ export const StyledWelcomeMessageWrapper = styled.div`
 `;
 
 export const StyledWelcomeMessage = styled.div`
-  font-size: 4rem;
+  font-size: clamp(1.5rem, 4vw, 4rem); /* Responsive typography */
   color: var(--widget-text-color-primary);
-  text-align: center;
-  margin-top: -2rem;
+  margin-top: -1rem;
   max-width: 100%;
+  margin-right: 2rem;
+
+  @media (max-width: 1600px) {
+    font-size: clamp(1.75rem, 2.5vw, 2.5rem); /* Adjust font size for smaller laptop screens */
+  }
 `;
 
 export const StyledWelcomeInput = styled.input`
   font-family: 'Wotfard';
-  font-size: 4rem;
+  font-size: clamp(1.5rem, 4vw, 4rem); /* Responsive typography */
   color: var(--widget-text-color-primary);
-  text-align: center;
-  margin-top: -2rem;
+  margin-top: -1rem;
+  margin-right: 3rem;
   max-width: 100%;
   background: none;
   border: none;
   border-bottom: 1px solid var(--widget-text-color-primary);
   outline: none;
+  text-align: center;
+
+  @media (max-width: 1600px) {
+    font-size: clamp(1.75rem, 2.5vw, 2.5rem); /* Adjust font size for smaller laptop screens */
+  }
 `;
 
 export const StyledEditMessageIcon = styled.div`
   display: none; /* Hide by default */
   position: absolute; /* Position it absolutely */
-  right: 0; /* Adjust the position so it doesn't affect the time component */
-  font-size: 3rem;
+  right: 0rem; /* Adjust the position so it doesn't affect the time component */
+  font-size: 2rem;
   color: var(--widget-text-color-primary);
   cursor: pointer;
-  margin-top: -2rem;
+  margin-top: -1rem;
+
+  @media (max-width: 1600px) {
+    font-size: 1.5rem;
+  }
 `;
 
 export const StyledSaveIcon = styled(StyledEditMessageIcon)`
@@ -59,10 +73,14 @@ export const StyledDiscardIcon = styled(StyledEditMessageIcon)`
 `;
 
 export const StyledGreetingMessage = styled.div`
-  font-size: 4rem;
+  font-size: clamp(1.5rem, 4vw, 4rem); /* Responsive typography */
   color: var(--widget-text-color-primary);
   text-align: center;
-  margin-top: -2rem;
+  margin-top: -1rem;
   max-width: 100%;
   margin-right: 0.5rem; /* Add some space between the greeting and the username */
+
+  @media (max-width: 1600px) {
+    font-size: clamp(1.75rem, 2.5vw, 2.5rem); /* Adjust font size for smaller laptop screens */
+  }
 `;

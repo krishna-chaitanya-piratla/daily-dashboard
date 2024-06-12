@@ -9,7 +9,7 @@ export const GlobalStyles = createGlobalStyle`
     --widget-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.25);
     --todo-text-color-primary: #ccc;
     --todo-text-color-secondary: gray;
-    --todo-title-font-size: 24px;
+    --todo-title-font-size: 1.5rem; /* Changed to relative unit */
     --icon-font-size: 1.2em;
     --input-focus-text-color: gray;
     --input-placeholder-color: gray;
@@ -30,6 +30,11 @@ export const GlobalStyles = createGlobalStyle`
     --scrollbar-thumb-color: #999;
     --scrollbar-thumb-hover-color: #999;
   }
+
+  html {
+    font-size: 16px; /* Set base font-size */
+  }
+
   body {
     background-color: black;
     color: white;
@@ -76,7 +81,7 @@ export const Header = styled.header`
   position: fixed;
   top: 0;
   right: 0;
-  padding: 10px;
+  padding: 0.5rem 1rem; /* Adjusted for better responsiveness */
 `;
 
 export const AppContainer = styled.div`
@@ -87,8 +92,15 @@ export const AppContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-size: cover; /* Ensure the background image covers the entire container */
+  background-size: cover;
   position: relative;
-  z-index: 0; /* Ensure it has a base z-index */
+  z-index: 0;
+  padding: 1rem; /* Added padding for better spacing on smaller screens */
+  box-sizing: border-box;
+  @media (max-width: 1024px) {
+    padding: 0.5rem; /* Adjust padding for smaller laptop screens */
+  }
+  @media (min-width: 1025px) {
+    padding: 2rem; /* Adjust padding for larger screens */
+  }
 `;
-

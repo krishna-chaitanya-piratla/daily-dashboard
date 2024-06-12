@@ -5,11 +5,19 @@ export const StyledFocusCenter = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 30px; /* Add padding inside */
-  position: absolute; /* Center it within the parent */
+  padding: 2rem; /* Adjusted for better spacing */
+  position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%); /* Center it */
-  z-index: 1; /* Ensure it has a lower z-index */
-  
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  text-align: center; /* Center align text */
+
+  @media (max-width: 1024px) {
+    padding: 1rem; /* Adjust padding for smaller laptop screens */
+  }
+
+  @media (min-width: 1025px) {
+    padding: 3rem; /* Adjust padding for larger screens */
+  }
 `;

@@ -4,7 +4,7 @@ import MenuItem from '@mui/material/MenuItem';
 
 export const StyledDropDownIcon = styled.div`
   cursor: pointer;
-  margin-right: 5px;
+  margin-right: 0.25rem;
   color: var(--dropdown-icon-color);
   &:hover {
     color: var(--dropdown-icon-hover-color);

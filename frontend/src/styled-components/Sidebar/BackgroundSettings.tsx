@@ -16,12 +16,20 @@ export const RadioButtonContainer = styled.div`
     align-items: center;
     gap: 0.5rem;
   }
+
+  @media (max-width: 1024px) {
+    gap: 0.5rem; /* Adjust gap for smaller screens */
+  }
 `;
 
 export const ColorBoxContainer = styled.div`
   display: flex;
   gap: 0.5rem;
   margin-top: 0.5rem;
+
+  @media (max-width: 1024px) {
+    gap: 0.25rem; /* Adjust gap for smaller screens */
+  }
 `;
 
 export const ColorBox = styled.div<{ color: string; isSelected: boolean }>`
@@ -57,13 +65,13 @@ export const RowContainer = styled.div`
 `;
 
 export const RowLabel = styled.div`
-    font-family: SriRacha, cursive;
-    font-weight: bold;
-    margin-right: 1rem;
+  font-family: SriRacha, cursive;
+  font-weight: bold;
+  margin-right: 1rem;
 `;
 
 export const ColorSelectionDiv = styled.div`
-    margin-top: 1rem;
+  margin-top: 1rem;
 `;
 
 export const StyledUnsplashInput = styled.input`
@@ -78,6 +86,7 @@ export const StyledUnsplashInput = styled.input`
   margin: 0.5rem 0;
   margin-left: 1rem;
   color: inherit;
+
   &:focus,
   &:focus-visible {
     outline: none;
@@ -91,6 +100,10 @@ export const StyledUnsplashInput = styled.input`
   &:disabled {
     cursor: not-allowed;
     opacity: 0.5;
+  }
+
+  @media (max-width: 1024px) {
+    font-size: 1rem; /* Adjust font size for smaller screens */
   }
 `;
 

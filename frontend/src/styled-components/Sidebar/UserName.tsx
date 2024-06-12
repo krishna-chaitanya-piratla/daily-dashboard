@@ -23,7 +23,7 @@ export const StyledUserName = styled.input<StyledUserNameProps>`
   background: none;
   border: none;
   color: ${(props) => (props.isEditing ? 'var(--widget-text-color-primary)' : 'var(--widget-text-color-secondary)')};
-  font-size: 2rem;
+  font-size: 1.5rem;
   outline: none;
   width: ${(props) => `${props.width}px`};
   min-width: 150px;
@@ -33,29 +33,33 @@ export const StyledUserName = styled.input<StyledUserNameProps>`
   ::placeholder {
     color: var(--widget-text-color-primary);
   }
+
+  @media (max-width: 1024px) {
+    font-size: 1.25rem; /* Adjust font size for smaller screens */
+  }
 `;
 
 export const StyledUsernameEditIcon = styled(EditIcon)`
-  font-size: 0.75rem; 
+  font-size: 1rem; 
   color: var(--widget-text-color-secondary);
-  margin-left: 1.5rem; /* Gap between text and icon */
+  margin-left: 1rem; /* Gap between text and icon */
   flex-shrink: 0;
   cursor: pointer;
   visibility: hidden; /* Initially hidden */
 `;
 
 export const StyledCheckIcon = styled(CheckIcon)`
-  font-size: 0.75rem; 
+  font-size: 1rem; 
   color: var(--widget-text-color-primary);
-  margin-left: 1.5rem; /* Gap between text and icon */
+  margin-left: 1rem; /* Gap between text and icon */
   flex-shrink: 0;
   cursor: pointer;
 `;
 
 export const StyledClearIcon = styled(ClearIcon)`
-  font-size: 0.75rem; 
+  font-size: 1rem; 
   color: var(--widget-text-color-primary);
-  margin-left: 0.75rem; /* Gap between check icon and clear icon */
+  margin-left: 0.5rem; /* Gap between check icon and clear icon */
   flex-shrink: 0;
   cursor: pointer;
 `;

@@ -15,9 +15,9 @@ export const ColorPickerAndButtons = styled.div`
 `;
 
 export const SaveandRevertButtons = styled.div`
-    display: flex;
-    justify-content: center;
-    width: 100%; /* Takes up the remaining 10% of the width */
+  display: flex;
+  justify-content: center;
+  width: 100%; /* Takes up the remaining 10% of the width */
 `;
 
 export const RightSpace = styled.div`
@@ -56,25 +56,25 @@ export const StyledColorPicker = styled(SketchPicker)`
 `;
 
 export const StyledColorButton = styled.button`
-    font-family: 'Wotfard', sans-serif;
-    background-color: var(--widget-background-color);
+  font-family: 'Wotfard', sans-serif;
+  background-color: var(--widget-background-color);
+  color: white;
+  border: 0.5px dotted gray;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1.15rem;
+  cursor: pointer;
+  margin: 0.5rem;
+
+  &:hover {
+    border: none;
+    background-color: deeppink;
     color: white;
-    border: 0.5px dotted gray;
-    border-radius: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    font-size: 1.15rem;
-    cursor: pointer;
-    margin: 0.5rem;
+  }
 
-    &:hover {
-        border: none;
-        background-color: deeppink;
-        color: white;
-    }
-
-    &:focus {
-        outline: none;
-    }
+  &:focus {
+    outline: none;
+  }
 `;
 
 export const StyledCloseIconButton = styled.button`
